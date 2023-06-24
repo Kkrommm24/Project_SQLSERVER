@@ -9,23 +9,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      patientId: {
+      PatientId: {
         type: Sequelize.INTEGER
       },
-      doctorId: {
+      DoctorId: {
         type: Sequelize.INTEGER
       },
-      description: {
+      BookingId: {
+        type: Sequelize.INTEGER
+      },
+      History_description: {
         type: Sequelize.TEXT
       },
-      files: {
+      History_files: {
         type: Sequelize.TEXT
       },
-      createdAt: {
+      History_createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      History_updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

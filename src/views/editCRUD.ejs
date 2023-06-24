@@ -24,23 +24,23 @@
                     <div class="col-12 mt-3"><b>Edit user's information:</b></div>
                 <div class="form-row col-md-6">
                     <div class="form-group col-md-6">
-                        <label for="inputEmail4">First name</label>
+                        <label for="inputFirstname4">First name</label>
                         <input 
                           type="text" 
                           class="form-control" 
                           placeholder="First name" 
                           name="firstName"
-                          value="<%= user.firstName %>"
+                          value="<%= patient.firstName %>"
                         />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputPassword4">Last name</label>
+                        <label for="inputLastname4">Last name</label>
                         <input
                           type="text" 
                           class="form-control"
                           placeholder="Last name" 
                           name="lastName"
-                          value="<%= user.lastName %>"
+                          value="<%= patient.lastName %>"
                          />
                 </div>
                 <div class="form-group col-md-6">
@@ -50,10 +50,10 @@
                     class="form-control" 
                     placeholder="Address" 
                     name="address"
-                    value="<%= user.address %>"
+                    value="<%= patient.address %>"
                   />
                 </div>
-                <input name="id" value="<%= user.id %>" type="text" hidden/>
+                <input name="id" value="<%= patient.id %>" type="text" hidden/>
                 <button type="submit" class="btn btn-primary">Update</button>
               </form>
         </div>

@@ -1,54 +1,54 @@
 import bcrypt  from 'bcryptjs';
 import db from "../models/index";
-let handleUserLogin = (email, password) => {
+let handleLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try{
-            let userData = {}
+            let loginData = {}
             let isExist = await checkUserEmail(email);
             if(isExist){
                 //user existed
                 
-                let user = await db.User.findOne({
-                    attributes: ['email', 'roleId', 'password'],
+                let login = await db.Login.findOne({
+                    attributes: ['email', 'password'],
                     where: {email: email},
                     raw: true
                 });
-                if(user){
+                if(login){
                     //compare password
-                    let check = await bcrypt.compareSync(password, user.password);
+                    let check = await bcrypt.compareSync(password, login.password);
                     //
                     if(check){
-                        userData.errCode = 0;
-                        userData.errMessage = 'OK',
-                        console.log(user);
-                        delete user.password;
-                        userData.user = user;
+                        loginData.errCode = 0;
+                        loginData.errMessage = 'OK',
+                        console.log(login);
+                        delete login.password;
+                        loginData.login = login;
                     }else{
-                        userData.errCode = 3;
-                        userData.errMessage = 'Wrong Password';
+                        loginData.errCode = 3;
+                        loginData.errMessage = 'Wrong Password';
                     }
                 }else{
-                    userData.errCode = 2;
-                    userData.errMessage = `USER NOT FOUND`;
+                    loginData.errCode = 2;
+                    loginData.errMessage = `USER NOT FOUND`;
                 }
             }else{
-                userData.errCode = 1;
-                userData.errMessage = `Email doesn't exist`;
+                loginData.errCode = 1;
+                loginData.errMessage = `Email doesn't exist`;
             }
-            resolve(userData)
+            resolve(loginData)
         }catch(e){
             reject(e);
         }
     })
 }
 
-let checkUserEmail = (userEmail) =>{
+let checkUserEmail = (loginEmail) =>{
     return new Promise(async (resolve, reject) => {
         try{
-            let user = await db.User.findOne({
-                where: {email: userEmail}
+            let login = await db.Login.findOne({
+                where: {email: loginEmail}
             })
-            if(user){
+            if(login){
                 resolve(true)
             }else{
                 resolve(false)
@@ -59,7 +59,28 @@ let checkUserEmail = (userEmail) =>{
     })
 }
 
-
+let getAllPatients = (PatientId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let logins = '';
+        if (PatientId === 'ALL') {
+          logins = await db.Patient.findAll({
+          });
+        }
+        if (PatientId && PatientId !== 'ALL') {
+          // Add code here
+          logins = await db.Patient.findOne({
+            where: { id: PatientId },
+          });
+        }
+        resolve(logins);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  };
+  
 module.exports = {
-    handleUserLogin: handleUserLogin,
+  handleLogin: handleLogin,
+  getAllPatients: getAllPatients,
 }

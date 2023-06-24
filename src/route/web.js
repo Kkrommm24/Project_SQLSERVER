@@ -14,7 +14,8 @@ let initWebRoutes = (app) => {
     router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển 
     router.get('/delete-crud', homeController.deleteCRUD); //delete
 
-    router.post('/api/login', userController.handleLogin);
+    router.post('/api/login', userController.handleLogin); //login
+    router.get('/api/get-all-patients', userController.handlegetAllPatients); //edit
 
     return app.use("/", router)
 }

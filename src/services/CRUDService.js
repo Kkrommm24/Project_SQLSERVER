@@ -6,16 +6,21 @@ let createNewUser = async (data) =>{
     return new Promise( async (resolve, reject) => {
         try{
             let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.User.create({
+            await db.Login.create({
                 email: data.email,
-                password: hashPasswordFromBcrypt,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                phonenumber: data.phonenumber,
-                gender: data.gender == '1' ? true : false,
-                roleId: data.roleId,
+                password: hashPasswordFromBcrypt,  
             })
+            await db.Patient.create({
+                roleId: 'Patient',
+                Patient_email: data.email,
+                Patient_firstName: data.firstName,
+                Patient_lastName: data.lastName,
+                Patient_address: data.address,
+                Patient_phoneNumber: data.phoneNumber,
+                Patient_age: data.Age,
+                Patient_gender: data.gender,   
+            })
+            
             resolve('Create succeed');
         }catch(e){
             reject(e);
@@ -35,28 +40,28 @@ let hashUserPassword = (password) => {
     
 }
 
-let getAllUser = () => {
+let getAllPatient = () => {
     return new Promise( async (resolve, reject) =>{
         try{
-            let users = db.User.findAll({
+            let patients = db.Patient.findAll({
                 raw: true,
             });
-            resolve(users)
+            resolve(patients)
         }catch(e){
             reject(e);
         }     
     })
 }
 
-let getUserInfoById = (userId) => {
+let getPatientInfoById = (PatientId) => {
     return new Promise( async (resolve, reject) =>{
         try{
-            let user = await db.User.findOne({
-                where: {id: userId},
+            let patient = await db.Patient.findOne({
+                where: {id: PatientId},
                 raw: true,
             });
-            if(user){
-                resolve(user)
+            if(patient){
+                resolve(patient);
             }else{
                 resolve({})
             }
@@ -67,20 +72,21 @@ let getUserInfoById = (userId) => {
     })
 }
 
-let updateUserData = (data) =>{
+let updatePatientData = (data) =>{
     return new Promise( async (resolve, reject) =>{
         try{
-            let user = await db.User.findOne({
+            let patient = await  db.Patient.findOne({
                 where: {id: data.id},
             })
-            if(user){
-                user.firstName = data.firstName;
-                user.lastName = data.lastName;
-                user.address = data.address;
-
-                await user.save();
-                let allUsers = await db.User.findAll();
-                resolve(allUsers);
+            console.log(patient);
+            if(patient){
+                patient.Patient_firstName = data.firstName;
+                patient.Patient_lastName = data.lastName;
+                patient.Patient_address = data.address;
+                console.log(patient);
+                await patient.save();
+                let allPatients = await db.Patient.findAll();
+                resolve(allPatients);
             }else{
                 resolve();
             }
@@ -89,14 +95,14 @@ let updateUserData = (data) =>{
         }     
     })
 }
-let deleteUserById = (userId) => {
+let deletePatientById = (PatientId) => {
     return new Promise( async (resolve, reject) =>{
         try{
-            let user = await db.User.findOne({
-                where: {id: userId},
+            let patient = await db.Patient.findOne({
+                where: {id: PatientId},
             });
-            if(user){
-                user.destroy();
+            if(patient){
+                patient.destroy({ truncate: true, restartIdentity: true });
             }else{
             }
             resolve();
@@ -107,8 +113,8 @@ let deleteUserById = (userId) => {
 }
 module.exports ={
     createNewUser: createNewUser,
-    getAllUser: getAllUser,
-    getUserInfoById: getUserInfoById,
-    updateUserData: updateUserData,
-    deleteUserById: deleteUserById,
+    getAllPatient: getAllPatient,
+    getPatientInfoById: getPatientInfoById,
+    updatePatientData: updatePatientData,
+    deletePatientById: deletePatientById,
 }
