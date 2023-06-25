@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 import bcrypt  from 'bcryptjs';
 import db from "../models/index";
 let handleLogin = (email, password) => {
@@ -20,7 +21,7 @@ let handleLogin = (email, password) => {
                     if(check){
                         loginData.errCode = 0;
                         loginData.errMessage = 'OK',
-                        console.log(login);
+                        //console.log(login);
                         delete login.password;
                         loginData.login = login;
                     }else{
@@ -59,28 +60,13 @@ let checkUserEmail = (loginEmail) =>{
     })
 }
 
-let getAllPatients = (PatientId) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let logins = '';
-        if (PatientId === 'ALL') {
-          logins = await db.Patient.findAll({
-          });
-        }
-        if (PatientId && PatientId !== 'ALL') {
-          // Add code here
-          logins = await db.Patient.findOne({
-            where: { id: PatientId },
-          });
-        }
-        resolve(logins);
-      } catch (e) {
-        reject(e);
-      }
-    });
-  };
-  
+// let createPasswordChangedToken = async (user_email) => {
+//     const resetToken = crypto.randomBytes(32).toString('hex')
+//     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+//     this.passwordResetExpires = Date.now() + 15 * 60 * 1000
+//     return resetToken
+// }
 module.exports = {
-  handleLogin: handleLogin,
-  getAllPatients: getAllPatients,
-}
+    handleLogin: handleLogin,
+    // createPasswordChangedToken: createPasswordChangedToken,
+  }

@@ -1,6 +1,7 @@
 import express from "express";
 import homeController from "../controller/homeController";
-import userController from "../controller/userController";
+import LoginController from "../controller/LoginController";
+import PatientController from "../controller/PatientController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -14,9 +15,13 @@ let initWebRoutes = (app) => {
     router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển 
     router.get('/delete-crud', homeController.deleteCRUD); //delete
 
-    router.post('/api/login', userController.handleLogin); //login
-    router.get('/api/get-all-patients', userController.handlegetAllPatients); //edit
+    router.post('/api/login', LoginController.handleLogin); //login
+    router.get('/api/get-all-patients', PatientController.handlegetAllPatients); //print all patients
+    router.post('/api/create-new-patient', PatientController.handleCreateNewPatient);
+    router.put('/api/edit-patient', PatientController.handleEditPatient);
+    router.delete('/api/delete-patient', PatientController.handleDeletePatient);
 
+    // router.get('/api/reset-password', LoginController.handleLogin);
     return app.use("/", router)
 }
 
