@@ -10,12 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Doctor.hasMany(Login, {
+        foreignKey: 'email'
+      });
+      Login.belongsTo(Doctor);
+
+      Patient.hasMany(Login, {
+        foreignKey: 'email'
+      });
+      Login.belongsTo(Patient);
     }
   }
   Login.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
+    roleId: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Login',

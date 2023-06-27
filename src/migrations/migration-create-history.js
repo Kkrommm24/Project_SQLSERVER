@@ -10,13 +10,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       PatientId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       DoctorId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       BookingId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       History_description: {
         type: Sequelize.TEXT

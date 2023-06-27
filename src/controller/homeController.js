@@ -18,11 +18,11 @@ let getAboutPage = (req, res) => {
 let getCRUD = (req, res) => {
     return res.render('crud.ejs');
  }
- let postCRUD = async (req, res) => {
+let postCRUD = async (req, res) => {
     let message = await CRUDService.createNewUser(req.body);
     console.log(message)
     return res.send('Created');
- }
+}
  let displayGetCRUD = async (req, res) => {
     let data = await CRUDService.getAllPatient();
     console.log('---------------------')

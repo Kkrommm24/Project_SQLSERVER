@@ -1,0 +1,41 @@
+<!-- create_booking.ejs -->
+
+<script>
+    function checkField(fieldId, nextFieldId) {
+      const field = document.getElementById(fieldId);
+      const nextField = document.getElementById(nextFieldId);
+  
+      if (field.value === '') {
+        nextField.disabled = true;
+      } else {
+        nextField.disabled = false;
+      }
+    }
+  </script>
+  
+  <form action="/booking" method="POST">
+    <div>
+      <label for="location">Nơi đăng ký khám:</label>
+      <input type="text" id="location" name="location" onchange="checkField('location', 'specialty')" required>
+    </div>
+    <div>
+      <label for="specialty">Chuyên khoa:</label>
+      <input type="text" id="specialty" name="specialty" onchange="checkField('specialty', 'doctor')" required disabled>
+    </div>
+    <div>
+      <label for="doctor">Bác sĩ:</label>
+      <input type="text" id="doctor" name="doctor" onchange="checkField('doctor', 'date')" required disabled>
+    </div>
+    <div>
+      <label for="date">Ngày:</label>
+      <input type="date" id="date" name="date" onchange="checkField('date', 'time')" required disabled>
+    </div>
+    <div>
+      <label for="time">Giờ:</label>
+      <input type="time" id="time" name="time" required disabled>
+    </div>
+    <div>
+      <input type="submit" value="Đăng ký">
+    </div>
+  </form>
+  

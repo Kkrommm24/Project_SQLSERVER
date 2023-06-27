@@ -13,10 +13,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       ClinicId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       SpecializationId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       roleId:{
         type: Sequelize.STRING
@@ -49,7 +49,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {

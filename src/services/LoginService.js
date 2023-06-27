@@ -10,7 +10,7 @@ let handleLogin = (email, password) => {
                 //user existed
                 
                 let login = await db.Login.findOne({
-                    attributes: ['email', 'password'],
+                    attributes: ['email', 'password','roleId'],
                     where: {email: email},
                     raw: true
                 });
@@ -19,11 +19,21 @@ let handleLogin = (email, password) => {
                     let check = await bcrypt.compareSync(password, login.password);
                     //
                     if(check){
-                        loginData.errCode = 0;
-                        loginData.errMessage = 'OK',
-                        //console.log(login);
-                        delete login.password;
-                        loginData.login = login;
+                        let role = login.roleId
+                        if(role === 'Patient'){
+                            loginData.errCode = 0;
+                            loginData.errMessage = `Ok You're Patient`,
+                            //console.log(login);
+                            delete login.password;
+                            loginData.login = login;
+                        }else{
+                            loginData.errCode = 0;
+                            loginData.errMessage = `Ok You're Doctor`,
+                            //console.log(login);
+                            delete login.password;
+                            loginData.login = login;
+                        }
+                        
                     }else{
                         loginData.errCode = 3;
                         loginData.errMessage = 'Wrong Password';

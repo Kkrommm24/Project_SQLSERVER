@@ -9,7 +9,7 @@ let initWebRoutes = (app) => {
     router.get('/about', homeController.getAboutPage);
 
     router.get('/crud', homeController.getCRUD); //render ra form create
-    router.post('/post-crud', homeController.postCRUD); //create
+    router.post('/post-crud', homeController.postCRUD); //created
     router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình
     router.get('/edit-crud', homeController.getEditCRUD); //edit
     router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển 
@@ -17,9 +17,12 @@ let initWebRoutes = (app) => {
 
     router.post('/api/login', LoginController.handleLogin); //login
     router.get('/api/get-all-patients', PatientController.handlegetAllPatients); //print all patients
-    router.post('/api/create-new-patient', PatientController.handleCreateNewPatient);
+    router.post('/api/patient-sign-up', PatientController.handleCreateNewPatient);
     router.put('/api/edit-patient', PatientController.handleEditPatient);
     router.delete('/api/delete-patient', PatientController.handleDeletePatient);
+
+    router.get('/patient-booking', PatientController.handleBooking);
+    router.post('/booking-state', PatientController.postBooking);
 
     // router.get('/api/reset-password', LoginController.handleLogin);
     return app.use("/", router)

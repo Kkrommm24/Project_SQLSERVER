@@ -7,12 +7,16 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       email: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       password: {
+        type: Sequelize.STRING
+      },
+      roleId:{
         type: Sequelize.STRING
       },
       createdAt: {
@@ -24,6 +28,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Logins');
