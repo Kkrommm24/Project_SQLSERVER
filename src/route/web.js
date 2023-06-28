@@ -24,6 +24,8 @@ let initWebRoutes = (app) => {
     router.get('/patient-booking', PatientController.handleBooking);
     router.post('/booking-state', PatientController.postBooking);
 
+    router.get('/allcode', homeController.getAllCode);
+
     // router.get('/api/reset-password', LoginController.handleLogin);
     return app.use("/", router)
 }

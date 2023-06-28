@@ -15,10 +15,12 @@ module.exports = {
       },
       DoctorId: {
         allowNull: false,
+        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       PatientId: {
         allowNull: false,
+        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       date: {

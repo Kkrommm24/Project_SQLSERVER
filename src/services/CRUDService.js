@@ -111,10 +111,35 @@ let deletePatientById = (PatientId) => {
         }     
     })
 }
+
+let getAllCodeService = (typeinput) => {
+    return new Promise( async (resolve, reject) =>{
+        try{
+            if(!typeinput){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameters'
+                })
+            }else{
+                let res = {};
+            let allcode = await db.Allcode.findAll({
+                where: {type: typeinput}
+            });
+            res.errCode = 0;
+            res.data = allcode;
+            resolve(res);
+            }
+            
+        }catch(e){
+            reject(e);
+        }
+    })
+}
 module.exports ={
     createNewUser: createNewUser,
     getAllPatient: getAllPatient,
     getPatientInfoById: getPatientInfoById,
     updatePatientData: updatePatientData,
     deletePatientById: deletePatientById,
+    getAllCodeService: getAllCodeService,
 }

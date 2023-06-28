@@ -146,19 +146,8 @@ let createBooking = async (data) =>{
   return new Promise( async (resolve, reject) => {
       try{
           await db.Booking.create({
-              StatusId: 'CONFIRMED'
-              // DoctorId: 
-              // password: hashPasswordFromBcrypt,  
-          })
-          await db.Patient.create({
-              roleId: 'Patient',
-              Patient_email: data.email,
-              Patient_firstName: data.firstName,
-              Patient_lastName: data.lastName,
-              Patient_address: data.address,
-              Patient_phoneNumber: data.phoneNumber,
-              Patient_age: data.Age,
-              Patient_gender: data.gender,   
+              StatusId: 'CONFIRMED',
+              //DoctorId: data.DoctorId
           })
           
           resolve('Create succeed');
