@@ -13,6 +13,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       Patient_email: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       Patient_firstName: {

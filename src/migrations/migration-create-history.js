@@ -11,7 +11,6 @@ module.exports = {
       },
       PatientId: {
         allowNull: false,
-        allowNull: false,
         type: Sequelize.INTEGER,
       },
       DoctorId: {

@@ -10,6 +10,8 @@ module.exports = {
         primaryKey: true,
       },
       Doctor_email: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       ClinicId: {
