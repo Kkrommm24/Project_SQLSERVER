@@ -1,7 +1,7 @@
-import bcrypt  from 'bcryptjs';
-import db from '../models/index';
+const bcrypt = require('bcryptjs');
+const db = require('../models/index');
 
-const salt = bcrypt.genSaltSync(10)
+const salt = bcrypt.genSaltSync(10);
 let createNewUser = async (data) =>{
     return new Promise( async (resolve, reject) => {
         try{
@@ -9,6 +9,7 @@ let createNewUser = async (data) =>{
             await db.Login.create({
                 email: data.email,
                 password: hashPasswordFromBcrypt,  
+                roleId: 'Patient',
             })
             await db.Patient.create({
                 roleId: 'Patient',
@@ -20,10 +21,9 @@ let createNewUser = async (data) =>{
                 Patient_age: data.Age,
                 Patient_gender: data.gender,   
             })
-            
             resolve('Create succeed');
         }catch(e){
-            reject(e);
+            console.error('Error:', e);
         }
     })
 }

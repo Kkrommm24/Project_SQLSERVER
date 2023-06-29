@@ -42,20 +42,20 @@ let handleDeletePatient = async (req, res) =>{
     return res.status(200).json(message);
 }
 
-let handleBooking = async (req, res) =>{
-    return res.render('patient_booking.ejs');
-}
+// let handleBooking = async (req, res) =>{
+//     return res.render('patient_booking.ejs');
+// }
 
-let postBooking = async (req, res) => {
-    let message = await PatientService.createBooking(req.body);
-    console.log(message)
-    return res.send('Created');
-}
+// let postBooking = async (req, res) => {
+//     let message = await PatientService.createBooking(req.body);
+//     console.log(message)
+//     return res.send('Created');
+// }
 module.exports ={
     handlegetAllPatients: handlegetAllPatients,
     handleCreateNewPatient: handleCreateNewPatient,
     handleEditPatient: handleEditPatient,
     handleDeletePatient: handleDeletePatient,
-    handleBooking: handleBooking,
-    postBooking: postBooking,
+    // handleBooking: handleBooking,
+    // postBooking: postBooking,
 }

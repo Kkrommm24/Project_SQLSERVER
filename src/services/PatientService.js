@@ -26,7 +26,9 @@ let checkUserEmail = (loginEmail) =>{
   return new Promise(async (resolve, reject) => {
       try{
           let login = await db.Login.findOne({
-              where: {email: loginEmail}
+            attributes: ['email', 'password', 'roleId'],
+              where: {email: loginEmail},
+              raw: true,
           })
           if(login){
               resolve(true)
@@ -62,7 +64,8 @@ let hashUserPassword = (password) => {
         let hashPasswordFromBcrypt = await hashUserPassword(data.password);
             await db.Login.create({
                 email: data.email,
-                password: hashPasswordFromBcrypt,  
+                password: hashPasswordFromBcrypt,
+                roleId: 'Patient'  
             })
             await db.Patient.create({
                 roleId: 'Patient',
@@ -80,6 +83,7 @@ let hashUserPassword = (password) => {
             })
           }
       }catch(e){
+        console.error('Error:', e);
         reject(e)
       }
     }
@@ -142,25 +146,25 @@ let deleteUser = (patientId) =>{
   })
 }
 
-let createBooking = async (data) =>{
-  return new Promise( async (resolve, reject) => {
-      try{
-          await db.Booking.create({
-              StatusId: 'CONFIRMED',
-              //DoctorId: data.DoctorId
-          })
+// let createBooking = async (data) =>{
+//   return new Promise( async (resolve, reject) => {
+//       try{
+//           await db.Booking.create({
+//               StatusId: 'CONFIRMED',
+//               //DoctorId: data.DoctorId
+//           })
           
-          resolve('Create succeed');
-      }catch(e){
-          reject(e);
-      }
-  })
-}
+//           resolve('Create succeed');
+//       }catch(e){
+//           reject(e);
+//       }
+//   })
+// }
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
   updatePatientData: updatePatientData,
   deleteUser: deleteUser,
-  createBooking: createBooking,
+  // createBooking: createBooking,
   
 }

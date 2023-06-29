@@ -48,6 +48,7 @@ let handleLogin = (email, password) => {
             }
             resolve(loginData)
         }catch(e){
+            console.error('Error:', e);
             reject(e);
         }
     })
@@ -57,7 +58,9 @@ let checkUserEmail = (loginEmail) =>{
     return new Promise(async (resolve, reject) => {
         try{
             let login = await db.Login.findOne({
-                where: {email: loginEmail}
+                attributes: ['email', 'password', 'roleId'],
+                where: {email: loginEmail},
+                raw: true
             })
             if(login){
                 resolve(true)
@@ -65,6 +68,7 @@ let checkUserEmail = (loginEmail) =>{
                 resolve(false)
             }
         }catch(e){
+            console.error('Error:', e);
             reject(e);
         }
     })

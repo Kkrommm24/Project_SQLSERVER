@@ -4,8 +4,6 @@ let handleLogin = async (req, res) =>{
     let password = req.body.password;
     console.log('your email: ' + email);
     console.log('your password: ' + password);
-    
-
     //check email exist
     if(!email || !password){
         return res.status(500).json({
