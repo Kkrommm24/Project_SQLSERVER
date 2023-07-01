@@ -1,15 +1,14 @@
-<!-- file.ejs -->
 <form action="/booking-state-complete" method="POST">
     <label for="doctor">Chọn bác sĩ:</label>
     <select name="doctor" id="doctor">
       <% doctors.forEach(function(doctor) { %>
-        <option value="<%= id %>"><%= Doctor_lastName %></option>
+        <option value="<%= doctor.id %>"><%= doctor.Doctor_lastName %></option>
       <% }); %>
     </select>
-    
+      
     <label for="date">Chọn ngày:</label>
     <input type="date" name="date" id="date">
-    
+      
     <label for="time">Chọn giờ:</label>
     <select name="time" id="time">
       <option value="9:00-10:00">9:00-10:00</option>
@@ -19,7 +18,7 @@
       <option value="15:00-16:00">15:00-16:00</option>
       <option value="16:00-17:00">16:00-17:00</option>
     </select>
-    
+      
     <button type="submit">Đặt lịch</button>
   </form>
   

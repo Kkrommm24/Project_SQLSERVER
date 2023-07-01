@@ -49,7 +49,8 @@ let handleBooking_1 = async (req, res) =>{
 
 let postBooking_clinic = async (req, res) => {
     let message = await PatientService.createBooking_clinic(req.body);
-    console.log(message)
+    console.log(message);
+    await PatientService.setClinicValue(req.body.clinicId);
     return res.redirect('/patient-booking-specialization');
 }
 
@@ -59,19 +60,32 @@ let handleBooking_2 = async (req, res) =>{
 
 let postBooking_specialization = async (req, res) => {
     let message = await PatientService.createBooking_specialization(req.body);
-    console.log(message)
+    console.log(message);
+    await PatientService.setSpecializationValue(req.body.specializationId);
     return res.redirect('/patient-booking-doctor');
 }
 
-let handleBooking_3 = async (req, res) =>{
-    const doctors = await db.Doctor.findAll({
-        where: { ClinicId: PatientService.Clinic_value(),
-                SpecializationId: PatientService.Specialization_value()
-         },
-    });
-    // Render file EJS và truyền danh sách bác sĩ vào
-    res.render('patient-booking-doctor.ejs', { doctors: doctors });
-}
+let handleBooking_3 = async (req, res) => {
+    try {
+      const clinicId = await PatientService.getClinicValue();
+      const specializationId = await PatientService.getSpecializationValue();
+  
+      const doctors = await db.Doctor.findAll({
+        where: {
+          ClinicId: clinicId,
+          SpecializationId: specializationId
+        }
+      });
+  
+      // Render file EJS và truyền danh sách bác sĩ vào
+      res.render('patient-booking-doctor.ejs', { doctors: doctors });
+    } catch (e) {
+      console.error('Error:', e);
+      // Xử lý lỗi nếu cần thiết
+      res.status(500).send('Internal Server Error');
+    }
+  };
+  
 
 
 let postBooking_doctor = async (req, res) => {
