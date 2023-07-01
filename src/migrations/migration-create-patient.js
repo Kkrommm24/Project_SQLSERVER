@@ -12,7 +12,7 @@ module.exports = {
       roleId:{
         type: Sequelize.STRING
       },
-      Patient_email: {
+      email: {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING

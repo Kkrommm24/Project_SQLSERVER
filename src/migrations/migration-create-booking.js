@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      StatusId: {
+      Status: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },

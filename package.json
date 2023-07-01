@@ -23,6 +23,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.4.1",
+    "node-persist": "0.0.8",
     "nodemailer": "^6.9.3"
   },
   "keywords": [

@@ -1,6 +1,7 @@
 import { response } from "express";
 import db from "../models/index";
 import bcrypt  from 'bcryptjs';
+var storage = require('node-persist');
 const salt = bcrypt.genSaltSync(10)
 let getAllPatients = (PatientId) => {
     return new Promise(async (resolve, reject) => {
@@ -69,7 +70,7 @@ let hashUserPassword = (password) => {
             })
             await db.Patient.create({
                 roleId: 'Patient',
-                Patient_email: data.email,
+                email: data.email,
                 Patient_firstName: data.firstName,
                 Patient_lastName: data.lastName,
                 Patient_address: data.address,
@@ -123,10 +124,10 @@ let updatePatientData =(data) =>{
   })
 }
 
-let deleteUser = (patientId) =>{
+let deleteUser = (p_email) =>{
   return new Promise(async (resolve, reject) => {
     let patient = await db.Patient.findOne({
-      where: {id: patientId},
+      where: {email: p_email},
       raw: false
     })
     if(!patient){
@@ -136,7 +137,11 @@ let deleteUser = (patientId) =>{
       })
     }
     await db.Patient.destroy({
-      where: {id: patientId},
+      where: {email: p_email},
+      raw: false
+    });
+    await db.Login.destroy({
+      where: {email: p_email},
       raw: false
     });
     resolve({
@@ -146,25 +151,77 @@ let deleteUser = (patientId) =>{
   })
 }
 
-// let createBooking = async (data) =>{
-//   return new Promise( async (resolve, reject) => {
-//       try{
-//           await db.Booking.create({
-//               StatusId: 'CONFIRMED',
-//               //DoctorId: data.DoctorId
-//           })
-          
-//           resolve('Create succeed');
-//       }catch(e){
-//           reject(e);
-//       }
-//   })
-// }
+let createBooking_clinic = async (data) =>{
+  return new Promise( async (resolve, reject) => {
+      try{
+        storage.init().then(function(){
+          storage.setItem(ClinicId_book, data.clinicId);
+      });
+          await db.Booking.create({
+            Status: "Pending",
+            DoctorId: 1,
+            PatientId: 1,
+          })
+          resolve('Next stage');
+      }catch(e){
+        console.error('Error:', e);
+      }
+  })
+}
+
+let createBooking_specialization = async (data) =>{
+  return new Promise( async (resolve, reject) => {
+      try{
+        storage.init().then(function(){
+          storage.setItem(SpecializationId_book, data.specializationId);
+      });
+          resolve('Next stage');
+      }catch(e){
+        console.error('Error:', e);
+      }
+  })
+}
+
+let createBooking_doctor = async (data) =>{
+  return new Promise( async (resolve, reject) => {
+      try{
+          resolve('Next stage');
+      }catch(e){
+        console.error('Error:', e);
+      }
+  })
+}
+let Clinic_value = async () => {
+  return new Promise( async (resolve, reject) => {
+    try{
+      return storage.init().then(function(){
+        storage.getItem(ClinicId_book);
+      });
+    }catch(e){
+      console.error('Error:', e);
+    }
+})
+}
+let Specialization_value = async () => {
+  return new Promise( async (resolve, reject) => {
+    try{
+      return storage.init().then(function(){
+        storage.getItem(SpecializationId_book);
+    });
+    }catch(e){
+      console.error('Error:', e);
+    }
+})
+}
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
   updatePatientData: updatePatientData,
   deleteUser: deleteUser,
-  // createBooking: createBooking,
+  createBooking_clinic: createBooking_clinic,
+  createBooking_specialization: createBooking_specialization,
+  Clinic_value: Clinic_value,
+  Specialization_value: Specialization_value,
+  createBooking_doctor: createBooking_doctor,
   
 }

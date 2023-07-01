@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Patient.init({
     roleId: DataTypes.STRING,
-    Patient_email: DataTypes.STRING,
+    email: DataTypes.STRING,
     Patient_firstName: DataTypes.STRING,
     Patient_lastName: DataTypes.STRING,
     Patient_address: DataTypes.STRING,

@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      Doctor_email: {
+      email: {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING
