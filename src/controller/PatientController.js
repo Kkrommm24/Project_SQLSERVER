@@ -1,6 +1,7 @@
 import PatientService from "../services/PatientService"
 import db from "../models/index";
 var storage = require('node-persist');
+// Lấy toàn bộ bệnh nhâ 
 let handlegetAllPatients = async (req, res) => {
     let id = req.query.id; // truyền All, id
     raw: true;
@@ -20,6 +21,7 @@ let handlegetAllPatients = async (req, res) => {
     })
 }
 
+//Tạo mới 1 bệnh nhân
 let handleCreateNewPatient = async (req, res) =>{
     let message = await PatientService.createNewPatient(req.body);
     console.log(message);
@@ -27,11 +29,14 @@ let handleCreateNewPatient = async (req, res) =>{
     
 }
 
+//Chỉnh sửa 1 bệnh nhân
 let handleEditPatient = async (req, res) =>{
     let data = req.body;
     let message = await PatientService.updatePatientData(data);
     return res.status(200).json(message);
 }
+
+//Xóa bệnh nhân theo email
 let handleDeletePatient = async (req, res) =>{
     if(!req.body.email){
         return res.status(200).json({
@@ -43,6 +48,7 @@ let handleDeletePatient = async (req, res) =>{
     return res.status(200).json(message);
 }
 
+//Tạo 1 booking mới
 let handleBooking_1 = async (req, res) =>{
     return res.render('patient_booking_clinic.ejs');
 }
@@ -86,8 +92,6 @@ let handleBooking_3 = async (req, res) => {
     }
   };
   
-
-
 let postBooking_doctor = async (req, res) => {
     let message = await PatientService.createBooking_doctor(req.body);
     console.log(message)

@@ -1,24 +1,35 @@
+<!-- File EJS -->
 <form action="/booking-state-complete" method="POST">
-    <label for="doctor">Chọn bác sĩ:</label>
-    <select name="doctor" id="doctor">
-      <% doctors.forEach(function(doctor) { %>
-        <option value="<%= doctor.id %>"><%= doctor.Doctor_lastName %></option>
-      <% }); %>
-    </select>
-      
-    <label for="date">Chọn ngày:</label>
-    <input type="date" name="date" id="date">
-      
-    <label for="time">Chọn giờ:</label>
-    <select name="time" id="time">
-      <option value="9:00-10:00">9:00-10:00</option>
-      <option value="10:00-11:00">10:00-11:00</option>
-      <option value="11:00-12:00">11:00-12:00</option>
-      <option value="14:00-15:00">14:00-15:00</option>
-      <option value="15:00-16:00">15:00-16:00</option>
-      <option value="16:00-17:00">16:00-17:00</option>
-    </select>
-      
-    <button type="submit">Đặt lịch</button>
-  </form>
+  <label for="doctor">Chọn bác sĩ:</label>
+  <select name="doctor" id="doctor">
+    <% doctors.forEach(function(doctor) { %>
+      <option value="<%= doctor.id %>"><%= doctor.Doctor_lastName %></option>
+    <% }); %>
+  </select>
   
+  <label for="date">Chọn ngày:</label>
+  <input type="date" name="date" id="date">
+  
+  <label for="time">Chọn giờ:</label>
+  <select name="time" id="time">
+    <option value="9:00-10:00">9:00-10:00</option>
+    <option value="10:00-11:00">10:00-11:00</option>
+    <option value="11:00-12:00">11:00-12:00</option>
+    <option value="14:00-15:00">14:00-15:00</option>
+    <option value="15:00-16:00">15:00-16:00</option>
+    <option value="16:00-17:00">16:00-17:00</option>
+  </select>
+  
+  <button type="submit">Đặt lịch</button>
+</form>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const minDate = `${year}-${month}-${day}`;
+    document.getElementById('date').setAttribute('min', minDate);
+  });
+</script>
