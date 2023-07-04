@@ -30,11 +30,11 @@ const Login = (props) => {
       let data = await handleLoginForm(email, password);
       console.log(data);
       if (data.errCode === 0) {
-        if (data.user.roleID === "Doctor") {
-          props.doctorLoginSuccess(data.user);
+        if (data.login.roleId === "Doctor") {
+          props.doctorLoginSuccess(data.login);
           console.log("yes docctor");
-        } else if (data.user.roleID === "Patient") {
-          props.patientLoginSuccess(data.user);
+        } else if (data.login.roleId === "Patient") {
+          props.patientLoginSuccess(data.login);
         } else {
           console.log("nah i not doctor nor patient");
         }
@@ -44,7 +44,7 @@ const Login = (props) => {
       console.log(e);
     }
 
-    //NOTE: In this app we dont use any security method for user data, instead we will store user data directly inside the local storage
+    //NOTE: In this app we dont use any security method for login data, instead we will store login data directly inside the local storage
   };
   return (
     <div className="container">

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { handleRegisterForm } from "../service/userService";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [err, setErr] = useState({
     errCode: "",
     message: "",
@@ -22,8 +23,9 @@ const Register = () => {
     console.log(FormData);
     let result = await handleRegisterForm(FormData);
     if (result.errCode === 0) {
+      setErr({errCode:""});
       console.log("register successful!");
-      <Navigate replace to="/login" />;
+      navigate("/login");
     } else {
       console.log("Nah not create any yet");
       setErr({ errCode: result.errCode, message: result.message });
