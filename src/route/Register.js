@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Form } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { handleRegisterForm } from "../service/userService";
 
 const Register = () => {
+  const [err, setErr] = useState({
+    errCode: "",
+    message: "",
+  });
   const [FormData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,9 +17,17 @@ const Register = () => {
     age: 0,
     gender: 0,
   });
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     console.log(FormData);
+    let result = await handleRegisterForm(FormData);
+    if (result.errCode === 0) {
+      console.log("register successful!");
+      <Navigate replace to="/login" />;
+    } else {
+      console.log("Nah not create any yet");
+      setErr({ errCode: result.errCode, message: result.message });
+    }
   };
   return (
     <div>
@@ -100,6 +113,7 @@ const Register = () => {
           value={FormData.phoneNumber}
         />
         <button onClick={(e) => handleRegister(e)}>Click Me</button>
+        <div style={{ color: "red" }}>{err.message}</div>
       </form>
     </div>
   );
