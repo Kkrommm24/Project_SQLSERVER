@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec ./node_modules/.bin/babel-node src/server.js"
   },
-  "author": "Chrom",
+  "author": "QLPK",
   "license": "ISC",
   "description": "backend cua chrom",
   "dependencies": {
@@ -29,7 +29,7 @@
     "nodemailer": "^6.9.3"
   },
   "keywords": [
-    "chrom",
+    "qlpk",
     "nodejs",
     "express"
   ],

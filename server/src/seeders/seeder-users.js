@@ -11,6 +11,8 @@ module.exports = {
       address: "123, WallStreet",
       gender: 0,
       Age: 40,
+      ClinicId: 1,
+      SpecializationId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
