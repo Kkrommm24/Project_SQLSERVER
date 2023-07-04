@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { processLogout } from "../store/action/userAction";
+import { useState } from "react";
 
 const Home = (props) => {
   //check user role then render
   const navigate = useNavigate();
+
   const handleLogout = () => {
     props.processLogout();
     navigate("/home");

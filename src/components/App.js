@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import Home from "../route/Home";
-import Login from "../route/Login";
+import IsLoggedIn from "../route/Login";
 import NotFound from "../route/NotFound";
-
+import Register from "../route/Register";
 //hook for checking who tf is logging in
 
 const App = () => {
@@ -20,7 +20,8 @@ const App = () => {
           <Route path="/*" element={<NotFound />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<IsLoggedIn />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </div>

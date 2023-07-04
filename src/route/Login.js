@@ -6,7 +6,13 @@ import {
   processLogout,
 } from "../store/action/userAction";
 import handleLoginForm from "../service/userService";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
+const IsLoggedIn = (props) => {
+  if (props.isDoctor || props.isPatient) {
+    return <Navigate replace to="/home" />;
+  } else return <Login {...props} />;
+};
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -24,10 +30,14 @@ const Login = (props) => {
       let data = await handleLoginForm(email, password);
       console.log(data);
       if (data.errCode === 0) {
-        if (data.user.roleID === "1") {
+        if (data.user.roleID === "Doctor") {
           props.doctorLoginSuccess(data.user);
+          console.log("yes docctor");
+        } else if (data.user.roleID === "Patient") {
+          props.patientLoginSuccess(data.user);
+        } else {
+          console.log("nah i not doctor nor patient");
         }
-        if (data.user.roleID === "2") props.patientLoginSuccess(data.user);
         navigate("/home");
       }
     } catch (e) {
@@ -55,6 +65,7 @@ const Login = (props) => {
         />
         <button onClick={(e) => handleLogin(e)}>Click Me</button>
       </form>
+      <Link to="/register">register</Link>
     </div>
   );
 };
@@ -74,4 +85,5 @@ const mapDispatchToProps = (dispatch) => {
     processLogout: () => dispatch(processLogout()),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, mapDispatchToProps)(IsLoggedIn);
