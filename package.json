@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "cd client && npm install && cd .. && cd server && npm install",
-    "dev": "cd client && npm run start"
+    "dev": "cd client && npm run start",
+    "database":"cd server && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "author": "",
   "license": "ISC"
