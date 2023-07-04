@@ -1,0 +1,43 @@
+{
+  "name": "expressjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec ./node_modules/.bin/babel-node src/server.js"
+  },
+  "author": "Chrom",
+  "license": "ISC",
+  "description": "backend cua chrom",
+  "dependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/node": "^7.22.5",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "concurrently": "^8.2.0",
+    "cors": "^2.8.5",
+    "crypto.js": "^3.1.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.4.1",
+    "node-persist": "0.0.8",
+    "nodemailer": "^6.9.3"
+  },
+  "keywords": [
+    "chrom",
+    "nodejs",
+    "express"
+  ],
+  "devDependencies": {
+    "@babel/core": "7.22.5",
+    "@babel/preset-env": "7.22.5",
+    "nodemon": "2.0.22",
+    "sequelize": "^6.32.1",
+    "sequelize-cli": "^6.6.1"
+  }
+}

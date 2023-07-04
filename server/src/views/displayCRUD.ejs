@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.btn-edit{
+    outline: none;
+    background: orange;
+    border: none;
+    height: 25px;
+    width: 60px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-delete{
+    outline: none;
+    background: #ff0023;
+    border: none;
+    height: 25px;
+    width: 60px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+</style>
+<body>
+    <table>
+        <tr>
+          <th>Email</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+
+        <% for(let i=0; i < dataTable.length; i++) { %>
+            <tr>
+              <td><%= dataTable[i].Patient_email %></td>
+              <td><%= dataTable[i].Patient_firstName %></td>
+              <td><%= dataTable[i].Patient_lastName %></td>
+              <td><%= dataTable[i].Patient_address %></td>
+              <td> 
+                    <a href="/edit-crud?id=<%= dataTable[i].id %>" class="btn-edit" type="button">Edit</a>
+                    <a href="/delete-crud?id=<%= dataTable[i].id %>" class="btn-edit" type="button">Delelte</a>
+                    
+              </td>
+            </tr>
+         <% } %>
+      </table>
+</body>
+</html>
