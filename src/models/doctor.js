@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       models.Doctor.belongsTo(models.Clinic,{foreignKey: 'ClinicId', targetKey: 'id'});
 
       models.Doctor.belongsTo(models.Specialization,{foreignKey: 'SpecializationId', targetKey: 'id'});
+
+      models.Doctor.hasOne(models.Login,{foreignKey: 'email', targetKey: 'email'});
     }
   }
   Doctor.init({

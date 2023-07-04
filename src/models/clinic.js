@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Clinic.init({
-    clinic_name: DataTypes.STRING,
-    clinic_address: DataTypes.STRING,
-    clinic_description: DataTypes.TEXT,
-    clinic_image: DataTypes.STRING
+    Clinic_name: DataTypes.STRING,
+    Clinic_address: DataTypes.STRING,
+    Clinic_description: DataTypes.TEXT,
+    Clinic_image: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Clinic',

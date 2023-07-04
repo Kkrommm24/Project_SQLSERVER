@@ -1,9 +1,10 @@
 <!-- File EJS -->
 <form action="/booking-state-complete" method="POST">
+  <input type="number", name="PatientId">
   <label for="doctor">Chọn bác sĩ:</label>
-  <select name="doctor" id="doctor">
+  <select name="doctorId" id="doctor">
     <% doctors.forEach(function(doctor) { %>
-      <option value="<%= doctor.id %>"><%= doctor.Doctor_lastName %></option>
+      <option value="<%= doctor.id %>"><%= doctor.Doctor_firstName %> <%= doctor.Doctor_lastName %></option>
     <% }); %>
   </select>
   
@@ -12,12 +13,14 @@
   
   <label for="time">Chọn giờ:</label>
   <select name="time" id="time">
-    <option value="9:00-10:00">9:00-10:00</option>
-    <option value="10:00-11:00">10:00-11:00</option>
-    <option value="11:00-12:00">11:00-12:00</option>
-    <option value="14:00-15:00">14:00-15:00</option>
-    <option value="15:00-16:00">15:00-16:00</option>
-    <option value="16:00-17:00">16:00-17:00</option>
+    <option value="7">8:00-9:00</option>
+    <option value="8">9:00-10:00</option>
+    <option value="9">10:00-11:00</option>
+    <option value="10">11:00-12:00</option>
+    <option value="11">13:00-14:00</option>
+    <option value="12">14:00-15:00</option>
+    <option value="13">15:00-16:00</option>
+    <option value="14">16:00-17:00</option>
   </select>
   
   <button type="submit">Đặt lịch</button>

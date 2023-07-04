@@ -13,14 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       models.Booking.belongsTo(models.Doctor,{foreignKey: 'DoctorId', targetKey: 'id'});
 
       models.Booking.belongsTo(models.Patient,{foreignKey: 'PatientId', targetKey: 'id'});
+
+      models.Booking.belongsTo(models.Allcode,{foreignKey: 'StatusId', targetKey: 'id'});
     }
   }
   Booking.init({
-    Status: DataTypes.STRING,
+    StatusId: DataTypes.INTEGER,
     DoctorId: DataTypes.INTEGER,
     PatientId: DataTypes.INTEGER,
-    date: DataTypes.DATE,
-    timeType: DataTypes.STRING,
+    date: DataTypes.DATEONLY,
+    timeType: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Booking',

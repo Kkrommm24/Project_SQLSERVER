@@ -27,6 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       Patient_gender: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       Patient_age: {
@@ -46,7 +47,29 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
+    .then(() => queryInterface.addConstraint('patients', {
+      type: 'FOREIGN KEY',
+      name: 'patients_ibfk_logins', // useful if using queryInterface.removeConstraint
+      fields: ['email'], 
+      references: {
+        table: 'Logins',
+        field: 'email',
+      },
+      onDelete: 'restrict',
+      onUpdate: 'restrict',
+    }))
+    .then(() => queryInterface.addConstraint('patients', {
+      type: 'FOREIGN KEY',
+      name: 'patients_ibfk_allcodes', // useful if using queryInterface.removeConstraint
+      fields: ['Patient_gender'], 
+      references: {
+        table: 'Allcodes',
+        field: 'id',
+      },
+      onDelete: 'restrict',
+      onUpdate: 'restrict',
+    }))
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Patients');

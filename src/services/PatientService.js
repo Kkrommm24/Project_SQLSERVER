@@ -165,11 +165,6 @@ let createBooking_clinic = async (data) =>{
   return new Promise( async (resolve, reject) => {
       try{
           await setClinicValue(data.clinicId)
-          await db.Booking.create({
-            Status: "Pending",
-            DoctorId: 1,
-            PatientId: 1,
-          })
           resolve('Next stage');
       }catch(e){
         console.error('Error:', e);
@@ -199,13 +194,54 @@ let getSpecializationValue = async () => {
   return specializationId;
 };
 
+let checkBooking = (doctorData, dateData, timeTypeData) =>{
+  return new Promise(async (resolve, reject) => {
+      try{
+          let booking = await db.Booking.findOne({
+            attributes: ['DoctorId', 'date', 'timeType'],
+              where: {
+                DoctorId: doctorData,
+                date: dateData,
+                timeType: timeTypeData
+              },
+              raw: true,
+          })
+          if(booking){
+              resolve(true)
+          }else{
+              resolve(false)
+          }
+      }catch(e){
+          reject(e);
+      }
+  })
+}
+
 let createBooking_doctor = async (data) =>{
   return new Promise( async (resolve, reject) => {
-      try{
-          resolve('Next stage');
-      }catch(e){
-        console.error('Error:', e);
+    try{
+      let check =await checkBooking(data.doctorId, data.date, data.time);
+      if(check===true){
+        resolve({
+          errCode: 1,
+          message: 'Your schedule is already booked, try another schedule'
+        })
+      }else{
+        await db.Booking.create({
+          StatusId: 3,
+          DoctorId: data.doctorId,
+          PatientId: data.PatientId,
+          date: data.date,
+          timeType: data.time,  
+      })
       }
+      resolve({
+        errCode: 0,
+        message: 'OK'
+      })    
+    }catch(e){
+      console.error('Error_cre_doc:', e);
+    }
   })
 }
 module.exports = {

@@ -50,18 +50,21 @@ let handleDeletePatient = async (req, res) =>{
 
 //Tạo 1 booking mới
 let handleBooking_1 = async (req, res) =>{
-    return res.render('patient_booking_clinic.ejs');
+    let clinics = await db.Clinic.findAll();
+    return res.render('patient_booking_clinic.ejs', {clinics: clinics});
 }
 
 let postBooking_clinic = async (req, res) => {
     let message = await PatientService.createBooking_clinic(req.body);
     console.log(message);
-    await PatientService.setClinicValue(req.body.clinicId);
+    let post_cli = await PatientService.setClinicValue(req.body.clinicId);
+    console.log(post_cli);
     return res.redirect('/patient-booking-specialization');
 }
 
 let handleBooking_2 = async (req, res) =>{
-    return res.render('patient_booking_specialization.ejs');
+    let specializations = await db.Specialization.findAll();
+    return res.render('patient_booking_specialization.ejs', {specializations: specializations});
 }
 
 let postBooking_specialization = async (req, res) => {
@@ -73,10 +76,10 @@ let postBooking_specialization = async (req, res) => {
 
 let handleBooking_3 = async (req, res) => {
     try {
-      const clinicId = await PatientService.getClinicValue();
-      const specializationId = await PatientService.getSpecializationValue();
+      let clinicId = await PatientService.getClinicValue();
+      let specializationId = await PatientService.getSpecializationValue();
   
-      const doctors = await db.Doctor.findAll({
+      let doctors = await db.Doctor.findAll({
         where: {
           ClinicId: clinicId,
           SpecializationId: specializationId
@@ -95,7 +98,12 @@ let handleBooking_3 = async (req, res) => {
 let postBooking_doctor = async (req, res) => {
     let message = await PatientService.createBooking_doctor(req.body);
     console.log(message)
-    return res.send('Created');
+    if(message.errCode === 0){
+        return res.send('Created');
+    }else if(message.errCode === 1){
+        return res.send('Your schedule is already booked, try another schedule');
+    }
+    
 }
 module.exports ={
     handlegetAllPatients: handlegetAllPatients,

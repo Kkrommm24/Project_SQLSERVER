@@ -15,42 +15,14 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<script>
-  function updateDoctors() {
-    const clinicSelect = document.getElementById('inputClinic');
-    const specializationSelect = document.getElementById('inputSpecialization');
-    const doctorSelect = document.getElementById('inputDoctor');
-
-    const clinicId = clinicSelect.value;
-    const specializationId = specializationSelect.value;
-
-    // Gọi API để lấy danh sách bác sĩ dựa trên phòng khám và chuyên khoa đã chọn
-    fetch(`/api/patient-booking`)
-      .then((response) => response.json())
-      .then((data) => {
-        // Xóa tất cả các tùy chọn bác sĩ hiện tại
-        while (doctorSelect.firstChild) {
-          doctorSelect.removeChild(doctorSelect.firstChild);
-        }
-
-        // Thêm các tùy chọn bác sĩ mới dựa trên danh sách nhận được từ API
-        data.forEach((doctor) => {
-          const option = document.createElement('option');
-          option.value = doctor.id;
-          option.textContent = doctor.name;
-          doctorSelect.appendChild(option);
-        });
-      });
-  }
-</script>
 
 <form action="/booking-state-clinic" method="POST">
 <div class="form-group col-md-3">
   <label for="inputClinic">Nơi đăng ký khám</label>
-  <select id="inputClinic" name="clinicId" class="form-control" >
-    <option value="1">Thu Cuc</option>
-    <option value="2">Xuan Phuong</option>
-    <option value="3">Bạch Mai</option>
+  <select name="clinicId" id="clinicId">
+    <% clinics.forEach(function(clinic) { %>
+      <option value="<%= clinic.id %>"><%= clinic.Clinic_name %></option>
+    <% }); %>
   </select>
 </div>
 <div>

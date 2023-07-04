@@ -22,10 +22,10 @@
     <form action="/booking-state-specialization" method="POST">
         <div class="form-group col-md-3">
             <label for="inputSpecialization">Chuyên khoa</label>
-            <select id="inputSpecialization" name="specializationId" class="form-control">
-              <option value="1">Tim Mạch</option>
-              <option value="2">Hô Hấp</option>
-              <option value="3">Tai Mũi Họng</option>
+            <select name="specializationId" id="specializationId">
+              <% specializations.forEach(function(specialization) { %>
+                <option value="<%= specialization.id %>"><%= specialization.Specialization_name %></option>
+              <% }); %>
             </select>
           </div>
         <br>
