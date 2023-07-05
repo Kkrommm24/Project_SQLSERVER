@@ -1,21 +1,41 @@
 'use strict';
+const bcrypt = require('bcrypt');
+
+// Các hàm tạo dữ liệu và các hàm hỗ trợ khác
+
+async function hashPasswords(passwords) {
+  const saltRounds = 10;
+  const hashedPasswords = await Promise.all(
+    passwords.map((password) => bcrypt.hash(password, saltRounds))
+  );
+  return hashedPasswords;
+}
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Thêm dữ liệu cho bảng Logins trước
     const logins = [];
+    const passwords = [];
+
     for (let i = 0; i < 30; i++) {
       const email = `${generateRandomName().toLowerCase()}${i + 1}@gmail.com`;
+      const password = '123456'; // Thay đổi mật khẩu theo nhu cầu
       const login = {
         email: email,
-        password: '123456', // Thay đổi mật khẩu theo nhu cầu
         roleId: 'Doctor',
         createdAt: new Date(),
         updatedAt: new Date(),
       };
       logins.push(login);
+      passwords.push(password);
     }
+
+    const hashedPasswords = await hashPasswords(passwords);
+
+    logins.forEach((login, index) => {
+      login.password = hashedPasswords[index];
+    });
+
     await queryInterface.bulkInsert('Logins', logins, {});
 
     // Lấy danh sách email từ bảng Logins

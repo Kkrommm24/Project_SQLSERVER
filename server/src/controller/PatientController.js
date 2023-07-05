@@ -1,7 +1,7 @@
 import PatientService from "../services/PatientService"
 import db from "../models/index";
 var storage = require('node-persist');
-// Lấy toàn bộ bệnh nhâ 
+// Lấy toàn bộ bệnh nhân
 let handlegetAllPatients = async (req, res) => {
     let id = req.query.id; // truyền All, id
     raw: true;
