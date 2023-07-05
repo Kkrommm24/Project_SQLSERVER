@@ -23,7 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"cd ../NodeJs && nodemon --exec ./node_modules/.bin/babel-node src/server.js\"",
+    "start": "concurrently \"react-scripts start\" \"cd ../server && nodemon --exec ./node_modules/.bin/babel-node src/server.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

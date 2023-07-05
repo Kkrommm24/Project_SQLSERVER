@@ -1,7 +1,7 @@
 # Project_SQLSERVER
 Project on building a website of a clinic using database
 ## Nodejs & MySQL install
-To run this project, you will need to have your machine installed Nodejs ( We recommend using 18.15.0 since we're using it on this project) and MySQL.
+To run this project, you will need to have your machine installed Nodejs ( We recommend using 18.16.0 since we're using it on this project) and MySQL.
 
 ### Fetch repo from github
 Press the Fork button (top right the page) to save copy of this project on your account.
@@ -15,6 +15,8 @@ git clone https://github.com/Kkrommm24/Project_SQLSERVER.git
 ```
 ## Install dependencies
 After download project's files, you need to use ``` npm install ``` to install neccessary files.
+
+You'll also need to use ``` npm install concurrently --save ``` to run with just on e ```npm start```.
 
 Deploy database models and base data in server:
 
