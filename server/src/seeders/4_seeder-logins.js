@@ -60,7 +60,7 @@ module.exports = {
         Doctor_firstName: firstName,
         Doctor_lastName: lastName,
         Doctor_address: generateRandomAddress(),
-        Doctor_gender: Math.floor(Math.random() * 3), // 0: Male, 1: Female, 2: Others
+        Doctor_gender: Math.floor(Math.random() * 3) + 1, // 1: Male, 2: Female, 3: Others
         Doctor_age: Math.floor(Math.random() * 20) + 30, // Random age between 30 and 50
         Doctor_phoneNumber: generateRandomPhoneNumber(),
         Doctor_image: `doctor${i + 1}.jpg`,

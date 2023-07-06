@@ -2,8 +2,7 @@ import LoginService from "../services/LoginService"
 let handleLogin = async (req, res) =>{
     let email = req.body.email;
     let password = req.body.password;
-    console.log('your email: ' + email);
-    console.log('your password: ' + password);
+
     //check email exist
     if(!email || !password){
         return res.status(500).json({
@@ -13,9 +12,25 @@ let handleLogin = async (req, res) =>{
     }
 
     let loginData = await LoginService.handleLogin(email, password)
-    //compare password
-    // return user in4
-    // return access token
+    if (loginData.errCode === 0) {
+        let role = loginData.login.roleId;
+        let userId;
+    
+        if (role === 'Patient') {
+          // Lấy ID từ bảng "patients"
+          if (loginData.patient) {
+            userId = loginData.patient.id;
+          }
+        } else if (role === 'Doctor') {
+          // Lấy ID từ bảng "doctors"
+          if (loginData.doctor) {
+            userId = loginData.doctor.id;
+          }
+        }
+        // Lưu ID vào session
+        req.session.userId = userId;
+      }
+    console.log('User ID:', req.session.userId);
     return res.status(200).json({
         errCode: loginData.errCode,
         message: loginData.errMessage,

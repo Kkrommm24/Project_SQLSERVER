@@ -4,6 +4,7 @@ import viewEngine from "./config/viewEngine";
 import initWebRoutes from './route/web';
 import connectDB from './config/connectDB';
 import cors from 'cors'
+const session = require('express-session');
 require('dotenv').config();
 let app = express();
 app.use((req, res, next) => {
@@ -12,7 +13,13 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
   });
-  
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
 app.use(cors({origin: true}));
 //config app
 
