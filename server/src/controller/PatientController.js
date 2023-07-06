@@ -85,7 +85,7 @@ let handleChangePassword = async (req, res) =>{
     if (!isMatch) {
       return res.status(400).json({ error: 'Incorrect current password' });
     }
-    if(isMatch2 === 1){
+    if(isMatch2 !== 0){
       return res.status(400).json({ error: 'New password does not match. Enter new password again' });
     }
     // Hash và lưu mật khẩu mới
