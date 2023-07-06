@@ -10,8 +10,18 @@ let handleLogin = (email, password) => {
                 //user existed
                 
                 let login = await db.Login.findOne({
-                    attributes: ['email', 'password','roleId'],
+                    attributes: ['id', 'email', 'password','roleId'],
                     where: {email: email},
+                    raw: true
+                });
+                let patient = await db.Patient.findOne({ 
+                    attributes: ['id', 'email'],
+                    where: { email: email },
+                    raw: true
+                });
+                let doctor = await db.Doctor.findOne({
+                    attributes: ['id', 'email'],
+                    where: { email: email },
                     raw: true
                 });
                 if(login){
@@ -20,18 +30,20 @@ let handleLogin = (email, password) => {
                     //
                     if(check){
                         let role = login.roleId
-                        if(role === 'Patient'){
+                        if(patient && role === 'Patient'){
                             loginData.errCode = 0;
                             loginData.errMessage = `Ok You're Patient`,
                             //console.log(login);
                             delete login.password;
                             loginData.login = login;
-                        }else{
+                            loginData.patient = patient;
+                        }else if(doctor && role === 'Doctor'){
                             loginData.errCode = 0;
                             loginData.errMessage = `Ok You're Doctor`,
                             //console.log(login);
                             delete login.password;
                             loginData.login = login;
+                            loginData.doctor = doctor;
                         }
                         
                     }else{

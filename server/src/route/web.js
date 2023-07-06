@@ -7,6 +7,7 @@ var storage = require('node-persist');
 let router = express.Router();
 
 let initWebRoutes = (app) => {
+    app.use(express.json());
     // function isLoggedIn(req,res,next)
     // {
     //     if (req.session.id)
@@ -16,9 +17,9 @@ let initWebRoutes = (app) => {
     router.get('/', homeController.getHomePage);
     router.get('/about', homeController.getAboutPage);
 
-    router.get('/crud', homeController.getCRUD); //render ra form create
+    router.get('/crud', homeController.getCRUD); //render ra form create patient
     router.post('/post-crud', homeController.postCRUD); //created
-    router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình
+    router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình patient
     router.get('/edit-crud', homeController.getEditCRUD); //edit
     router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển 
     router.get('/delete-crud', homeController.deleteCRUD); //delete
@@ -26,11 +27,14 @@ let initWebRoutes = (app) => {
     router.post('/api/login', LoginController.handleLogin); //login
 
     router.get('/api/get-all-patients', PatientController.handlegetAllPatients); //print all patients
+
+    router.get('/api/patient/info', PatientController.handlegetOnePatient); //print a ptient
     router.post('/api/patient-sign-up', PatientController.handleCreateNewPatient);
     router.put('/api/edit-patient', PatientController.handleEditPatient);
+    router.put('/api/change-user-password', PatientController.handleChangePassword);
     router.delete('/api/delete-patient', PatientController.handleDeletePatient);
 
-    router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all patients
+    router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all doctors
     router.post('/api/doctor-sign-up', DoctorController.handleCreateNewDoctor);
     router.put('/api/edit-doctor', DoctorController.handleEditDoctor);
     router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor);

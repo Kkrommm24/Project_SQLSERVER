@@ -81,7 +81,7 @@ let hashUserPassword = (password) => {
                 Patient_lastName: data.lastName,
                 Patient_address: data.address,
                 Patient_phoneNumber: data.phoneNumber,
-                Patient_age: data.Age,
+                Patient_age: data.age,
                 Patient_gender: data.gender,   
             })
             resolve({
@@ -104,7 +104,7 @@ let updatePatientData =(data) =>{
           errMessage: 'Missing required parameters'
         })
       }
-      let patient = await  db.Patient.findOne({
+    let patient = await  db.Patient.findOne({
         where: {id: data.id},
         raw: false
     })
@@ -112,6 +112,49 @@ let updatePatientData =(data) =>{
       patient.Patient_firstName = data.firstName;
       patient.Patient_lastName = data.lastName;
       patient.Patient_address = data.address;
+      patient.Patient_gender = data.gender;
+      patient.Patient_phoneNumber = data.phoneNumber;
+      patient.Patient_age = data.age;
+      console.log(patient);
+      await patient.save();
+        resolve({
+          errCode:0,
+          errMessage: `EDIT SUCCESS`
+        })
+    }else{
+        resolve({
+          errCode:2,
+          errMessage: `USER'S NOT FOUND`
+        });
+    }
+    }catch(e){
+      reject(e);
+    }
+  })
+}
+let updatePatientPassword = (userId) =>{
+  return new Promise(async (resolve, reject) => {
+    try{
+      if(!userId){
+        resolve({
+          errCode:1,
+          errMessage: 'Missing required parameters'
+        })
+      }
+    let patient = await  db.Patient.findOne({
+        where: {id: userId},
+        raw: false
+    })
+    let login = await db.Login.findOne({
+      where: { email: patient.email },
+    });
+    if(patient){
+      patient.Patient_firstName = data.firstName;
+      patient.Patient_lastName = data.lastName;
+      patient.Patient_address = data.address;
+      patient.Patient_gender = data.gender;
+      patient.Patient_phoneNumber = data.phoneNumber;
+      patient.Patient_age = data.age;
       console.log(patient);
       await patient.save();
         resolve({
@@ -248,6 +291,7 @@ module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
   updatePatientData: updatePatientData,
+  updatePatientPassword: updatePatientPassword,
   deleteUser: deleteUser,
   createBooking_clinic: createBooking_clinic,
   createBooking_specialization: createBooking_specialization,
