@@ -1,0 +1,14 @@
+{
+  "name": "project_sqlserver",
+  "version": "1.0.0",
+  "description": "Project on building a website of a clinic using database ## Nodejs & MySQL install To run this project, you will need to have your machine installed Nodejs ( We recommend using 18.15.0 since we're using it on this project) and MySQL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd client && npm install && cd .. && cd server && npm install",
+    "dev": "cd client && npm run start",
+    "database":"cd server && npx sequelize db:migrate && npx sequelize db:seed:all"
+  },
+  "author": "",
+  "license": "ISC"
+}
