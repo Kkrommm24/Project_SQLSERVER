@@ -94,6 +94,34 @@ let createNewDoctor = (data) =>{
       }
     }
   )}
+
+  let getDoctor = async (userId) => {
+    try {
+      // Kiểm tra trong bảng doctors
+      const doctor = await db.Doctor.findOne({
+        where: { id: userId },
+        attributes: ['id', 'Doctor_firstName', 'Doctor_lastName', 'Doctor_address', 'Doctor_gender', 'Doctor_phoneNumber', 'Doctor_age'],
+      });
+      let doctor_cli_spe = await db.Doctor.findOne({
+        where: { id: userId },
+        attributes: ['ClinicId', 'SpecializationId'],
+      });
+      let clinic = await db.Clinic.findOne({
+        where: {id: doctor_cli_spe.ClinicId},
+        attributes: ['Clinic_name'],
+      })
+      let specialization = await db.Specialization.findOne({
+        where: {id: doctor_cli_spe.SpecializationId},
+        attributes: ['Specialization_name'],
+      })
+      let doctor_data = {clinic, specialization, doctor  }
+      console.log('Clinic: ', clinic, '\nSpecialization: ', specialization)
+      return doctor_data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw new Error('Internal Server Error');
+    }
+  }
 let updateDoctorData =(data) =>{
   return new Promise(async (resolve, reject) => {
     try{
@@ -171,6 +199,7 @@ module.exports = {
     bulkCreateSchedule: bulkCreateSchedule,
     getAllDoctors: getAllDoctors,
     createNewDoctor: createNewDoctor,
+    getDoctor: getDoctor,
     updateDoctorData: updateDoctorData,
     deleteUser: deleteUser,
   }

@@ -36,8 +36,10 @@ let initWebRoutes = (app) => {
 //***************DOCTOR***************
     router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all doctors
     
-    router.post('/api/doctor-sign-up', DoctorController.handleCreateNewDoctor); // this appear to manual create a new doctor in backend
+    router.get('/api/doctor/info', DoctorController.handlegetOneDoctor); //print a ptient
+    router.post('/api/doctor-sign-up', DoctorController.handleCreateNewDoctor); // this appears to manual create a new doctor in backend
     router.put('/api/edit-doctor', DoctorController.handleEditDoctor); // edit a doctor
+    router.put('/api/change-doctor-password', DoctorController.handleChangePassword); // change patient password
     router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
 //***************BOOKING***************
     router.get('/api/patient-booking', PatientController.handleBooking_1); // render frontend select clinic
