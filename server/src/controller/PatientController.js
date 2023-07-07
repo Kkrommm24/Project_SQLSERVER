@@ -170,7 +170,10 @@ let postBooking_doctor = async (req, res) => {
       return res.send('Created');
     } else if (message.errCode === 1) {
       return res.send('Your schedule is already booked, try another schedule');
-    } else {
+    } else if (message.errCode === 1.1) {
+      return res.send('You are booking the same time as another one you have booked, try another schedule');
+    }
+     else {
       return res.send('Failed to create booking');
     }
   } catch (error) {

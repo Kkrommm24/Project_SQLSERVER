@@ -292,25 +292,55 @@ let checkBooking = (doctorData, dateData, timeTypeData) =>{
   })
 }
 
+let checkBooking2 = (patientData, dateData, timeTypeData) =>{
+  return new Promise(async (resolve, reject) => {
+      try{
+          let booking = await db.Booking.findOne({
+            attributes: ['PatientId', 'date', 'timeType'],
+              where: {
+                PatientId: patientData,
+                date: dateData,
+                timeType: timeTypeData
+              },
+              raw: true,
+          })
+          if(booking){
+              resolve(true)
+          }else{
+              resolve(false)
+          }
+      }catch(e){
+          reject(e);
+      }
+  })
+}
+
 let createBooking_doctor = async (bookingData) =>{
   return new Promise( async (resolve, reject) => {
     try{
       let { patientId, doctorId, date, timeType } = bookingData;
-      let check =await checkBooking(doctorId, date, timeType);
+      let check = await checkBooking(doctorId, date, timeType);
+      let check2 = await checkBooking2(patientId, date, timeType);
       if(check===true){
         resolve({
           errCode: 1,
           message: 'Your schedule is already booked, try another schedule'
         })
       }else{
-        await db.Booking.create({
+        if(check2===true){
+          resolve({
+            errCode: 1.1,
+            message: 'You are booking the same time as another one you have booked, try another schedule'
+          })
+        }else{
+          await db.Booking.create({
           StatusId: 4,
           DoctorId: doctorId,
           PatientId: patientId,
           date: date,
           timeType: timeType,  
-      })
-      console.log(bookingData)
+          })
+        }
       }
       resolve({
         errCode: 0,
