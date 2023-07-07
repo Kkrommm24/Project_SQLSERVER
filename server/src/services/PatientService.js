@@ -58,43 +58,57 @@ let hashUserPassword = (password) => {
   })
     
 }
-  let createNewPatient = (data) =>{
-    return new Promise(async (resolve, reject) => {
-      try{
-        let check =await checkUserEmail(data.email);
-        if(check===true){
-          resolve({
-            errCode: 1,
-            message: 'Your email is already in used, Try another one'
+let createNewPatient = (data) =>{
+  return new Promise(async (resolve, reject) => {
+    try{
+      let check =await checkUserEmail(data.email);
+      if(check===true){
+        resolve({
+          errCode: 1,
+          message: 'Your email is already in used, Try another one'
+        })
+      }else{
+      let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+          await db.Login.create({
+              email: data.email,
+              password: hashPasswordFromBcrypt,
+              roleId: 'Patient'  
           })
-        }else{
-        let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.Login.create({
-                email: data.email,
-                password: hashPasswordFromBcrypt,
-                roleId: 'Patient'  
-            })
-            await db.Patient.create({
-                roleId: 'Patient',
-                email: data.email,
-                Patient_firstName: data.firstName,
-                Patient_lastName: data.lastName,
-                Patient_address: data.address,
-                Patient_phoneNumber: data.phoneNumber,
-                Patient_age: data.age,
-                Patient_gender: data.gender,   
-            })
-            resolve({
-              errCode: 0,
-              message: 'OK'
-            })
-          }
-      }catch(e){
-        console.error('Error:', e);
-        reject(e)
-      }
+          await db.Patient.create({
+              roleId: 'Patient',
+              email: data.email,
+              Patient_firstName: data.firstName,
+              Patient_lastName: data.lastName,
+              Patient_address: data.address,
+              Patient_phoneNumber: data.phoneNumber,
+              Patient_age: data.age,
+              Patient_gender: data.gender,   
+          })
+          resolve({
+            errCode: 0,
+            message: 'OK'
+          })
+        }
+    }catch(e){
+      console.error('Error:', e);
+      reject(e)
     }
-  )}
+  }
+)}
+
+let getPatient = async (userId) => {
+  try {
+    // Kiểm tra trong bảng patients
+    const patient = await db.Patient.findOne({
+      where: { id: userId },
+      attributes: ['id', 'Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_gender', 'Patient_phoneNumber', 'Patient_age'],
+    });
+    return patient;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Internal Server Error');
+  }
+}
 let updatePatientData =(data) =>{
   return new Promise(async (resolve, reject) => {
     try{
@@ -260,10 +274,11 @@ let checkBooking = (doctorData, dateData, timeTypeData) =>{
   })
 }
 
-let createBooking_doctor = async (data) =>{
+let createBooking_doctor = async (bookingData) =>{
   return new Promise( async (resolve, reject) => {
     try{
-      let check =await checkBooking(data.doctorId, data.date, data.time);
+      let { patientId, doctorId, date, timeType } = bookingData;
+      let check =await checkBooking(doctorId, date, timeType);
       if(check===true){
         resolve({
           errCode: 1,
@@ -271,16 +286,17 @@ let createBooking_doctor = async (data) =>{
         })
       }else{
         await db.Booking.create({
-          StatusId: 3,
-          DoctorId: data.doctorId,
-          PatientId: data.PatientId,
-          date: data.date,
-          timeType: data.time,  
+          StatusId: 4,
+          DoctorId: doctorId,
+          PatientId: patientId,
+          date: date,
+          timeType: timeType,  
       })
+      console.log(bookingData)
       }
       resolve({
         errCode: 0,
-        message: 'OK'
+        message: 'Booking created successfully'
       })    
     }catch(e){
       console.error('Error_cre_doc:', e);
@@ -290,6 +306,7 @@ let createBooking_doctor = async (data) =>{
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
+  getPatient: getPatient,
   updatePatientData: updatePatientData,
   updatePatientPassword: updatePatientPassword,
   deleteUser: deleteUser,

@@ -30,32 +30,30 @@ let handleCreateNewPatient = async (req, res) =>{
     
 }
 
+//Lấy thông tin bệnh nhân trong phiên đăng nhập
 let handlegetOnePatient = async (req, res) =>{
-    try {
-        const userId = req.session.userId; // Lấy userId từ session
-        console.log(userId);
-        // Kiểm tra trong bảng patients
-        const patient = await db.Patient.findOne({
-          where: { id: userId },
-          attributes: ['id', 'Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_gender', 'Patient_phoneNumber', 'Patient_age'],
-        });
-        if (patient) {
-          return res.status(200).json({ patient });
-        } else {
-          return res.status(404).json({ message: 'Patient not found' });
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
+  try {
+    const userId = req.session.userId; // Lấy userId từ session
+    const patient = await PatientService.getPatient(userId);
+    if (patient) {
+      return res.status(200).json({ patient });
+    } else {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 }
-//Chỉnh sửa 1 bệnh nhân
+
+//Chỉnh sửa bệnh nhân 
 let handleEditPatient = async (req, res) =>{
     let data = req.body;
     let message = await PatientService.updatePatientData(data);
     return res.status(200).json(message);
 }
 
+//Đổi password bệnh nhân trong phiên đăng nhập
 let handleChangePassword = async (req, res) =>{
   let patientId = req.session.userId;
   let { currentPassword, newPassword, cf_newPassword } = req.body;
@@ -120,9 +118,7 @@ let handleBooking_1 = async (req, res) =>{
 let postBooking_clinic = async (req, res) => {
     let message = await PatientService.createBooking_clinic(req.body);
     console.log(message);
-    let post_cli = await PatientService.setClinicValue(req.body.clinicId);
-    console.log(post_cli);
-    return res.redirect('/patient-booking-specialization');
+    return res.redirect('/api/patient-booking-specialization');
 }
 
 let handleBooking_2 = async (req, res) =>{
@@ -133,15 +129,14 @@ let handleBooking_2 = async (req, res) =>{
 let postBooking_specialization = async (req, res) => {
     let message = await PatientService.createBooking_specialization(req.body);
     console.log(message);
-    await PatientService.setSpecializationValue(req.body.specializationId);
-    return res.redirect('/patient-booking-doctor');
+    return res.redirect('/api/patient-booking-doctor');
 }
 
 let handleBooking_3 = async (req, res) => {
     try {
       let clinicId = await PatientService.getClinicValue();
       let specializationId = await PatientService.getSpecializationValue();
-  
+      console.log('ClinicId: ', clinicId,'\nSpecializationId: ', specializationId)
       let doctors = await db.Doctor.findAll({
         where: {
           ClinicId: clinicId,
@@ -159,22 +154,42 @@ let handleBooking_3 = async (req, res) => {
   };
   
 let postBooking_doctor = async (req, res) => {
-    let message = await PatientService.createBooking_doctor(req.body);
-    console.log(message)
-    if(message.errCode === 0){
-        return res.send('Created');
-    }else if(message.errCode === 1){
-        return res.send('Your schedule is already booked, try another schedule');
+  const patientId = req.session.userId;
+  console.log(patientId)
+  const bookingData = {
+    patientId: patientId,
+    doctorId: req.body.doctorId,
+    date: req.body.date,
+    timeType: req.body.timeType,
+  };
+  console.log(bookingData);
+  try {
+    const message = await PatientService.createBooking_doctor(bookingData);
+    console.log(message);
+    if (message.errCode === 0) {
+      return res.send('Created');
+    } else if (message.errCode === 1) {
+      return res.send('Your schedule is already booked, try another schedule');
+    } else {
+      return res.send('Failed to create booking');
     }
-    
-}
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 module.exports ={
     handlegetAllPatients: handlegetAllPatients,
+
     handleCreateNewPatient: handleCreateNewPatient,
+  
     handlegetOnePatient: handlegetOnePatient,
+
     handleEditPatient: handleEditPatient,
     handleChangePassword: handleChangePassword,
+
     handleDeletePatient: handleDeletePatient,
+    
     handleBooking_1: handleBooking_1,
     postBooking_clinic: postBooking_clinic,
     handleBooking_2: handleBooking_2,
