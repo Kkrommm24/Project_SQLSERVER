@@ -178,6 +178,22 @@ let postBooking_doctor = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+//Hiển thị booking của bản thân
+let handlegetBooking = async (req, res) =>{
+  try {
+    const userId = req.session.userId; // Lấy userId từ session
+    const patientBooking = await PatientService.getPatientBooking(userId);
+    if (patientBooking) {
+      return res.status(200).json({ patientBooking });
+    } else {
+      return res.status(404).json({ message: `You haven't book anything` });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
 module.exports ={
     handlegetAllPatients: handlegetAllPatients,
 
@@ -196,5 +212,7 @@ module.exports ={
     postBooking_specialization: postBooking_specialization,
     handleBooking_3: handleBooking_3,
     postBooking_doctor: postBooking_doctor,
+
+    handlegetBooking: handlegetBooking,
     
 }

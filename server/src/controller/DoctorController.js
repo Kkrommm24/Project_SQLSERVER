@@ -32,20 +32,20 @@ let handleCreateNewDoctor = async (req, res) =>{
 }
 
 //Lấy thông tin bác sĩ trong phiên đăng nhập
-let handlegetOneDoctor = async (req, res) =>{
-    try {
-      const userId = req.session.userId; // Lấy userId từ session
-      const doctor = await DoctorService.getDoctor(userId);
-      if (doctor) {
-        return res.status(200).json({ doctor });
-      } else {
-        return res.status(404).json({ message: 'Doctor not found' });
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      return res.status(500).json({ message: 'Internal Server Error' });
+let handlegetOneDoctor = async (req, res) => {
+  try {
+    let userId = req.session.userId;
+    let doctor = await DoctorService.getDoctor(userId); // Gọi phương thức getDoctor từ DoctorService
+    if (doctor) {
+      return res.status(200).json({ doctor });
+    } else {
+      return res.status(404).json({ message: 'Doctor not found' });
     }
+  } catch (error) {
+    console.error('Error from handlegetOneDoctor:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
+};
 
 //Đổi password bác sĩ trong phiên đăng nhập
 let handleChangePassword = async (req, res) =>{

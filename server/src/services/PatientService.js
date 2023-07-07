@@ -98,17 +98,35 @@ let createNewPatient = (data) =>{
 
 let getPatient = async (userId) => {
   try {
-    // Kiểm tra trong bảng patients
+    // Kiểm tra trong bảng Patients
     const patient = await db.Patient.findOne({
       where: { id: userId },
-      attributes: ['id', 'Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_gender', 'Patient_phoneNumber', 'Patient_age'],
+      attributes: ['Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_phoneNumber', 'Patient_age'],
+      include: [
+        { model: db.Allcode, attributes: ['valueEn', 'valueVi'] },
+      ],
     });
-    return patient;
+
+    if (!patient) {
+      return null; // Bác sĩ không tồn tại
+    }
+
+    const patient_data = {
+      patient: {
+        Patient_firstName: patient.Patient_firstName,
+        Patient_lastName: patient.Patient_lastName,
+        Patient_address: patient.Patient_address,
+        Patient_phoneNumber: patient.Patient_phoneNumber,
+        Patient_age: patient.Patient_age,
+      },
+      gender: patient.Allcode ? { GenderEn: patient.Allcode.valueEn, GenderVi: patient.Allcode.valueVi } : null,
+    };
+    return patient_data;
   } catch (error) {
     console.error('Error:', error);
     throw new Error('Internal Server Error');
   }
-}
+};
 let updatePatientData =(data) =>{
   return new Promise(async (resolve, reject) => {
     try{
@@ -303,6 +321,62 @@ let createBooking_doctor = async (bookingData) =>{
     }
   })
 }
+
+let getPatientBooking = async (userId) => {
+  try {
+    // Kiểm tra trong bảng bookings
+    const bookings = await db.Booking.findAll({
+      where: { PatientId: userId },
+      attributes: ['DoctorId', 'date', 'timeType'],
+      exclude: ['DoctorId', 'timeType'],
+    });
+
+    let bookingData = [];
+    for (let i = 0; i < bookings.length; i++) {
+      let time = await db.Allcode.findOne({
+        where: { id: bookings[i].timeType },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let doctor = await db.Doctor.findOne({
+        where: { id: bookings[i].DoctorId },
+        attributes: ['Doctor_firstName', 'Doctor_lastName'],
+        include: [
+          { model: db.Clinic, attributes: ['Clinic_name'] },
+          { model: db.Specialization, attributes: ['Specialization_name'] }
+        ]
+      });
+
+      if (!doctor) {
+        // Bác sĩ không tồn tại, xử lý lỗi hoặc bỏ qua phần tử này
+        continue;
+      }
+
+      let data = {
+        bookings: {
+          date: bookings[i].date,
+        },
+        time: time,
+        doctor: {
+          firstName: doctor.Doctor_firstName,
+          lastName: doctor.Doctor_lastName
+        },
+        clinic: {
+          name: doctor.Clinic ? doctor.Clinic.Clinic_name : null
+        },
+        specialization: {
+          name: doctor.Specialization ? doctor.Specialization.Specialization_name : null
+        }
+      };
+
+      bookingData.push(data);
+    }
+
+    return bookingData;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Internal Server Error');
+  }
+}
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
@@ -317,5 +391,5 @@ module.exports = {
   getClinicValue: getClinicValue,
   getSpecializationValue: getSpecializationValue,
   createBooking_doctor: createBooking_doctor,
-  
+  getPatientBooking: getPatientBooking,
 }

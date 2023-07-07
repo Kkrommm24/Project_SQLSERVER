@@ -33,7 +33,9 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-patient', PatientController.handleEditPatient); // edit a patient
     router.put('/api/change-patient-password', PatientController.handleChangePassword); // change patient password
     router.delete('/api/delete-patient', PatientController.handleDeletePatient); // delete a patient (might be delete if it's not useful)
-//***************DOCTOR***************
+    router.get('/api/patient/getBooking', PatientController.handlegetBooking); //print a ptient
+
+    //***************DOCTOR***************
     router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all doctors
     
     router.get('/api/doctor/info', DoctorController.handlegetOneDoctor); //print a ptient
