@@ -195,10 +195,60 @@ let deleteUser = (DoctorEmail) =>{
   })
 }
 
+let getDoctorBooking = async (userId) => {
+  try {
+    // Kiểm tra trong bảng bookings
+    const bookings = await db.Booking.findAll({
+      where: { DoctorId: userId },
+      attributes: ['PatientId', 'date', 'timeType', 'StatusId'],
+      exclude: ['PatientId', 'timeType', 'StatusId'],
+    });
+
+    let bookingData = [];
+    for (let i = 0; i < bookings.length; i++) {
+      let time = await db.Allcode.findOne({
+        where: { id: bookings[i].timeType },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let status = await db.Allcode.findOne({
+        where: { id: bookings[i].StatusId },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let patient = await db.Patient.findOne({
+        where: { id: bookings[i].PatientId },
+        attributes: ['Patient_firstName', 'Patient_lastName'],
+      });
+
+      if (!patient) {
+        // Bác sĩ không tồn tại, xử lý lỗi hoặc bỏ qua phần tử này
+        continue;
+      }
+
+      let data = {
+        bookings: {
+          date: bookings[i].date,
+        },
+        time: time,
+        status: status,
+        patient: {
+          firstName: patient.Patient_firstName,
+          lastName: patient.Patient_lastName
+        },
+      };
+      bookingData.push(data);
+    }
+    return bookingData;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Internal Server Error');
+  }
+}
+
 module.exports = {
     getAllDoctors: getAllDoctors,
     createNewDoctor: createNewDoctor,
     getDoctor: getDoctor,
     updateDoctorData: updateDoctorData,
     deleteUser: deleteUser,
+    getDoctorBooking: getDoctorBooking,
   }

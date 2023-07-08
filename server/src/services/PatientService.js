@@ -357,14 +357,18 @@ let getPatientBooking = async (userId) => {
     // Kiểm tra trong bảng bookings
     const bookings = await db.Booking.findAll({
       where: { PatientId: userId },
-      attributes: ['DoctorId', 'date', 'timeType'],
-      exclude: ['DoctorId', 'timeType'],
+      attributes: ['DoctorId', 'date', 'timeType', 'StatusId'],
+      exclude: ['DoctorId', 'timeType', 'StatusId'],
     });
 
     let bookingData = [];
     for (let i = 0; i < bookings.length; i++) {
       let time = await db.Allcode.findOne({
         where: { id: bookings[i].timeType },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let status = await db.Allcode.findOne({
+        where: { id: bookings[i].StatusId },
         attributes: ['valueEn', 'valueVi'],
       });
       let doctor = await db.Doctor.findOne({
@@ -386,6 +390,7 @@ let getPatientBooking = async (userId) => {
           date: bookings[i].date,
         },
         time: time,
+        status: status,
         doctor: {
           firstName: doctor.Doctor_firstName,
           lastName: doctor.Doctor_lastName
@@ -403,7 +408,7 @@ let getPatientBooking = async (userId) => {
 
     return bookingData;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error from getPatientBooking:', error);
     throw new Error('Internal Server Error');
   }
 }

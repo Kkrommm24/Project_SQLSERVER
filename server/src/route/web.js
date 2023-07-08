@@ -3,6 +3,7 @@ import homeController from "../controller/homeController";
 import LoginController from "../controller/LoginController";
 import PatientController from "../controller/PatientController";
 import DoctorController from "../controller/DoctorController";
+import BookingController from "../controller/BookingController";
 var storage = require('node-persist');
 let router = express.Router();
 
@@ -33,8 +34,11 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-patient', PatientController.handleEditPatient); // edit a patient
     router.put('/api/change-patient-password', PatientController.handleChangePassword); // change patient password
     router.delete('/api/delete-patient', PatientController.handleDeletePatient); // delete a patient (might be delete if it's not useful)
-    router.get('/api/patient/getBooking', PatientController.handlegetBooking); //print a ptient
+    
+    router.get('/api/patient/getBooking', PatientController.handlegetBooking); //print bookings of a patient
 
+    
+    
     //***************DOCTOR***************
     router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all doctors
     
@@ -43,6 +47,9 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-doctor', DoctorController.handleEditDoctor); // edit a doctor
     router.put('/api/change-doctor-password', DoctorController.handleChangePassword); // change patient password
     router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
+    router.get('/api/doctor/getBooking', DoctorController.handlegetBooking); //print bookings of a doctor
+
+
 //***************BOOKING***************
     router.get('/api/patient-booking', PatientController.handleBooking_1); // render frontend select clinic
     router.post('/api/booking-state-clinic', PatientController.postBooking_clinic); // save clinicId and redirect to /api/patient-booking-specialization
@@ -52,10 +59,14 @@ let initWebRoutes = (app) => {
 
     router.get('/api/patient-booking-doctor', PatientController.handleBooking_3); // render frontend select doctor, date and time
     router.post('/api/booking-state-complete', PatientController.postBooking_doctor); // result of booking
-    // router.get('/allcode', homeController.getAllCode);
-    // router.post('/api/bulk-create-schedule', DoctorController.bulkCreateSchedule);
+    
+    router.put('/api/cancel/booking', BookingController.handleCancelBooking); // cancel a booking
+    router.put('/api/cancel/description', BookingController.DescriptionOfCancel); // description of cancelled booking
 
-    // router.get('/api/reset-password', LoginController.handleLogin);
+    router.put('/api/confirm/booking', BookingController.handleConfirmBooking); // confirm a booking
+
+    router.put('/api/done/booking', BookingController.handleDoneBooking); // DONE a booking
+    router.put('/api/done/description', BookingController.DescriptionOfDone); // description of DONE booking
     return app.use("/", router)
 }
 

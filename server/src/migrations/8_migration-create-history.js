@@ -27,11 +27,11 @@ module.exports = {
       History_files: {
         type: Sequelize.TEXT
       },
-      History_createdAt: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      History_updatedAt: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

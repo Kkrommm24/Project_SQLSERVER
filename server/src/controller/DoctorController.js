@@ -110,7 +110,20 @@ let handleDeleteDoctor = async (req, res) =>{
     return res.status(200).json(message);
 }
 
-
+let handlegetBooking = async (req, res) =>{
+  try {
+    const userId = req.session.userId; // Lấy userId từ session
+    const doctorBooking = await DoctorService.getDoctorBooking(userId);
+    if (doctorBooking) {
+      return res.status(200).json({ doctorBooking });
+    } else {
+      return res.status(404).json({ message: `You haven't book anything` });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
 module.exports ={
     handlegetAllDoctors: handlegetAllDoctors,
     handleCreateNewDoctor: handleCreateNewDoctor,
@@ -118,4 +131,5 @@ module.exports ={
     handleEditDoctor: handleEditDoctor,
     handleDeleteDoctor: handleDeleteDoctor,
     handlegetOneDoctor: handlegetOneDoctor,
+    handlegetBooking: handlegetBooking,
 }
