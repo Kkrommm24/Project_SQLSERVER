@@ -95,12 +95,22 @@ let initWebRoutes = (app) => {
   router.post('/api/booking/doctor', async (req, res) => {
     let doctorData = await db.Doctor.findAll({
       where: {
-        SpecializationId: req.body.id,
+        SpecializationId: req.body.sid,
+        ClinicId: req.body.cid,
       },
       raw: true,
     });
     res.send({ doctor: doctorData });
   });
+
+  router.post('/api/booking/done', async (req, res) => {
+    //check if any booking yet ? since we dont have time or date idk if we need
+    //if not response with err 0  and message
+    //if yes response with err 1 and message
+    //create booking in db btw
+    res.send({ errCode: 0, message: 'Yay you submitted a booking' });
+  });
+
   return app.use('/', router);
 };
 
