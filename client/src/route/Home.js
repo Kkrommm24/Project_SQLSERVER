@@ -1,54 +1,15 @@
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { processLogout } from '../store/action/userAction';
-
+import { Navbar } from '../components/Navbar';
+import { Landing } from '../components/Landing';
 const Home = (props) => {
-  //check user role then render
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    props.processLogout();
-    navigate('/home');
-  };
-  if (props.isDoctor) {
-    return (
-      <div className="container">
-        <ul>
-          <li>Home</li>
-          <li>Specialty</li>
-          <li>About us</li>
-          <li>Hello, Dr.{props.userInfo.Doctor_firstName}</li>
-          <button onClick={() => handleLogout()}>Log out</button>
-        </ul>
-        <button onClick={console.log(props)}>Check</button>
-      </div>
-    );
-  } else if (props.isPatient) {
-    return (
-      <div className="container">
-        <ul>
-          <li>Home</li>
-          <li>Specialty</li>
-          <li>About us</li>
-          <li>Hello,{props.userInfo.Patient_firstName}</li>
-          <button onClick={() => handleLogout()}>Log out</button>
-        </ul>
-        <button onClick={() => navigate('/booking')}>Book</button>
-      </div>
-    );
-  } else {
-    return (
-      <div className="container">
-        <ul>
-          <li>Home</li>
-          <li>Specialty</li>
-          <li>About us</li>
-          <button onClick={() => navigate('/login')}>Login</button>
-        </ul>
-        <button onClick={console.log(props)}>Check</button>
-      </div>
-    );
-  }
+  return (
+    <>
+      <Navbar props={props} />
+      <Landing />
+    </>
+  );
 };
 
 const mapStateToProps = (state) => {
