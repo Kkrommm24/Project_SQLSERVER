@@ -80,8 +80,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     doctorLoginSuccess: (user) => dispatch(doctorLoginSuccess(user)),
-    patientLoginSuccess: () =>
-      dispatch(patientLoginSuccess({ email: "test2", password: "test again" })),
+    patientLoginSuccess: (user) => dispatch(patientLoginSuccess(user)),
     processLogout: () => dispatch(processLogout()),
   };
 };

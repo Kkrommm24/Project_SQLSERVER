@@ -16,14 +16,14 @@ const Register = () => {
     address: "",
     phoneNumber: "",
     age: 0,
-    gender: 0,
+    gender: 1,
   });
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log(FormData);
     let result = await handleRegisterForm(FormData);
     if (result.errCode === 0) {
-      setErr({errCode:""});
+      setErr({ errCode: "" });
       console.log("register successful!");
       navigate("/login");
     } else {
@@ -82,9 +82,9 @@ const Register = () => {
             setFormData({ ...FormData, gender: parseInt(e.target.value) });
           }}
         >
-          <option value="0">Male</option>
-          <option value="1">Female</option>
-          <option value="2">Other</option>
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+          <option value="3">Other</option>
         </select>
         <label>Address</label>
         <input

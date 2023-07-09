@@ -33,7 +33,7 @@ const Home = (props) => {
           <li>Hello,{props.userInfo.email}</li>
           <button onClick={() => handleLogout()}>Log out</button>
         </ul>
-        <button onClick={console.log(props)}>Check</button>
+        <button onClick={() => navigate("/booking")}>Book</button>
       </div>
     );
   } else {
