@@ -110,6 +110,7 @@ let handleDeleteDoctor = async (req, res) =>{
     return res.status(200).json(message);
 }
 
+//Lấy ttin lịch khám của bản thân
 let handlegetBooking = async (req, res) =>{
   try {
     const userId = req.session.userId; // Lấy userId từ session

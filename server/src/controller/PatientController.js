@@ -109,79 +109,6 @@ let handleDeletePatient = async (req, res) =>{
     return res.status(200).json(message);
 }
 
-//Tạo 1 booking mới
-let handleBooking_1 = async (req, res) =>{
-    let clinics = await db.Clinic.findAll();
-    return res.render('patient_booking_clinic.ejs', {clinics: clinics});
-}
-
-let postBooking_clinic = async (req, res) => {
-    let message = await PatientService.createBooking_clinic(req.body);
-    console.log(message);
-    return res.redirect('/api/patient-booking-specialization');
-}
-
-let handleBooking_2 = async (req, res) =>{
-    let specializations = await db.Specialization.findAll();
-    return res.render('patient_booking_specialization.ejs', {specializations: specializations});
-}
-
-let postBooking_specialization = async (req, res) => {
-    let message = await PatientService.createBooking_specialization(req.body);
-    console.log(message);
-    return res.redirect('/api/patient-booking-doctor');
-}
-
-let handleBooking_3 = async (req, res) => {
-    try {
-      let clinicId = await PatientService.getClinicValue();
-      let specializationId = await PatientService.getSpecializationValue();
-      console.log('ClinicId: ', clinicId,'\nSpecializationId: ', specializationId)
-      let doctors = await db.Doctor.findAll({
-        where: {
-          ClinicId: clinicId,
-          SpecializationId: specializationId
-        }
-      });
-  
-      // Render file EJS và truyền danh sách bác sĩ vào
-      res.render('patient-booking-doctor.ejs', { doctors: doctors });
-    } catch (e) {
-      console.error('Error:', e);
-      // Xử lý lỗi nếu cần thiết
-      res.status(500).send('Internal Server Error');
-    }
-  };
-  
-let postBooking_doctor = async (req, res) => {
-  const patientId = req.session.userId;
-  console.log(patientId)
-  const bookingData = {
-    patientId: patientId,
-    doctorId: req.body.doctorId,
-    date: req.body.date,
-    timeType: req.body.timeType,
-  };
-  console.log(bookingData);
-  try {
-    const message = await PatientService.createBooking_doctor(bookingData);
-    console.log(message);
-    if (message.errCode === 0) {
-      return res.send('Created');
-    } else if (message.errCode === 1) {
-      return res.send('Your schedule is already booked, try another schedule');
-    } else if (message.errCode === 1.1) {
-      return res.send('You are booking the same time as another one you have booked, try another schedule');
-    }
-     else {
-      return res.send('Failed to create booking');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
-
 //Hiển thị booking của bản thân
 let handlegetBooking = async (req, res) =>{
   try {
@@ -208,13 +135,6 @@ module.exports ={
     handleChangePassword: handleChangePassword,
 
     handleDeletePatient: handleDeletePatient,
-    
-    handleBooking_1: handleBooking_1,
-    postBooking_clinic: postBooking_clinic,
-    handleBooking_2: handleBooking_2,
-    postBooking_specialization: postBooking_specialization,
-    handleBooking_3: handleBooking_3,
-    postBooking_doctor: postBooking_doctor,
 
     handlegetBooking: handlegetBooking,
     
