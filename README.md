@@ -15,11 +15,13 @@ Download the repository files (project) from the download section or clone this 
 git clone https://github.com/Kkrommm24/Project_SQLSERVER.git
 ```
 ## Install dependencies
-After download project's files, you need to use ``` npm install ``` to install neccessary files.
+After download project's files, you need to use ``` npm run install ``` to install neccessary files.
 
-You'll also need to use ``` npm install concurrently --save ``` to run with just on e ```npm start```.
 
-Deploy database models and base data in server:
+
+Deploy database models and base data in server with ``` npm run database ```
+(Note that you will need a database called 'qlpk' to use this)
+After that, ```npm run dev``` to run
 
 //Working on it later//
 
