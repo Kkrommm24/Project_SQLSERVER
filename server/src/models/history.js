@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     BookingId: DataTypes.INTEGER,
     History_description: DataTypes.TEXT,
     History_files: DataTypes.TEXT,
-    files: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'History',

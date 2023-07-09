@@ -20,21 +20,24 @@ let handleLogin = async (req, res) =>{
           // Lấy ID từ bảng "patients"
           if (loginData.patient) {
             userId = loginData.patient.id;
+            console.log('Patient ID:', userId);
           }
         } else if (role === 'Doctor') {
           // Lấy ID từ bảng "doctors"
           if (loginData.doctor) {
             userId = loginData.doctor.id;
+            console.log('Doctor ID:', userId);
           }
         }
         // Lưu ID vào session
         req.session.userId = userId;
-      }
-    console.log('User ID:', req.session.userId);
+        req.session.roleId = role;
+      } 
     return res.status(200).json({
-        errCode: loginData.errCode,
-        message: loginData.errMessage,
-        login: loginData.login ? loginData.login : {}
+      errCode: loginData.errCode,
+      message: loginData.errMessage,
+      ...(loginData.doctor && { doctor: loginData.doctor }), // Chỉ hiển thị doctor nếu có giá trị
+      ...(loginData.patient && { patient: loginData.patient }), // Chỉ hiển thị patient nếu có giá trị,
     })
 }
 

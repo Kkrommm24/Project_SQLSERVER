@@ -96,26 +96,36 @@ let createNewPatient = (data) => {
 
 let getPatient = async (userId) => {
   try {
-    // Kiểm tra trong bảng patients
+    // Kiểm tra trong bảng Patients
     const patient = await db.Patient.findOne({
       where: { id: userId },
-      attributes: [
-        "id",
-        "Patient_firstName",
-        "Patient_lastName",
-        "Patient_address",
-        "Patient_gender",
-        "Patient_phoneNumber",
-        "Patient_age",
+      attributes: ['Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_phoneNumber', 'Patient_age'],
+      include: [
+        { model: db.Allcode, attributes: ['valueEn', 'valueVi'] },
       ],
     });
-    return patient;
+
+    if (!patient) {
+      return null; // Bác sĩ không tồn tại
+    }
+
+    const patient_data = {
+      patient: {
+        Patient_firstName: patient.Patient_firstName,
+        Patient_lastName: patient.Patient_lastName,
+        Patient_address: patient.Patient_address,
+        Patient_phoneNumber: patient.Patient_phoneNumber,
+        Patient_age: patient.Patient_age,
+      },
+      gender: patient.Allcode ? { GenderEn: patient.Allcode.valueEn, GenderVi: patient.Allcode.valueVi } : null,
+    };
+    return patient_data;
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Internal Server Error");
   }
 };
-let updatePatientData = (data) => {
+let updatePatientData =(data) =>{
   return new Promise(async (resolve, reject) => {
     try {
       if (!data.id) {
@@ -277,31 +287,58 @@ let checkBooking = (doctorData, dateData, timeTypeData) => {
       } else {
         resolve(false);
       }
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
+  })
+}
+
+let checkBooking2 = (patientData, dateData, timeTypeData) =>{
+  return new Promise(async (resolve, reject) => {
+      try{
+          let booking = await db.Booking.findOne({
+            attributes: ['PatientId', 'date', 'timeType'],
+              where: {
+                PatientId: patientData,
+                date: dateData,
+                timeType: timeTypeData
+              },
+              raw: true,
+          })
+          if(booking){
+              resolve(true)
+          }else{
+              resolve(false)
+          }
+      }catch(e){
+          reject(e);
+      }
+  })
+}
 
 let createBooking_doctor = async (bookingData) => {
   return new Promise(async (resolve, reject) => {
     try {
       let { patientId, doctorId, date, timeType } = bookingData;
       let check = await checkBooking(doctorId, date, timeType);
-      if (check === true) {
+      let check2 = await checkBooking2(patientId, date, timeType);
+      if(check===true){
         resolve({
           errCode: 1,
-          message: "Your schedule is already booked, try another schedule",
-        });
-      } else {
-        await db.Booking.create({
+          message: 'Your schedule is already booked, try another schedule'
+        })
+      }else{
+        if(check2===true){
+          resolve({
+            errCode: 1.1,
+            message: 'You are booking the same time as another one you have booked, try another schedule'
+          })
+        }else{
+          await db.Booking.create({
           StatusId: 4,
           DoctorId: doctorId,
           PatientId: patientId,
           date: date,
-          timeType: timeType,
-        });
-        console.log(bookingData);
+          timeType: timeType,  
+          })
+        }
       }
       resolve({
         errCode: 0,
@@ -310,8 +347,69 @@ let createBooking_doctor = async (bookingData) => {
     } catch (e) {
       console.error("Error_cre_doc:", e);
     }
-  });
-};
+  })
+}
+
+let getPatientBooking = async (userId) => {
+  try {
+    // Kiểm tra trong bảng bookings
+    const bookings = await db.Booking.findAll({
+      where: { PatientId: userId },
+      attributes: ['DoctorId', 'date', 'timeType', 'StatusId'],
+      exclude: ['DoctorId', 'timeType', 'StatusId'],
+    });
+
+    let bookingData = [];
+    for (let i = 0; i < bookings.length; i++) {
+      let time = await db.Allcode.findOne({
+        where: { id: bookings[i].timeType },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let status = await db.Allcode.findOne({
+        where: { id: bookings[i].StatusId },
+        attributes: ['valueEn', 'valueVi'],
+      });
+      let doctor = await db.Doctor.findOne({
+        where: { id: bookings[i].DoctorId },
+        attributes: ['Doctor_firstName', 'Doctor_lastName'],
+        include: [
+          { model: db.Clinic, attributes: ['Clinic_name'] },
+          { model: db.Specialization, attributes: ['Specialization_name'] }
+        ]
+      });
+
+      if (!doctor) {
+        // Bác sĩ không tồn tại, xử lý lỗi hoặc bỏ qua phần tử này
+        continue;
+      }
+
+      let data = {
+        bookings: {
+          date: bookings[i].date,
+        },
+        time: time,
+        status: status,
+        doctor: {
+          firstName: doctor.Doctor_firstName,
+          lastName: doctor.Doctor_lastName
+        },
+        clinic: {
+          name: doctor.Clinic ? doctor.Clinic.Clinic_name : null
+        },
+        specialization: {
+          name: doctor.Specialization ? doctor.Specialization.Specialization_name : null
+        }
+      };
+
+      bookingData.push(data);
+    }
+
+    return bookingData;
+  } catch (error) {
+    console.error('Error from getPatientBooking:', error);
+    throw new Error('Internal Server Error');
+  }
+}
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
@@ -326,4 +424,5 @@ module.exports = {
   getClinicValue: getClinicValue,
   getSpecializationValue: getSpecializationValue,
   createBooking_doctor: createBooking_doctor,
-};
+  getPatientBooking: getPatientBooking,
+}
