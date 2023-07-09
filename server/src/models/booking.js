@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       models.Booking.belongsTo(models.Patient,{foreignKey: 'PatientId', targetKey: 'id'});
 
       models.Booking.belongsTo(models.Allcode,{foreignKey: 'StatusId', targetKey: 'id'});
+
+      models.Booking.belongsTo(models.Allcode,{foreignKey: 'timeType', targetKey: 'id'});
     }
   }
   Booking.init({

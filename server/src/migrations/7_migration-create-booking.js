@@ -51,8 +51,19 @@ module.exports = {
     }))
     .then(() => queryInterface.addConstraint('Bookings', {
       type: 'FOREIGN KEY',
-      name: 'bookings_ibfk_allcodes', // useful if using queryInterface.removeConstraint
+      name: 'bookings_ibfk_allcodes_status', // useful if using queryInterface.removeConstraint
       fields: ['StatusId'], 
+      references: {
+        table: 'Allcodes',
+        field: 'id',
+      },
+      onDelete: 'restrict',
+      onUpdate: 'restrict',
+    }))
+    .then(() => queryInterface.addConstraint('Bookings', {
+      type: 'FOREIGN KEY',
+      name: 'bookings_ibfk_allcodes_timeType', // useful if using queryInterface.removeConstraint
+      fields: ['timeType'], 
       references: {
         table: 'Allcodes',
         field: 'id',
