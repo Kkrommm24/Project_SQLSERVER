@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
   doctorLoginSuccess,
   patientLoginSuccess,
   processLogout,
-} from "../store/action/userAction";
-import handleLoginForm from "../service/userService";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+} from '../store/action/userAction';
+import handleLoginForm from '../service/userService';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const IsLoggedIn = (props) => {
   if (props.isDoctor || props.isPatient) {
@@ -16,8 +16,8 @@ const IsLoggedIn = (props) => {
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -30,15 +30,15 @@ const Login = (props) => {
       let data = await handleLoginForm(email, password);
       console.log(data);
       if (data.errCode === 0) {
-        if (data.login.roleId === "Doctor") {
-          props.doctorLoginSuccess(data.login);
-          console.log("yes docctor");
-        } else if (data.login.roleId === "Patient") {
-          props.patientLoginSuccess(data.login);
+        if (data.doctor) {
+          props.doctorLoginSuccess(data.doctor);
+          console.log('yes doctor');
+        } else if (data.patient) {
+          props.patientLoginSuccess(data.patient);
         } else {
-          console.log("nah i not doctor nor patient");
+          console.log('nah i not doctor nor patient');
         }
-        navigate("/home");
+        navigate('/home');
       }
     } catch (e) {
       console.log(e);

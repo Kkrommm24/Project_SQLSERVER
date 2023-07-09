@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { processLogout } from "../store/action/userAction";
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { processLogout } from '../store/action/userAction';
 
 const Home = (props) => {
   //check user role then render
@@ -8,7 +8,7 @@ const Home = (props) => {
 
   const handleLogout = () => {
     props.processLogout();
-    navigate("/home");
+    navigate('/home');
   };
   if (props.isDoctor) {
     return (
@@ -17,7 +17,7 @@ const Home = (props) => {
           <li>Home</li>
           <li>Specialty</li>
           <li>About us</li>
-          <li>Hello, Dr.{props.userInfo.email}</li>
+          <li>Hello, Dr.{props.userInfo.Doctor_firstName}</li>
           <button onClick={() => handleLogout()}>Log out</button>
         </ul>
         <button onClick={console.log(props)}>Check</button>
@@ -30,10 +30,10 @@ const Home = (props) => {
           <li>Home</li>
           <li>Specialty</li>
           <li>About us</li>
-          <li>Hello,{props.userInfo.email}</li>
+          <li>Hello,{props.userInfo.Patient_firstName}</li>
           <button onClick={() => handleLogout()}>Log out</button>
         </ul>
-        <button onClick={() => navigate("/booking")}>Book</button>
+        <button onClick={() => navigate('/booking')}>Book</button>
       </div>
     );
   } else {
@@ -43,7 +43,7 @@ const Home = (props) => {
           <li>Home</li>
           <li>Specialty</li>
           <li>About us</li>
-          <button onClick={() => navigate("/login")}>Login</button>
+          <button onClick={() => navigate('/login')}>Login</button>
         </ul>
         <button onClick={console.log(props)}>Check</button>
       </div>

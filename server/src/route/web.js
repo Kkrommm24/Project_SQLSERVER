@@ -4,6 +4,7 @@ import LoginController from '../controller/LoginController';
 import PatientController from '../controller/PatientController';
 import DoctorController from '../controller/DoctorController';
 import BookingController from '../controller/BookingController';
+import db from '../models/index';
 var storage = require('node-persist');
 let router = express.Router();
 
@@ -17,16 +18,19 @@ let initWebRoutes = (app) => {
   // }
   router.get('/', homeController.getHomePage);
   router.get('/about', homeController.getAboutPage);
+
   //***************ADMIN****************
+
   router.get('/crud', homeController.getCRUD); //render ra form create patient
   router.post('/post-crud', homeController.postCRUD); //created
   router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình patient
   router.get('/edit-crud', homeController.getEditCRUD); //edit
   router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển
   router.get('/delete-crud', homeController.deleteCRUD); //delete
-
   router.post('/api/login', LoginController.handleLogin); //login
+
   //***************PATIENT***************
+
   router.get('/api/get-all-patients', PatientController.handlegetAllPatients); //print all patients
 
   router.get('/api/patient/info', PatientController.handlegetOnePatient); //print a ptient
@@ -37,7 +41,9 @@ let initWebRoutes = (app) => {
     PatientController.handleChangePassword
   ); // change patient password
   router.delete('/api/delete-patient', PatientController.handleDeletePatient); // delete a patient (might be delete if it's not useful)
+
   //***************DOCTOR***************
+
   router.get('/api/get-all-doctors', DoctorController.handlegetAllDoctors); //print all doctors
 
   router.get('/api/doctor/info', DoctorController.handlegetOneDoctor); //print a ptient
@@ -48,7 +54,9 @@ let initWebRoutes = (app) => {
     DoctorController.handleChangePassword
   ); // change patient password
   router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
+
   //***************BOOKING***************
+
   router.get('/api/patient-booking', PatientController.handleBooking_1); // render frontend select clinic
   router.post(
     '/api/booking-state-clinic',
@@ -73,6 +81,26 @@ let initWebRoutes = (app) => {
   // router.post('/api/bulk-create-schedule', DoctorController.bulkCreateSchedule);
 
   // router.get('/api/reset-password', LoginController.handleLogin);
+
+  // test frontend style booking
+  router.get('/api/booking', async (req, res) => {
+    let clinicData = await db.Clinic.findAll({
+      raw: true,
+    });
+    let specializationData = await db.Specialization.findAll({
+      raw: true,
+    });
+    res.send({ clinic: clinicData, specialization: specializationData });
+  });
+  router.post('/api/booking/doctor', async (req, res) => {
+    let doctorData = await db.Doctor.findAll({
+      where: {
+        SpecializationId: req.body.id,
+      },
+      raw: true,
+    });
+    res.send({ doctor: doctorData });
+  });
   return app.use('/', router);
 };
 
