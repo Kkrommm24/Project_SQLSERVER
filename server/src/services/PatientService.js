@@ -1,22 +1,22 @@
-import { response } from "express";
-import db from "../models/index";
-import bcrypt from "bcryptjs";
-var storage = require("node-persist");
+import { response } from 'express';
+import db from '../models/index';
+import bcrypt from 'bcryptjs';
+var storage = require('node-persist');
 let initStorage = async () => {
   await storage.init();
 };
 initStorage();
 const salt = bcrypt.genSaltSync(10);
-let clinicId = "";
-let specializationId = "";
+let clinicId = '';
+let specializationId = '';
 let getAllPatients = (PatientId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let patients = "";
-      if (PatientId === "ALL") {
+      let patients = '';
+      if (PatientId === 'ALL') {
         patients = await db.Patient.findAll({});
       }
-      if (PatientId && PatientId !== "ALL") {
+      if (PatientId && PatientId !== 'ALL') {
         // Add code here
         patients = await db.Patient.findOne({
           where: { id: PatientId },
@@ -32,7 +32,7 @@ let checkUserEmail = (loginEmail) => {
   return new Promise(async (resolve, reject) => {
     try {
       let login = await db.Login.findOne({
-        attributes: ["email", "password", "roleId"],
+        attributes: ['email', 'password', 'roleId'],
         where: { email: loginEmail },
         raw: true,
       });
@@ -63,17 +63,17 @@ let createNewPatient = (data) => {
       if (check === true) {
         resolve({
           errCode: 1,
-          message: "Your email is already in used, Try another one",
+          message: 'Your email is already in used, Try another one',
         });
       } else {
         let hashPasswordFromBcrypt = await hashUserPassword(data.password);
         await db.Login.create({
           email: data.email,
           password: hashPasswordFromBcrypt,
-          roleId: "Patient",
+          roleId: 'Patient',
         });
         await db.Patient.create({
-          roleId: "Patient",
+          roleId: 'Patient',
           email: data.email,
           Patient_firstName: data.firstName,
           Patient_lastName: data.lastName,
@@ -84,11 +84,11 @@ let createNewPatient = (data) => {
         });
         resolve({
           errCode: 0,
-          message: "OK",
+          message: 'OK',
         });
       }
     } catch (e) {
-      console.error("Error:", e);
+      console.error('Error:', e);
       reject(e);
     }
   });
@@ -99,10 +99,14 @@ let getPatient = async (userId) => {
     // Kiểm tra trong bảng Patients
     const patient = await db.Patient.findOne({
       where: { id: userId },
-      attributes: ['Patient_firstName', 'Patient_lastName', 'Patient_address', 'Patient_phoneNumber', 'Patient_age'],
-      include: [
-        { model: db.Allcode, attributes: ['valueEn', 'valueVi'] },
+      attributes: [
+        'Patient_firstName',
+        'Patient_lastName',
+        'Patient_address',
+        'Patient_phoneNumber',
+        'Patient_age',
       ],
+      include: [{ model: db.Allcode, attributes: ['valueEn', 'valueVi'] }],
     });
 
     if (!patient) {
@@ -117,21 +121,26 @@ let getPatient = async (userId) => {
         Patient_phoneNumber: patient.Patient_phoneNumber,
         Patient_age: patient.Patient_age,
       },
-      gender: patient.Allcode ? { GenderEn: patient.Allcode.valueEn, GenderVi: patient.Allcode.valueVi } : null,
+      gender: patient.Allcode
+        ? {
+            GenderEn: patient.Allcode.valueEn,
+            GenderVi: patient.Allcode.valueVi,
+          }
+        : null,
     };
     return patient_data;
   } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Internal Server Error");
+    console.error('Error:', error);
+    throw new Error('Internal Server Error');
   }
 };
-let updatePatientData =(data) =>{
+let updatePatientData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (!data.id) {
         resolve({
           errCode: 1,
-          errMessage: "Missing required parameters",
+          errMessage: 'Missing required parameters',
         });
       }
       let patient = await db.Patient.findOne({
@@ -168,7 +177,7 @@ let updatePatientPassword = (userId) => {
       if (!userId) {
         resolve({
           errCode: 1,
-          errMessage: "Missing required parameters",
+          errMessage: 'Missing required parameters',
         });
       }
       let patient = await db.Patient.findOne({
@@ -239,9 +248,9 @@ let createBooking_clinic = async (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       await setClinicValue(data.clinicId);
-      resolve("Next stage");
+      resolve('Next stage');
     } catch (e) {
-      console.error("Error:", e);
+      console.error('Error:', e);
       reject(e);
     }
   });
@@ -255,9 +264,9 @@ let createBooking_specialization = async (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       await setSpecializationValue(data.specializationId);
-      resolve("Next stage");
+      resolve('Next stage');
     } catch (e) {
-      console.error("Error:", e);
+      console.error('Error:', e);
     }
   });
 };
@@ -274,7 +283,7 @@ let checkBooking = (doctorData, dateData, timeTypeData) => {
   return new Promise(async (resolve, reject) => {
     try {
       let booking = await db.Booking.findOne({
-        attributes: ["DoctorId", "date", "timeType"],
+        attributes: ['DoctorId', 'date', 'timeType'],
         where: {
           DoctorId: doctorData,
           date: dateData,
@@ -287,31 +296,34 @@ let checkBooking = (doctorData, dateData, timeTypeData) => {
       } else {
         resolve(false);
       }
-  })
-}
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
-let checkBooking2 = (patientData, dateData, timeTypeData) =>{
+let checkBooking2 = (patientData, dateData, timeTypeData) => {
   return new Promise(async (resolve, reject) => {
-      try{
-          let booking = await db.Booking.findOne({
-            attributes: ['PatientId', 'date', 'timeType'],
-              where: {
-                PatientId: patientData,
-                date: dateData,
-                timeType: timeTypeData
-              },
-              raw: true,
-          })
-          if(booking){
-              resolve(true)
-          }else{
-              resolve(false)
-          }
-      }catch(e){
-          reject(e);
+    try {
+      let booking = await db.Booking.findOne({
+        attributes: ['PatientId', 'date', 'timeType'],
+        where: {
+          PatientId: patientData,
+          date: dateData,
+          timeType: timeTypeData,
+        },
+        raw: true,
+      });
+      if (booking) {
+        resolve(true);
+      } else {
+        resolve(false);
       }
-  })
-}
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 let createBooking_doctor = async (bookingData) => {
   return new Promise(async (resolve, reject) => {
@@ -319,36 +331,37 @@ let createBooking_doctor = async (bookingData) => {
       let { patientId, doctorId, date, timeType } = bookingData;
       let check = await checkBooking(doctorId, date, timeType);
       let check2 = await checkBooking2(patientId, date, timeType);
-      if(check===true){
+      if (check === true) {
         resolve({
           errCode: 1,
-          message: 'Your schedule is already booked, try another schedule'
-        })
-      }else{
-        if(check2===true){
+          message: 'Your schedule is already booked, try another schedule',
+        });
+      } else {
+        if (check2 === true) {
           resolve({
             errCode: 1.1,
-            message: 'You are booking the same time as another one you have booked, try another schedule'
-          })
-        }else{
+            message:
+              'You are booking the same time as another one you have booked, try another schedule',
+          });
+        } else {
           await db.Booking.create({
-          StatusId: 4,
-          DoctorId: doctorId,
-          PatientId: patientId,
-          date: date,
-          timeType: timeType,  
-          })
+            StatusId: 4,
+            DoctorId: doctorId,
+            PatientId: patientId,
+            date: date,
+            timeType: timeType,
+          });
         }
       }
       resolve({
         errCode: 0,
-        message: "Booking created successfully",
+        message: 'Booking created successfully',
       });
     } catch (e) {
-      console.error("Error_cre_doc:", e);
+      console.error('Error_cre_doc:', e);
     }
-  })
-}
+  });
+};
 
 let getPatientBooking = async (userId) => {
   try {
@@ -374,8 +387,8 @@ let getPatientBooking = async (userId) => {
         attributes: ['Doctor_firstName', 'Doctor_lastName'],
         include: [
           { model: db.Clinic, attributes: ['Clinic_name'] },
-          { model: db.Specialization, attributes: ['Specialization_name'] }
-        ]
+          { model: db.Specialization, attributes: ['Specialization_name'] },
+        ],
       });
 
       if (!doctor) {
@@ -391,14 +404,16 @@ let getPatientBooking = async (userId) => {
         status: status,
         doctor: {
           firstName: doctor.Doctor_firstName,
-          lastName: doctor.Doctor_lastName
+          lastName: doctor.Doctor_lastName,
         },
         clinic: {
-          name: doctor.Clinic ? doctor.Clinic.Clinic_name : null
+          name: doctor.Clinic ? doctor.Clinic.Clinic_name : null,
         },
         specialization: {
-          name: doctor.Specialization ? doctor.Specialization.Specialization_name : null
-        }
+          name: doctor.Specialization
+            ? doctor.Specialization.Specialization_name
+            : null,
+        },
       };
 
       bookingData.push(data);
@@ -409,7 +424,7 @@ let getPatientBooking = async (userId) => {
     console.error('Error from getPatientBooking:', error);
     throw new Error('Internal Server Error');
   }
-}
+};
 module.exports = {
   getAllPatients: getAllPatients,
   createNewPatient: createNewPatient,
@@ -425,4 +440,4 @@ module.exports = {
   getSpecializationValue: getSpecializationValue,
   createBooking_doctor: createBooking_doctor,
   getPatientBooking: getPatientBooking,
-}
+};
