@@ -174,8 +174,11 @@ const Register = () => {
                 }
                 value={FormData.phoneNumber}
               />
-              <div className="font-medium text-white mx-auto mt-3 w-full px-3 py-2 bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 rounded shadow-md text-center ">
-                <button className="inline" onClick={(e) => handleRegister(e)}>
+              <div>
+                <button
+                  className="font-medium text-white mx-auto mt-3 w-full px-3 py-2 bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 rounded shadow-md text-center "
+                  onClick={(e) => handleRegister(e)}
+                >
                   Sign In
                 </button>
               </div>

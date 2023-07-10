@@ -1,16 +1,17 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
-import { connect } from "react-redux";
-import Home from "../route/Home";
-import IsLoggedIn from "../route/Login";
-import NotFound from "../route/NotFound";
-import Register from "../route/Register";
-import Booking from "../route/PatientBook";
+} from 'react-router-dom';
+import { connect } from 'react-redux';
+import Home from '../route/Home';
+import IsLoggedIn from '../route/Login';
+import NotFound from '../route/NotFound';
+import Register from '../route/Register';
+import Booking from '../route/PatientBook';
+import Loading from '../route/Loading';
 //hook for checking who tf is logging in
 
 const App = () => {
