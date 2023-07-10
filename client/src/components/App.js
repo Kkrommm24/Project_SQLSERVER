@@ -7,11 +7,10 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Home from '../route/Home';
-import IsLoggedIn from '../route/Login';
 import NotFound from '../route/NotFound';
-import Register from '../route/Register';
 import Booking from '../route/PatientBook';
 import Loading from '../route/Loading';
+import IsLogSignIn from '../route/Login_SignIn';
 //hook for checking who tf is logging in
 
 const App = () => {
@@ -19,11 +18,13 @@ const App = () => {
     <div className="container">
       <Router>
         <Routes>
+          <Route path="loading" element={<Loading />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<IsLoggedIn />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login-signin" element={<IsLogSignIn />} />
+          {/* <Route path="/login" element={<IsLoggedIn />} /> */}
+          {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/booking" element={<Booking />} />
         </Routes>
       </Router>

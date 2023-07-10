@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../asset/logo.png';
 import dropdownarrow from '../asset/arrow.png';
+import { Link } from 'react-router-dom';
 export const Navbar = (props) => {
+  console.log(props);
   //check user role then render
   const navigate = useNavigate();
+  const [navDropDown, setNavDropDown] = useState(false);
   const handleBooking = () => {
     if (props.props.isPatient) {
       navigate('/booking');
@@ -23,16 +26,34 @@ export const Navbar = (props) => {
       <div className="text-black hover:text-indigo-500 font-medium pl-6 p-3 cursor-pointer">
         Home
       </div>
-      <div className="w-fit flex items-center">
-        <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-          Clinic
+      <div
+        className="w-fit flex items-center  cursor-pointer py-3 relative"
+        onMouseOver={() => setNavDropDown(true)}
+        onMouseOut={() => setNavDropDown(false)}
+      >
+        <div className="text-black hover:text-indigo-500 font-medium p-3 h-full ">
+          Specialization
         </div>
         <img
           alt="drop down"
           src={dropdownarrow}
-          className="object-cover h-5 mx-0 text-indigo-500 cursor-pointer"
+          className="object-cover h-5 mx-0 hover:text-indigo-500 cursor-pointer"
         />
+        <div
+          className={
+            navDropDown
+              ? 'absolute top-16 shadow-md pl-4 pr-8 z-10 bg-white p-3 grid-cols-2 grid w-max gap-4'
+              : 'absolute  z-10 bg-white p-3 grid-cols-2 gap-4 hidden'
+          }
+        >
+          {props.data.map((data) => (
+            <div className="w-max hover:text-indigo-500 cursor-pointer">
+              {data.Specialization_name}
+            </div>
+          ))}
+        </div>
       </div>
+
       <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
         About Us
       </div>
@@ -73,12 +94,16 @@ export const Navbar = (props) => {
           </>
         ) : (
           <>
-            <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-              <button onClick={() => navigate('/login')}>Login</button>
-            </div>
-            <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-              <button onClick={() => navigate('/register')}>Sign in</button>
-            </div>
+            <Link to="/login-signin" state={{ state: false }}>
+              <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
+                Login
+              </div>
+            </Link>
+            <Link to="/login-signin" state={{ state: true }}>
+              <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
+                Sign in
+              </div>
+            </Link>
           </>
         )}
       </div>

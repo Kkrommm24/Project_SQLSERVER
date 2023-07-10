@@ -12,10 +12,14 @@ import Loading from './Loading';
 
 const Booking = (props) => {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (!props.isPatient) {
+      navigate('/home');
+    }
+  });
   if (props.isPatient) {
     return <Book props={props} />;
-  } else navigate('/home');
+  }
 };
 const Book = (props) => {
   const navigate = useNavigate();
@@ -51,7 +55,7 @@ const Book = (props) => {
       console.log(submitted);
       let message = submitted.message;
       let errCode = submitted.errCode;
-      if (errCode == 0) {
+      if (errCode === 0) {
         alert(message);
         navigate('/home');
       }
@@ -63,7 +67,8 @@ const Book = (props) => {
         cid: submit.clinic,
         sid: submit.specialization,
       });
-      if (doctorData.doctor.length == 0) {
+      console.log(doctorData);
+      if (doctorData.doctor.length === 0) {
         setEnabled(true);
       } else setEnabled(false);
       //setDoctorList(doctorData);

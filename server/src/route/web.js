@@ -49,19 +49,22 @@ let initWebRoutes = (app) => {
   router.get('/api/doctor/info', DoctorController.handlegetOneDoctor); //print a ptient
   router.post('/api/doctor-sign-up', DoctorController.handleCreateNewDoctor); // this appears to manual create a new doctor in backend
   router.put('/api/edit-doctor', DoctorController.handleEditDoctor); // edit a doctor
-  router.put('/api/change-doctor-password', DoctorController.handleChangePassword); // change patient password
+  router.put(
+    '/api/change-doctor-password',
+    DoctorController.handleChangePassword
+  ); // change patient password
   router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
 
   //***************BOOKING***************
 
-//   router.get('/api/patient-booking', BookingController.handleBooking_1); // render frontend select clinic
-//   router.post('/api/booking-state-clinic', BookingController.postBooking_clinic); // save clinicId and redirect to /api/patient-booking-specialization
+  //   router.get('/api/patient-booking', BookingController.handleBooking_1); // render frontend select clinic
+  //   router.post('/api/booking-state-clinic', BookingController.postBooking_clinic); // save clinicId and redirect to /api/patient-booking-specialization
 
-//   router.get('/api/patient-booking-specialization', BookingController.handleBooking_2); // render frontend select specialization
-//   router.post('/api/booking-state-specialization', BookingController.postBooking_specialization); // save specializationId and redirect to /api/patient-booking-doctor
+  //   router.get('/api/patient-booking-specialization', BookingController.handleBooking_2); // render frontend select specialization
+  //   router.post('/api/booking-state-specialization', BookingController.postBooking_specialization); // save specializationId and redirect to /api/patient-booking-doctor
 
-//   router.get('/api/patient-booking-doctor', BookingController.handleBooking_3); // render frontend select doctor, date and time
-//   router.post('/api/booking-state-complete', BookingController.postBooking_doctor); // result of booking
+  //   router.get('/api/patient-booking-doctor', BookingController.handleBooking_3); // render frontend select doctor, date and time
+  //   router.post('/api/booking-state-complete', BookingController.postBooking_doctor); // result of booking
 
   // test frontend style booking
   router.get('/api/booking', async (req, res) => {
@@ -84,7 +87,13 @@ let initWebRoutes = (app) => {
     res.send({ doctor: doctorData });
   });
 
-  router.post('/api/booking/done',  BookingController.postBooking);
+  router.post('/api/booking/done', BookingController.postBooking);
+
+  //*****************APP*****************
+  router.get(
+    '/api/home/specialization',
+    homeController.getSpecializationToHome
+  );
 
   return app.use('/', router);
 };

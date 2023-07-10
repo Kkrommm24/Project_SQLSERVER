@@ -1,4 +1,8 @@
+import { useLocation } from 'react-router-dom';
+
 const Loading = () => {
+  let { state } = useLocation();
+  console.log(state);
   return (
     <div className="justify-center flex items-center h-screen">
       <div

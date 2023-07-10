@@ -3,12 +3,62 @@ import { connect } from 'react-redux';
 import { processLogout } from '../store/action/userAction';
 import { Navbar } from '../components/Navbar';
 import { Landing } from '../components/Landing';
+import { useState, useEffect } from 'react';
+import error from '../asset/error.png';
+import axios from '../axios';
+import Loading from './Loading';
+
 const Home = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [err, setErr] = useState(false);
+  async function getSpecialization() {
+    let Sdata = await axios.get('/api/home/specialization');
+    console.log(Sdata);
+    return Sdata;
+  }
+  useEffect(() => {
+    getSpecialization()
+      .then((Sdata) => {
+        setData(Sdata.sData);
+      })
+      .then(() => setIsLoading(false))
+      .catch((e) => {
+        setIsLoading(true);
+        setErr(e.message);
+      });
+  }, []); //if cant fetch specialization data //literally every page isnt in route is notfound page lol
+  useEffect(() => {
+    if (data) {
+    }
+  }, [data]);
   return (
-    <>
-      <Navbar props={props} />
-      <Landing />
-    </>
+    <div>
+      {isLoading ? (
+        <div>
+          <div
+            className={
+              err
+                ? 'error flex bg-red-600  items-center fixed w-screen h-14 p-0  text-white overflow-hidden  '
+                : 'error flex bg-red-600  items-center fixed w-screen h-0 p-0   text-white overflow-hidden '
+            }
+          >
+            <img
+              src={error}
+              className="h-8 mx-3 border-solid border-4 rounded-full"
+              alt="logo"
+            />
+            An error occured. {err}
+          </div>
+          <Loading />
+        </div>
+      ) : (
+        <div>
+          <Navbar props={props} data={data} />
+          <Landing />
+        </div>
+      )}
+    </div>
   );
 };
 
