@@ -1,35 +1,34 @@
-import BookingService from "../services/BookingService"
-import db from "../models/index";
-import bcrypt  from 'bcryptjs';
-var storage = require('node-persist');
+import BookingService from '../services/BookingService';
+import db from '../models/index';
+import bcrypt from 'bcryptjs';
 
 //Tạo 1 booking mới
-let handleBooking = async (req, res) =>{
-    let clinicData = await db.Clinic.findAll({
-        raw: true,
-    });
-    let specializationData = await db.Specialization.findAll({
-        raw: true,
-    });
-    return res.send({clinic: clinicData, specialization: specializationData});
-}
+let handleBooking = async (req, res) => {
+  let clinicData = await db.Clinic.findAll({
+    raw: true,
+  });
+  let specializationData = await db.Specialization.findAll({
+    raw: true,
+  });
+  return res.send({ clinic: clinicData, specialization: specializationData });
+};
 
 // Lấy doctor với clinic và specialization tương ứng
-let postBooking_doctor = async (req, res) =>{
-    let doctorData = await db.Doctor.findAll({
-        where:{
-            ClinicId: req.body.ClinicId,
-            SpecializationId: req.body.SpecializationId,
-        },
-        raw: true,
-    });
-    return res.send({doctor: doctorData});
-}
+let postBooking_doctor = async (req, res) => {
+  let doctorData = await db.Doctor.findAll({
+    where: {
+      ClinicId: req.body.ClinicId,
+      SpecializationId: req.body.SpecializationId,
+    },
+    raw: true,
+  });
+  return res.send({ doctor: doctorData });
+};
 
 // Kiểm tra xem booking tồn tại hay chưa và tạo booking
 let postBooking = async (req, res) => {
   const patientId = req.session.userId;
-  console.log(patientId)
+  console.log(patientId);
   const bookingData = {
     patientId: patientId,
     doctorId: req.body.doctorId,
@@ -45,9 +44,10 @@ let postBooking = async (req, res) => {
     } else if (message.errCode === 1) {
       return res.send('Your schedule is already booked, try another schedule');
     } else if (message.errCode === 1.1) {
-      return res.send('You are booking the same time as another one you have booked, try another schedule');
-    }
-     else {
+      return res.send(
+        'You are booking the same time as another one you have booked, try another schedule'
+      );
+    } else {
       return res.send('Failed to create booking');
     }
   } catch (error) {
@@ -56,50 +56,56 @@ let postBooking = async (req, res) => {
   }
 };
 
-let handleCancelBooking = async (req, res) =>{
-    let data = req.body 
-    let message = await BookingService.updateCancelStatus(data);
-    req.session.bookingId = data.BookingId;
-    return res.status(200).json(message);
-}
+let handleCancelBooking = async (req, res) => {
+  let data = req.body;
+  let message = await BookingService.updateCancelStatus(data);
+  req.session.bookingId = data.BookingId;
+  return res.status(200).json(message);
+};
 
-let DescriptionOfCancel = async (req, res) =>{
-    let data = req.body
-    let booking_id = req.session.bookingId
-    let message = await BookingService.DescriptionOfCancel_Service(data, booking_id);
-    console.log(message);
-    return res.status(200).json(message)
-} 
+let DescriptionOfCancel = async (req, res) => {
+  let data = req.body;
+  let booking_id = req.session.bookingId;
+  let message = await BookingService.DescriptionOfCancel_Service(
+    data,
+    booking_id
+  );
+  console.log(message);
+  return res.status(200).json(message);
+};
 
-let handleConfirmBooking = async (req, res) =>{
-    let data = req.body 
-    let message = await BookingService.updateConfirmStatus(data);
-    req.session.bookingId = data.BookingId;
-    return res.status(200).json(message);
-}
+let handleConfirmBooking = async (req, res) => {
+  let data = req.body;
+  let message = await BookingService.updateConfirmStatus(data);
+  req.session.bookingId = data.BookingId;
+  return res.status(200).json(message);
+};
 
-let handleDoneBooking = async (req, res) =>{
-    let data = req.body 
-    let message = await BookingService.updateDoneStatus(data);
-    req.session.bookingId = data.BookingId;
-    return res.status(200).json(message);
-}
+let handleDoneBooking = async (req, res) => {
+  let data = req.body;
+  let message = await BookingService.updateDoneStatus(data);
+  req.session.bookingId = data.BookingId;
+  return res.status(200).json(message);
+};
 
-let DescriptionOfDone = async (req, res) =>{
-    let data = req.body
-    let booking_id = req.session.bookingId
-    let message = await BookingService.DescriptionOfDone_Service(data, booking_id);
-    console.log(message);
-    return res.status(200).json(message)
-} 
-module.exports ={
-    handleBooking: handleBooking,
-    postBooking_doctor: postBooking_doctor,
-    postBooking: postBooking,
+let DescriptionOfDone = async (req, res) => {
+  let data = req.body;
+  let booking_id = req.session.bookingId;
+  let message = await BookingService.DescriptionOfDone_Service(
+    data,
+    booking_id
+  );
+  console.log(message);
+  return res.status(200).json(message);
+};
+module.exports = {
+  handleBooking: handleBooking,
+  postBooking_doctor: postBooking_doctor,
+  postBooking: postBooking,
 
-    handleCancelBooking: handleCancelBooking,
-    DescriptionOfCancel: DescriptionOfCancel,
-    handleConfirmBooking: handleConfirmBooking,
-    handleDoneBooking: handleDoneBooking,
-    DescriptionOfDone: DescriptionOfDone,
-}
+  handleCancelBooking: handleCancelBooking,
+  DescriptionOfCancel: DescriptionOfCancel,
+  handleConfirmBooking: handleConfirmBooking,
+  handleDoneBooking: handleDoneBooking,
+  DescriptionOfDone: DescriptionOfDone,
+};
