@@ -1,6 +1,5 @@
 import BookingService from '../services/BookingService';
 import db from '../models/index';
-import bcrypt from 'bcryptjs';
 
 //Tạo 1 booking mới
 let handleBooking = async (req, res) => {
@@ -40,7 +39,7 @@ let postBooking = async (req, res) => {
     date: req.body.date,
     timeType: req.body.timeType,
   };
-  console.log(bookingData);
+  console.log('Booking: ', bookingData);
   try {
     const message = await BookingService.createBooking_doctor(bookingData);
     console.log(message);
