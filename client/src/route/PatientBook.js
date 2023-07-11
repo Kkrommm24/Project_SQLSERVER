@@ -56,6 +56,7 @@ const Book = (props) => {
       let message = submitted.message;
       let errCode = submitted.errCode;
       if (errCode === 0) {
+      if (errCode === 0) {
         alert(message);
         navigate('/home');
       }

@@ -1,49 +1,5 @@
 import { response } from "express";
 import db from "../models/index";
-var storage = require('node-persist');
-let initStorage = async () => {
-  await storage.init();
-}
-initStorage();
-let clinicId = '';
-let specializationId = '';
-
-let setClinicValue = async (value) => {
-  clinicId = value;
-};
-
-let createBooking_clinic = async (data) =>{
-  return new Promise( async (resolve, reject) => {
-      try{
-          await setClinicValue(data.clinicId)
-          resolve('Next stage');
-      }catch(e){
-        console.error('Error:', e);
-      }
-  })
-}
-
-let setSpecializationValue = async (value) => {
-  specializationId = value;
-};
-let createBooking_specialization = async (data) =>{
-  return new Promise( async (resolve, reject) => {
-      try{
-          await setSpecializationValue(data.specializationId)
-          resolve('Next stage');
-      }catch(e){
-        console.error('Error:', e);
-      }
-  })
-}
-
-let getClinicValue = async () => {
-  return clinicId;
-};
-
-let getSpecializationValue = async () => {
-  return specializationId;
-};
 
 let checkBooking = (doctorData, dateData, timeTypeData) =>{
   return new Promise(async (resolve, reject) => {
