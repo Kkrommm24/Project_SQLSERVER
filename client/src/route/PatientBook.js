@@ -28,6 +28,10 @@ const Book = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [isEnabled, setEnabled] = useState(true);
   const [doctorList, setDoctorList] = useState({});
+  const [date, setDate] = useState({
+    day: undefined,
+    time: 0,
+  });
   const [submit, setSubmit] = useState({
     clinic: 0,
     specialization: 0,
@@ -43,18 +47,14 @@ const Book = (props) => {
   };
   const handleSubmitBooking = async (e) => {
     e.preventDefault();
-    if (!submit.doctor) {
-      alert('hey u not choose doctor yet');
-    } else {
+    if (!submit.doctor || !date.day || date.time === 0) {
       console.log(submit);
-      console.log(props.props.userInfo);
-      let submitted = await handleBooking(
-        props.props.userInfo.id,
-        submit.doctor
-      );
-      console.log(submitted);
+      alert('Pls fill all fields');
+    } else {
+      let submitted = await handleBooking(submit.doctor, date.day, date.time);
       let message = submitted.message;
       let errCode = submitted.errCode;
+      console.log(submitted);
       if (errCode === 0) {
         alert(message);
         navigate('/home');
@@ -92,7 +92,7 @@ const Book = (props) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div>
+        <div className="flex flex-col">
           <form>
             <select
               defaultValue=""
@@ -136,8 +136,86 @@ const Book = (props) => {
                 ))
               )}
             </select>
-            <button onClick={(e) => handleSubmitBooking(e)}>Press me </button>
+            <input
+              type="date"
+              onChange={(e) => setDate({ ...date, day: e.target.value })}
+            />
           </form>
+          <div className="grid grid-cols-4 gap-1 rounded-md p-3 justify-center items-center w-max">
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={8}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              8:00 AM - 9:00 AM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={9}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              9:00 AM - 10:00 AM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={10}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              10:00 AM - 11:00 AM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={11}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              11:00 AM - 12:00 PM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={12}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              1:00 PM - 2:00 PM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={13}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              2:00 PM - 3:00 PM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 active:translate-x-0.5 active:translate-y-0.5 rounded bg-indigo-400"
+              value={14}
+              onClick={(e) => {
+                setDate({ ...date, time: parseInt(e.target.value) });
+              }}
+            >
+              3:00 PM - 4:00 PM
+            </button>
+            <button
+              className="p-1 border- active:bg-indigo-500 rounded active:translate-x-0.5 active:translate-y-0.5 bg-indigo-400"
+              value={15}
+              onClick={(e) =>
+                setDate({ ...date, time: parseInt(e.target.value) })
+              }
+            >
+              4:00 PM - 5:00 PM
+            </button>
+          </div>
+          <button onClick={(e) => handleSubmitBooking(e)}>Press me </button>
           <h1>
             {submit.clinic} and {submit.specialization} and {submit.doctor}
           </h1>
