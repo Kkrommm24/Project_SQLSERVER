@@ -10,9 +10,10 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
   app.use(express.json());
+
   // function isLoggedIn(req,res,next)
   // {
-  //     if (req.session.id)
+  //     if (req.session.userId)
   //         next();
   //     else res.redirect('/api/login');
   // }

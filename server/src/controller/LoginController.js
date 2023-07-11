@@ -32,6 +32,7 @@ let handleLogin = async (req, res) =>{
         // Lưu ID vào session
         req.session.userId = userId;
         req.session.roleId = role;
+        console.log(req.session);
       } 
     return res.status(200).json({
       errCode: loginData.errCode,
