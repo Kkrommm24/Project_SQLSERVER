@@ -10,4 +10,9 @@ export const handleRegisterForm = (formData) => {
 export const handleBooking = (doctorId, date, timeType) => {
   return axios.post('/api/booking/done', { doctorId, date, timeType }); // Set pending on create
 };
+
+export const LogOut = (userId) => {
+  return axios.post('/api/log-out', { userId });
+};
+
 export default handleLoginForm;

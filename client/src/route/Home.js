@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 //import { useNavigate } from 'react-router-dom';
 import { processLogout } from '../store/action/userAction';
 import { Navbar } from '../components/Navbar';
-import { Landing } from '../components/Landing';
 import { useState, useEffect } from 'react';
 import error from '../asset/error.png';
 import axios from '../axios';
 import Loading from './Loading';
+import { Outlet } from 'react-router-dom';
 
 const Home = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +14,7 @@ const Home = (props) => {
   const [err, setErr] = useState(false);
   async function getSpecialization() {
     let Sdata = await axios.get('/api/home/specialization');
-    console.log(Sdata);
+    console.log('hello', Sdata);
     return Sdata;
   }
   useEffect(() => {
@@ -55,7 +55,7 @@ const Home = (props) => {
       ) : (
         <div>
           <Navbar props={props} data={data} />
-          <Landing />
+          <Outlet />
         </div>
       )}
     </div>

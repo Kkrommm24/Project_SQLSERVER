@@ -3,27 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../asset/logo.png';
 import dropdownarrow from '../asset/arrow.png';
 import { Link } from 'react-router-dom';
+import { LogOut } from '../service/userService';
 export const Navbar = (props) => {
-  console.log(props);
   //check user role then render
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(false);
   const [navDropDown, setNavDropDown] = useState(false);
   const handleBooking = () => {
     if (props.props.isPatient) {
       navigate('/booking');
     } else navigate('/login');
   };
-  const handleLogout = () => {
-    props.props.processLogout();
-    navigate('/home');
+
+  const handleLogout = async () => {
+    console.log('logged out');
+    await LogOut(props.props.userInfo.id)
+      .then(props.props.processLogout())
+      .then(navigate('/home'));
   };
   return (
-    <div className="h-16 bg-white shadow-2xl shadow-black flex items-center pr-20 ">
+    <div className="h-16 bg-white shadow-2xl flex items-center pr-10 ">
       <div>
         <img src={logo} alt="logo" className="object-cover h-60 mx-0" />
       </div>
       <div className=" w-px h-10" style={{ background: '#5A4AE3' }}></div>
-      <div className="text-black hover:text-indigo-500 font-medium pl-6 p-3 cursor-pointer">
+      <div
+        onClick={() => navigate('/home')}
+        className="text-black hover:text-indigo-500 font-medium pl-6 p-3 cursor-pointer"
+      >
         Home
       </div>
       <div
@@ -42,7 +49,7 @@ export const Navbar = (props) => {
         <div
           className={
             navDropDown
-              ? 'absolute top-16 shadow-md pl-4 pr-8 z-10 bg-white p-3 grid-cols-2 grid w-max gap-4'
+              ? 'absolute top-16 shadow-md pl-4 pr-8 z-10 bg-white p-3 grid w-max gap-4'
               : 'absolute  z-10 bg-white p-3 grid-cols-2 gap-4 hidden'
           }
         >
@@ -70,8 +77,36 @@ export const Navbar = (props) => {
       <div className="ml-auto order-2 flex items-center">
         {props.props.isDoctor ? (
           <>
-            <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-              Hi,{props.props.userInfo.Doctor_firstName}
+            <div
+              className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative"
+              onMouseOver={() => setProfile(true)}
+              onMouseOut={() => setProfile(false)}
+            >
+              Hi,Dr. {props.props.userInfo.Doctor_firstName}
+              <div
+                className={
+                  profile
+                    ? 'absolute right-10 top-16 shadow-md p-4 pr-8 z-10 bg-white pl-8 grid w-max gap-4'
+                    : 'absolute  z-10 bg-white p-3 grid-cols-2 gap-4 hidden'
+                }
+              >
+                {' '}
+                <Link to="/user/profile">
+                  <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                    Your Profile
+                  </div>
+                </Link>
+                <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                  Some options
+                </div>
+                <div className="h-px w-full bg-gray-300 float-right"></div>
+                <div
+                  className="w-full hover:text-red-500 cursor-pointer text-right"
+                  onClick={() => handleLogout()}
+                >
+                  Log Out
+                </div>
+              </div>
             </div>
             <div
               onClick={() => handleLogout()}
@@ -82,14 +117,38 @@ export const Navbar = (props) => {
           </>
         ) : props.props.isPatient ? (
           <>
-            <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-              Hi,{props.props.userInfo.Patient_firstName}
-            </div>
             <div
-              onClick={() => handleLogout()}
-              className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer"
+              className="flex h-16 w-fit justify-center items-center"
+              onMouseOver={() => setProfile(true)}
+              onMouseOut={() => setProfile(false)}
             >
-              Logout
+              <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative">
+                Hi, {props.props.userInfo.Patient_firstName}
+              </div>
+
+              <div
+                className={
+                  profile
+                    ? 'absolute right-10 top-16 shadow-md p-4 pl-8 pr-8 z-10 bg-white  grid w-max gap-4'
+                    : 'absolute  z-10 bg-white p-3 grid-cols-2 gap-4 hidden'
+                }
+              >
+                <Link to="/user/profile">
+                  <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                    Your Profile
+                  </div>
+                </Link>
+                <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                  Some options
+                </div>
+                <div className="h-px w-full bg-gray-300 float-right"></div>
+                <div
+                  className="w-full hover:text-red-500 cursor-pointer text-right"
+                  onClick={() => handleLogout()}
+                >
+                  Log Out
+                </div>
+              </div>
             </div>
           </>
         ) : (

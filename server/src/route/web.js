@@ -4,7 +4,7 @@ import LoginController from '../controller/LoginController';
 import PatientController from '../controller/PatientController';
 import DoctorController from '../controller/DoctorController';
 import BookingController from '../controller/BookingController';
-import db from '../models/index';
+import db, { sequelize } from '../models/index';
 var storage = require('node-persist');
 let router = express.Router();
 
@@ -29,7 +29,13 @@ let initWebRoutes = (app) => {
   router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển
   router.get('/delete-crud', homeController.deleteCRUD); //delete
   router.post('/api/login', LoginController.handleLogin); //login
-
+  router.post('/api/log-out', async (req, res) => {
+    console.log('before', req.session);
+    await delete req.session.userId;
+    await delete req.session.roleId;
+    console.log('after', res.session);
+    res.send('logged out');
+  });
   //***************PATIENT***************
 
   router.get('/api/get-all-patients', PatientController.handlegetAllPatients); //print all patients
@@ -89,6 +95,96 @@ let initWebRoutes = (app) => {
   });
 
   router.post('/api/booking/done', BookingController.postBooking);
+
+  router.get('/api/get-session', async (req, res) => {
+    let response = 'userId' in req.session ? req.session.userId : 'failed';
+    let responseStr = 'userId' in req.session ? response.toString() : response;
+    console.log(responseStr);
+    res.send(responseStr);
+  });
+
+  router.get('/api/profile/patient/:id', async (req, res) => {
+    let userId = req.params.id;
+    let data = await db.Patient.findOne({
+      raw: true,
+      where: {
+        id: userId,
+      },
+      attributes: [
+        'email',
+        'Patient_lastName',
+        'Patient_firstName',
+        'Patient_address',
+        'Patient_gender',
+        'Patient_age',
+        'Patient_phoneNumber',
+      ],
+    });
+    console.log(data);
+    res.send({ data: data });
+  });
+  router.get('/api/profile/doctor/:id', async (req, res) => {
+    let userId = req.params.id;
+    let data = await db.Doctor.findOne({
+      raw: true,
+      where: {
+        id: userId,
+      },
+      attributes: [
+        'email',
+        'Doctor_lastName',
+        'Doctor_firstName',
+        'Doctor_address',
+        'Doctor_gender',
+        'Doctor_age',
+        'Doctor_phoneNumber',
+      ],
+    });
+    console.log(data);
+    res.send({ data: data });
+  });
+
+  router.get('/api/booking/patient/:id', async (req, res) => {
+    let userId = req.params.id;
+    let bookData = await db.sequelize.query(
+      'select bookings.id,h.StatusId,doctors.Doctor_firstName,f.Doctor_lastName,a.Clinic_name,b.Clinic_address,g.date,c.valueEn as time,d.valueEn as status from bookings inner join bookings h on h.id = bookings.id inner join doctors on doctors.id = bookings.DoctorId inner join doctors as f on doctors.id = f.id inner join clinics a on a.id = doctors.ClinicId inner join clinics b on b.id = doctors.ClinicId inner join bookings g on g.id = bookings.id inner join allcodes c on c.id = bookings.timeType inner join allcodes d on d.id = bookings.StatusId where bookings.PatientId = ' +
+        userId +
+        ' ORDER by h.StatusId asc , bookings.id asc',
+      { type: db.sequelize.QueryTypes.SELECT }
+    );
+    console.log(bookData);
+    res.send({ data: bookData });
+  });
+
+  router.get('/api/test/:id', async (req, res) => {
+    let userId = req.params.id;
+    let data = await db.sequelize.query(
+      'select bookings.id,h.StatusId,doctors.Doctor_firstName,f.Doctor_lastName,a.Clinic_name,b.Clinic_address,g.date,c.valueEn,d.valueEn from bookings inner join bookings h on h.id = bookings.id inner join doctors on doctors.id = bookings.DoctorId inner join doctors as f on doctors.id = f.id inner join clinics a on a.id = doctors.ClinicId inner join clinics b on b.id = doctors.ClinicId inner join bookings g on g.id = bookings.id inner join allcodes c on c.id = bookings.timeType inner join allcodes d on d.id = bookings.StatusId where bookings.PatientId = ' +
+        userId +
+        ' ORDER by h.StatusId asc , bookings.id asc',
+      { type: db.sequelize.QueryTypes.SELECT }
+    );
+    res.send({ data: data });
+  });
+
+  router.get('/api/booking/doctor/:id', async (req, res) => {
+    let userId = req.params.id;
+    let bookData = await db.Booking.findAll({
+      raw: true,
+      where: {
+        doctorId: userId,
+      },
+      attributes: [
+        'id',
+        'statusId',
+        'doctorId',
+        'PatientId',
+        'date',
+        'timeType',
+      ],
+    });
+    res.send({ data: bookData });
+  });
 
   //*****************APP*****************
   router.get(
