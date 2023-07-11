@@ -228,12 +228,6 @@ let DescriptionOfDone_Service = (data, booking_id) => {
   });
 };
 module.exports ={
-  createBooking_clinic: createBooking_clinic,
-  createBooking_specialization: createBooking_specialization,
-  setClinicValue: setClinicValue,
-  setSpecializationValue: setSpecializationValue,
-  getClinicValue: getClinicValue,
-  getSpecializationValue: getSpecializationValue,
   createBooking_doctor: createBooking_doctor,
 
   updateCancelStatus: updateCancelStatus,
