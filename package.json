@@ -10,5 +10,8 @@
     "database": "cd server && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express-session": "^1.17.3"
+  }
 }

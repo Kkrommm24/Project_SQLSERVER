@@ -112,19 +112,19 @@ let getDoctor = async (userId) => {
       return null; // Bác sĩ không tồn tại
     }
 
-    const doctor_data = {
-      doctor: {
-        Doctor_firstName: doctor.Doctor_firstName,
-        Doctor_lastName: doctor.Doctor_lastName,
-        Doctor_address: doctor.Doctor_address,
-        Doctor_phoneNumber: doctor.Doctor_phoneNumber,
-        Doctor_age: doctor.Doctor_age,
-      },
-      clinic: doctor.Clinic ? { Clinic_name: doctor.Clinic.Clinic_name } : null,
-      specialization: doctor.Specialization ? { Specialization_name: doctor.Specialization.Specialization_name } : null,
-      gender: doctor.Allcode ? { GenderEn: doctor.Allcode.valueEn, GenderVi: doctor.Allcode.valueVi } : null,
-    };
-    return doctor_data;
+    // const doctor_data = {
+    //   doctor: {
+    //     Doctor_firstName: doctor.Doctor_firstName,
+    //     Doctor_lastName: doctor.Doctor_lastName,
+    //     Doctor_address: doctor.Doctor_address,
+    //     Doctor_phoneNumber: doctor.Doctor_phoneNumber,
+    //     Doctor_age: doctor.Doctor_age,
+    //   },
+    //   clinic: doctor.Clinic ? { Clinic_name: doctor.Clinic.Clinic_name } : null,
+    //   specialization: doctor.Specialization ? { Specialization_name: doctor.Specialization.Specialization_name } : null,
+    //   gender: doctor.Allcode ? { GenderEn: doctor.Allcode.valueEn, GenderVi: doctor.Allcode.valueVi } : null,
+    // };
+    return doctor;
   } catch (error) {
     console.error('Error:', error);
     throw new Error('Internal Server Error');

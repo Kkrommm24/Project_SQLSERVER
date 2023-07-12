@@ -224,7 +224,6 @@ const Book = (props) => {
     </div>
   );
 };
-
 const mapStateToProps = (state) => {
   return {
     isDoctor: state.isDoctor,
@@ -240,4 +239,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Booking);
+export default connect(mapStateToProps, mapDispatchToProps)(Booking)

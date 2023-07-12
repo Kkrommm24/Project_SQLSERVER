@@ -59,7 +59,7 @@ let initWebRoutes = (app) => {
   router.put(
     '/api/change-doctor-password',
     DoctorController.handleChangePassword
-  ); // change patient password
+  ); // change doctor password
   router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
 
   //***************BOOKING***************
@@ -147,7 +147,7 @@ let initWebRoutes = (app) => {
   router.get('/api/booking/patient/:id', async (req, res) => {
     let userId = req.params.id;
     let bookData = await db.sequelize.query(
-      'select bookings.id,h.StatusId,doctors.Doctor_firstName,f.Doctor_lastName,a.Clinic_name,b.Clinic_address,g.date,c.valueEn as time,d.valueEn as status from bookings inner join bookings h on h.id = bookings.id inner join doctors on doctors.id = bookings.DoctorId inner join doctors as f on doctors.id = f.id inner join clinics a on a.id = doctors.ClinicId inner join clinics b on b.id = doctors.ClinicId inner join bookings g on g.id = bookings.id inner join allcodes c on c.id = bookings.timeType inner join allcodes d on d.id = bookings.StatusId where bookings.PatientId = ' +
+      ' SELECT bookings.id,h.StatusId,doctors.Doctor_firstName,f.Doctor_lastName,a.Clinic_name,b.Clinic_address,g.date,c.valueEn AS time,d.valueEn AS status FROM bookings INNER JOIN bookings h ON h.id = bookings.id INNER JOIN doctors ON doctors.id = bookings.DoctorId INNER JOIN doctors AS f ON doctors.id = f.id INNER JOIN clinics a ON a.id = doctors.ClinicId INNER JOIN clinics b ON b.id = doctors.ClinicId INNER JOIN bookings g ON g.id = bookings.id INNER JOIN allcodes c ON c.id = bookings.timeType INNER JOIN allcodes d ON d.id = bookings.StatusId WHERE bookings.PatientId = ' +
         userId +
         ' ORDER by h.StatusId asc , bookings.id asc',
       { type: db.sequelize.QueryTypes.SELECT }
@@ -156,33 +156,16 @@ let initWebRoutes = (app) => {
     res.send({ data: bookData });
   });
 
-  router.get('/api/test/:id', async (req, res) => {
-    let userId = req.params.id;
-    let data = await db.sequelize.query(
-      'select bookings.id,h.StatusId,doctors.Doctor_firstName,f.Doctor_lastName,a.Clinic_name,b.Clinic_address,g.date,c.valueEn,d.valueEn from bookings inner join bookings h on h.id = bookings.id inner join doctors on doctors.id = bookings.DoctorId inner join doctors as f on doctors.id = f.id inner join clinics a on a.id = doctors.ClinicId inner join clinics b on b.id = doctors.ClinicId inner join bookings g on g.id = bookings.id inner join allcodes c on c.id = bookings.timeType inner join allcodes d on d.id = bookings.StatusId where bookings.PatientId = ' +
-        userId +
-        ' ORDER by h.StatusId asc , bookings.id asc',
-      { type: db.sequelize.QueryTypes.SELECT }
-    );
-    res.send({ data: data });
-  });
 
   router.get('/api/booking/doctor/:id', async (req, res) => {
     let userId = req.params.id;
-    let bookData = await db.Booking.findAll({
-      raw: true,
-      where: {
-        doctorId: userId,
-      },
-      attributes: [
-        'id',
-        'statusId',
-        'doctorId',
-        'PatientId',
-        'date',
-        'timeType',
-      ],
-    });
+    let bookData = await db.sequelize.query(
+      'SELECT bookings.id, h.StatusId, patients.Patient_firstName, patients.Patient_lastName, a.Clinic_name, b.Clinic_address, g.date, c.valueEn AS time, d.valueEn AS status FROM bookings INNER JOIN bookings h ON h.id = bookings.id INNER JOIN patients ON patients.id = bookings.PatientId INNER JOIN patients AS f ON patients.id = f.id INNER JOIN doctors ON doctors.id = bookings.DoctorId INNER JOIN doctors AS f1 ON doctors.id = f1.id INNER JOIN clinics a ON a.id = doctors.ClinicId INNER JOIN clinics b ON b.id = doctors.ClinicId INNER JOIN bookings g ON g.id = bookings.id INNER JOIN allcodes c ON c.id = bookings.timeType INNER JOIN allcodes d ON d.id = bookings.StatusId WHERE bookings.DoctorId = '+ 
+      userId +
+        ' ORDER by h.StatusId asc , bookings.id asc',
+      { type: db.sequelize.QueryTypes.SELECT }
+    );
+    console.log(bookData);
     res.send({ data: bookData });
   });
 
