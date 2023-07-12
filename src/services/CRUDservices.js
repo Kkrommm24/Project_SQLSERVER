@@ -103,10 +103,36 @@ let deleteUser = (id) => {
   });
 };
 
+let updateClinicData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let clinic = await db.Clinic.findOne({
+        where: { id: data.id },
+      });
+      if (clinic) {
+        clinic.name = data.name;
+        clinic.address = data.address;
+        clinic.description = data.description;
+        clinic.image = data.image;
+        await clinic.save();
+        let allClinics = await db.Clinic.findAll();
+        resolve(allClinics);
+      } else {
+        resolve();
+      }
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+};
+
+
 module.exports = {
   createNewUser: createNewUser,
   getAllUser: getAllUser,
   getUserInfobyID: getUserInfobyID,
   updateUserData: updateUserData,
-  deleteUser: deleteUser // Export the new function
+  deleteUser: deleteUser, // Export the new function
+  updateClinicData: updateClinicData,
 };

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa phòng khám</title>
+</head>
+<body>
+    <h1>Sửa phòng khám</h1>
+    <% if (successMessage) { %>
+        <div class="success-message">
+            <%= successMessage %>
+        </div>
+    <% } %>
+    <% if (errorMessage) { %>
+        <div class="error-message">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+    <form action="/suaphongkham" method="POST" enctype="multipart/form-data">
+        <input type="hidden" id="id" name="id">
+        <label for="name">Tên phòng khám:</label>
+        <input type="text" id="name" name="name" required>
+    
+        <label for="address">Địa chỉ:</label>
+        <input type="text" id="address" name="address" required>
+    
+        <label for="description">Mô tả:</label>
+        <textarea id="description" name="description" required></textarea>
+    
+        <label for="image">Hình ảnh:</label>
+        <input type="file" id="image" name="image">
+    
+        <button type="submit">Cập nhật phòng khám</button>
+    </form>
+    
+</body>
+</html>

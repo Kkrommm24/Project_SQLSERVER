@@ -12,7 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     image: DataTypes.STRING,
     slug: DataTypes.STRING,
-    SpecialtyId: DataTypes.INTEGER, // Add this line
+    SpecialtyId: DataTypes.INTEGER, 
+    introduction: DataTypes.STRING,
+    specialty: DataTypes.STRING,
+    doctors: DataTypes.STRING,
+    booking: DataTypes.STRING,
+    location: DataTypes.STRING,
+
   }, {
     sequelize,
     modelName: 'Clinic',
