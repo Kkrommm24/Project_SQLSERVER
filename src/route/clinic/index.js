@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../models/index');
+const CRUDservices = require('../../services/CRUDservices');
 
 // GET route for /clinic
 router.get('/', (req, res) => {
@@ -12,6 +13,10 @@ router.get('/', (req, res) => {
       console.log(error);
       res.status(500).send('An error occurred.');
     });
+});
+router.get('/edit', async (req, res) => {
+  const clinics = await db.Clinic.findAll();
+  res.render('clinic-edit-home', { clinics: clinics });
 });
 
 // GET route for /clinic/:slug
@@ -63,5 +68,10 @@ router.post('/edit/:slug', async (req, res) => {
   }
 });
 
+router.get('/delete/:slug', async (req, res) => {
+  const slug = req.params.slug;
+  await CRUDservices.deleteClinic(slug);
+  res.redirect('/clinic/edit');
+});
 
 module.exports = router;
