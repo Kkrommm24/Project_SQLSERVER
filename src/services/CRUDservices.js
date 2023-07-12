@@ -127,13 +127,30 @@ let updateClinicData = (data) => {
   });
 };
 
+const fs = require('fs');
+
 let deleteClinic = (slug) => {
   return new Promise(async (resolve, reject) => {
       try {
-          await db.Clinic.destroy({
+          let clinic = await db.Clinic.findOne({
               where: { slug: slug }
           });
-          resolve('Clinic has been deleted.');
+          if (clinic) {
+              let imagePath = `.${clinic.image}`;
+              fs.unlink(imagePath, (err) => {
+                  if (err) {
+                      console.log(`Failed to delete image file: ${err}`);
+                  } else {
+                      console.log('Successfully deleted image file.');
+                  }
+              });
+              await db.Clinic.destroy({
+                  where: { slug: slug }
+              });
+              resolve('Clinic has been deleted.');
+          } else {
+              resolve('Clinic not found.');
+          }
       } catch (e) {
           reject(e);
       }
