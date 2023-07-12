@@ -6,3 +6,9 @@
 # Kiểm tra lại đã được tự đông thêm được trên view danh sách clinic chưa: http://localhost:8080/clinic
 ![image](https://github.com/Kkrommm24/Project_SQLSERVER/assets/131908995/1af3db1d-0755-4b33-b62a-cd348d565a56)
 
+# Edit clinic: http://localhost:8080/clinic/edit/
+![image](https://github.com/Kkrommm24/Project_SQLSERVER/assets/131908995/e63afd4e-2291-4dc3-9df3-865d25159432)
+
+# Edit: ![image](https://github.com/Kkrommm24/Project_SQLSERVER/assets/131908995/b1e8eeb4-db74-4a00-a4bc-166b5a2bfef9)
+# Delete: ![image](https://github.com/Kkrommm24/Project_SQLSERVER/assets/131908995/f1609e39-f4e7-4ee9-bb3f-f6ec7f1ab7c4)
+
