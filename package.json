@@ -8,7 +8,7 @@
     "start": "nodemon --exec babel-node src/server.js"
   },
   "keywords": [
-    "fullstack",
+    "fullstack",  
     "nodejs",
     "express",
     "hoiDanIT"
