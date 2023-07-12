@@ -94,5 +94,5 @@ module.exports = {
     putCRUD: putCRUD,
     deleteCRUD: deleteCRUD, 
     getClinicPage: getClinicPage,
-    getAllClinics:getAllClinics,
+    getAllClinics:getAllClinics
 };
