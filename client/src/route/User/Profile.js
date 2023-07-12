@@ -138,7 +138,7 @@ const Profile = (props) => {
                     </td>
                     <td className="w-max p-2">{data.status}</td>
                     <td>
-                      <button> Click me</button>
+                      <button onClick={{}}> Cancel</button>
                     </td>
                   </tr>
                 ))}

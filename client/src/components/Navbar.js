@@ -9,11 +9,6 @@ export const Navbar = (props) => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(false);
   const [navDropDown, setNavDropDown] = useState(false);
-  const handleBooking = () => {
-    if (props.props.isPatient) {
-      navigate('/booking');
-    } else navigate('/login');
-  };
 
   const handleLogout = async () => {
     console.log('logged out');
@@ -65,12 +60,14 @@ export const Navbar = (props) => {
         About Us
       </div>
       {!props.props.isDoctor ? (
-        <div
-          onClick={() => handleBooking()}
-          className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer"
+        <Link
+          to={props.props.isPatient ? '/booking' : '/login-signin'}
+          state={{ state: false }}
         >
-          Booking Now
-        </div>
+          <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
+            Booking Now
+          </div>
+        </Link>
       ) : (
         <></>
       )}

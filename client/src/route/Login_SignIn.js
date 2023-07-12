@@ -91,7 +91,7 @@ const LoginSignIn = (props) => {
       if (result.errCode === 0) {
         setErr({ errCode: '' });
         console.log('register successful!');
-        navigate('/login');
+        navigate('/home');
       } else {
         console.log('Nah not create any yet');
         setErr({ errCode: result.errCode, message: result.message });
