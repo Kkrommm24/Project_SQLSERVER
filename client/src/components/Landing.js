@@ -5,7 +5,7 @@ export const Landing = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="relative items-center w-fit">
+      <div className="relative items-center w-screen">
         <img
           src={background}
           alt="Landing Page"

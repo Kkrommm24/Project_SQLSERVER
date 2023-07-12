@@ -63,7 +63,7 @@ const Book = (props) => {
   };
   useEffect(() => {
     async function getDoctor() {
-      let doctorData = await axios.post('/api/booking/doctor', {
+      let doctorData = await axios.post('/api/get-booking/doctor', {
         cid: submit.clinic,
         sid: submit.specialization,
       });
@@ -239,4 +239,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Booking)
+export default connect(mapStateToProps, mapDispatchToProps)(Booking);

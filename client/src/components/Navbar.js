@@ -17,7 +17,7 @@ export const Navbar = (props) => {
       .then(navigate('/home'));
   };
   return (
-    <div className="h-16 bg-white shadow-2xl flex items-center pr-10 ">
+    <div className="h-16 bg-white shadow-2xl flex items-center pr-14 w-screen">
       <div>
         <img src={logo} alt="logo" className="object-cover h-60 mx-0" />
       </div>
@@ -75,19 +75,21 @@ export const Navbar = (props) => {
         {props.props.isDoctor ? (
           <>
             <div
-              className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative"
+              className="flex h-16 w-fit justify-center items-center"
               onMouseOver={() => setProfile(true)}
               onMouseOut={() => setProfile(false)}
             >
-              Hi,Dr. {props.props.userInfo.Doctor_firstName}
+              <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative">
+                Hi,Dr. {props.props.userInfo.Doctor_firstName}
+              </div>
+
               <div
                 className={
                   profile
-                    ? 'absolute right-10 top-16 shadow-md p-4 pr-8 z-10 bg-white pl-8 grid w-max gap-4'
+                    ? 'absolute right-10 top-16 shadow-md p-4 pl-8 pr-8 z-10 bg-white  grid w-max gap-4'
                     : 'absolute  z-10 bg-white p-3 grid-cols-2 gap-4 hidden'
                 }
               >
-                {' '}
                 <Link to="/user/profile">
                   <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
                     Your Profile
@@ -104,12 +106,6 @@ export const Navbar = (props) => {
                   Log Out
                 </div>
               </div>
-            </div>
-            <div
-              onClick={() => handleLogout()}
-              className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer"
-            >
-              Logout
             </div>
           </>
         ) : props.props.isPatient ? (

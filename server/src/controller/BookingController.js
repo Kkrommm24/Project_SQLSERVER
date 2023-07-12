@@ -87,11 +87,11 @@ let handleConfirmBooking = async (req, res) => {
   return res.status(200).json(message);
 };
 
-let handleDoneBooking = async (req, res) => {
+let handleDoneBooking = async (req, res, next) => {
   let data = req.body;
   let message = await BookingService.updateDoneStatus(data);
   req.session.bookingId = data.BookingId;
-  return res.status(200).json(message);
+  next();
 };
 
 let DescriptionOfDone = async (req, res) => {

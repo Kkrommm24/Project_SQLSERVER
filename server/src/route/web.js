@@ -74,9 +74,19 @@ let initWebRoutes = (app) => {
   //   router.post('/api/booking-state-complete', BookingController.postBooking_doctor); // result of booking
 
   router.post(
-    '/api/booking/cancel',
+    '/api/user/booking/cancel',
     BookingController.handleCancelBooking,
     BookingController.DescriptionOfCancel
+  );
+
+  router.post(
+    '/api/user/booking/confirm',
+    BookingController.handleConfirmBooking
+  );
+  router.post(
+    '/api/user/booking/done',
+    BookingController.handleDoneBooking,
+    BookingController.DescriptionOfDone
   );
 
   // test frontend style booking
@@ -89,7 +99,7 @@ let initWebRoutes = (app) => {
     });
     res.send({ clinic: clinicData, specialization: specializationData });
   });
-  router.post('/api/booking/doctor', async (req, res) => {
+  router.post('/api/get-booking/doctor', async (req, res) => {
     let doctorData = await db.Doctor.findAll({
       where: {
         SpecializationId: req.body.sid,
@@ -144,10 +154,27 @@ let initWebRoutes = (app) => {
         'Doctor_gender',
         'Doctor_age',
         'Doctor_phoneNumber',
+        'ClinicId',
+        'SpecializationId',
       ],
     });
-    console.log(data);
-    res.send({ data: data });
+    let workData = await db.Clinic.findOne({
+      raw: true,
+      where: {
+        id: data.ClinicId,
+      },
+      attributes: ['Clinic_address'],
+    });
+    let specialty = await db.Specialization.findOne({
+      raw: true,
+      where: {
+        id: data.SpecializationId,
+      },
+      attributes: ['Specialization_name'],
+    });
+
+    let combined = { ...data, ...specialty, ...workData };
+    res.send({ data: combined });
   });
 
   router.get('/api/booking/patient/:id', async (req, res) => {
@@ -159,6 +186,8 @@ let initWebRoutes = (app) => {
       { type: db.sequelize.QueryTypes.SELECT }
     );
     console.log(bookData);
+    if (bookData.length === 0)
+      res.send({ data: { message: 'No booking records found!' } });
     res.send({ data: bookData });
   });
 
@@ -170,10 +199,34 @@ let initWebRoutes = (app) => {
         ' ORDER by h.StatusId asc , bookings.id asc',
       { type: db.sequelize.QueryTypes.SELECT }
     );
-    console.log(bookData);
-    res.send({ data: bookData });
+    console.log('doctor book:', bookData);
+    if (bookData.length === 0) {
+      res.send({ data: { message: 'No booking records found!' } });
+    } else res.send({ data: bookData });
+  });
+  router.get('/api/history/patient/:id', async (req, res) => {
+    let userId = req.params.id;
+    let history = await db.sequelize.query(
+      'SELECT histories.id,b.History_description,doctors.Doctor_firstName,a.Doctor_lastName,clinics.Clinic_name,bookings.date,allcodes.valueEn as status from histories inner join histories as b on b.id = histories.id INNER join doctors on doctors.id = histories.DoctorId inner join doctors as a on a.id = histories.DoctorId inner join clinics on clinics.id = doctors.ClinicId INNER join bookings on bookings.id = histories.BookingId inner join allcodes on allcodes.id = bookings.StatusId where histories.PatientId = ' +
+        userId,
+      { type: db.sequelize.QueryTypes.SELECT }
+    );
+    if (history.length == 0)
+      res.send({ data: { message: 'No histories found!' } });
+    res.send({ data: history });
   });
 
+  router.get('/api/history/doctor/:id', async (req, res) => {
+    let userId = req.params.id;
+    let history = await db.sequelize.query(
+      'select histories.id,a.History_description,patients.Patient_firstName,patients.Patient_lastName,clinics.Clinic_name,c.Clinic_address,bookings.date,d.valueEn,allcodes.valueEn as status from histories INNER join histories as a on a.id = histories.id inner join patients on patients.id = histories.PatientId inner join patients as b on b.id = histories.PatientId inner join doctors on doctors.id = histories.DoctorId inner join clinics on clinics.id = doctors.ClinicId inner join clinics as c on c.id = doctors.ClinicId inner join bookings on bookings.id = histories.BookingId inner join allcodes as d on d.id = bookings.timeType inner join allcodes on allcodes.id = bookings.StatusId WHERE histories.DoctorId = ' +
+        userId,
+      { type: db.sequelize.QueryTypes.SELECT }
+    );
+    if (history.length === 0)
+      res.send({ data: { message: 'No histories found!' } });
+    else res.send({ data: history });
+  });
   //*****************APP*****************
   router.get(
     '/api/home/specialization',

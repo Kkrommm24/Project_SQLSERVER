@@ -6,9 +6,10 @@ import { useState, useEffect } from 'react';
 import error from '../asset/error.png';
 import axios from '../axios';
 import Loading from './Loading';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
   const [err, setErr] = useState(false);
@@ -27,6 +28,7 @@ const Home = (props) => {
         setIsLoading(true);
         setErr(e.message);
       });
+    navigate('/home');
   }, []); //if cant fetch specialization data //literally every page isnt in route is notfound page lol
   useEffect(() => {
     if (data) {
