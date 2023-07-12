@@ -61,11 +61,12 @@ let postBooking = async (req, res) => {
   }
 };
 
-let handleCancelBooking = async (req, res) => {
+let handleCancelBooking = async (req, res, next) => {
   let data = req.body;
   let message = await BookingService.updateCancelStatus(data);
   req.session.bookingId = data.BookingId;
-  return res.status(200).json(message);
+  next();
+  //return res.status(200).json(message);
 };
 
 let DescriptionOfCancel = async (req, res) => {
@@ -76,7 +77,7 @@ let DescriptionOfCancel = async (req, res) => {
     booking_id
   );
   console.log(message);
-  return res.status(200).json(message);
+  return res.json(message);
 };
 
 let handleConfirmBooking = async (req, res) => {
@@ -103,6 +104,7 @@ let DescriptionOfDone = async (req, res) => {
   console.log(message);
   return res.status(200).json(message);
 };
+
 module.exports = {
   handleBooking: handleBooking,
   postBooking_doctor: postBooking_doctor,

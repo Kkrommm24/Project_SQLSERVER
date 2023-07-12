@@ -73,6 +73,12 @@ let initWebRoutes = (app) => {
   //   router.get('/api/patient-booking-doctor', BookingController.handleBooking_3); // render frontend select doctor, date and time
   //   router.post('/api/booking-state-complete', BookingController.postBooking_doctor); // result of booking
 
+  router.post(
+    '/api/booking/cancel',
+    BookingController.handleCancelBooking,
+    BookingController.DescriptionOfCancel
+  );
+
   // test frontend style booking
   router.get('/api/booking', async (req, res) => {
     let clinicData = await db.Clinic.findAll({
@@ -156,12 +162,11 @@ let initWebRoutes = (app) => {
     res.send({ data: bookData });
   });
 
-
   router.get('/api/booking/doctor/:id', async (req, res) => {
     let userId = req.params.id;
     let bookData = await db.sequelize.query(
-      'SELECT bookings.id, h.StatusId, patients.Patient_firstName, patients.Patient_lastName, a.Clinic_name, b.Clinic_address, g.date, c.valueEn AS time, d.valueEn AS status FROM bookings INNER JOIN bookings h ON h.id = bookings.id INNER JOIN patients ON patients.id = bookings.PatientId INNER JOIN patients AS f ON patients.id = f.id INNER JOIN doctors ON doctors.id = bookings.DoctorId INNER JOIN doctors AS f1 ON doctors.id = f1.id INNER JOIN clinics a ON a.id = doctors.ClinicId INNER JOIN clinics b ON b.id = doctors.ClinicId INNER JOIN bookings g ON g.id = bookings.id INNER JOIN allcodes c ON c.id = bookings.timeType INNER JOIN allcodes d ON d.id = bookings.StatusId WHERE bookings.DoctorId = '+ 
-      userId +
+      'SELECT bookings.id, h.StatusId, patients.Patient_firstName, patients.Patient_lastName, a.Clinic_name, b.Clinic_address, g.date, c.valueEn AS time, d.valueEn AS status FROM bookings INNER JOIN bookings h ON h.id = bookings.id INNER JOIN patients ON patients.id = bookings.PatientId INNER JOIN patients AS f ON patients.id = f.id INNER JOIN doctors ON doctors.id = bookings.DoctorId INNER JOIN doctors AS f1 ON doctors.id = f1.id INNER JOIN clinics a ON a.id = doctors.ClinicId INNER JOIN clinics b ON b.id = doctors.ClinicId INNER JOIN bookings g ON g.id = bookings.id INNER JOIN allcodes c ON c.id = bookings.timeType INNER JOIN allcodes d ON d.id = bookings.StatusId WHERE bookings.DoctorId = ' +
+        userId +
         ' ORDER by h.StatusId asc , bookings.id asc',
       { type: db.sequelize.QueryTypes.SELECT }
     );
