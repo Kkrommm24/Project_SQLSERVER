@@ -2,29 +2,49 @@
 <html>
 <head>
     <title>Edit Clinic</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Edit Clinic</h1>
-    <form action="/clinic/edit/<%= clinic.slug %>" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="<%= clinic.name %>">
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" value="<%= clinic.address %>">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description"><%= clinic.description %></textarea>
-        <label for="introduction">Giới Thiệu:</label>
-        <textarea id="introduction" name="introduction"><%= clinic.introduction %></textarea>
-        <label for="specialty">Chuyên môn:</label>
-        <textarea id="specialty" name="specialty"><%= clinic.specialty %></textarea>
-        <label for="doctors">Các Bác Sĩ:</label>
-        <textarea id="doctors" name="doctors"><%= clinic.doctors %></textarea>
-        <label for="booking">Đặt Lịch:</label>
-        <textarea id="booking" name="booking"><%= clinic.booking %></textarea>
-        <label for="location">Vị Trí:</label>
-        <textarea id="location" name="location"><%= clinic.location %></textarea>
-
-
-        <input type="submit" value="Update">
-    </form>
+    <div class="container">
+        <h1>Edit Clinic</h1>
+        <form action="/clinic/edit/<%= clinic.slug %>" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<%= clinic.name %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="<%= clinic.address %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control"><%= clinic.description %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="introduction">Giới thiệu:</label>
+                <textarea id="introduction" name="introduction" class="form-control"><%= clinic.introduction %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="specialty">Chuyên môn:</label>
+                <textarea id="specialty" name="specialty" class="form-control"><%= clinic.specialty %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="doctors">Các Bác sĩ:</label>
+                <textarea id="doctors" name="doctors" class="form-control"><%= clinic.doctors %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="booking">Lịch:</label>
+                <textarea id="booking" name="booking" class="form-control"><%= clinic.booking %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="location">Vị trí:</label>
+                <textarea id="location" name="location" class="form-control"><%= clinic.location %></textarea>
+            </div>
+            <!-- Add more fields here -->
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

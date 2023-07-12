@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% clinics.forEach(clinic => { %>
+            <tr>
+                <td><%= clinic.id %></td>
+                <td><%= clinic.name %></td>
+                <td><%= clinic.address %></td>
+                <td><a href="/clinic/edit/<%= clinic.slug %>" class="btn btn-primary">Edit</a></td>
+                <td><a href="/clinic/delete/<%= clinic.slug %>" class="btn btn-danger">Delete</a></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

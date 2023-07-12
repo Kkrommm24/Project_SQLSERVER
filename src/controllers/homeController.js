@@ -72,6 +72,18 @@ let getClinicPage = async (req, res) => { // new function
     res.render('clinic.ejs', { clinics: clinics });
 }
 
+let getAllClinics = async (req, res) => {
+    try {
+        let clinics = await db.Clinic.findAll();
+        return res.render('clinic-edit-home.ejs', {
+            clinics: clinics
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+
 module.exports = {
     getHomePage: getHomePage,
     getAboutPage: getAboutPage,
@@ -82,4 +94,5 @@ module.exports = {
     putCRUD: putCRUD,
     deleteCRUD: deleteCRUD, 
     getClinicPage: getClinicPage,
+    getAllClinics:getAllClinics,
 };

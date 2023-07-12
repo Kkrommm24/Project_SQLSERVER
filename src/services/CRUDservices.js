@@ -127,6 +127,19 @@ let updateClinicData = (data) => {
   });
 };
 
+let deleteClinic = (slug) => {
+  return new Promise(async (resolve, reject) => {
+      try {
+          await db.Clinic.destroy({
+              where: { slug: slug }
+          });
+          resolve('Clinic has been deleted.');
+      } catch (e) {
+          reject(e);
+      }
+  });
+};
+
 
 module.exports = {
   createNewUser: createNewUser,
@@ -135,4 +148,5 @@ module.exports = {
   updateUserData: updateUserData,
   deleteUser: deleteUser, // Export the new function
   updateClinicData: updateClinicData,
+  deleteClinic: deleteClinic,
 };
