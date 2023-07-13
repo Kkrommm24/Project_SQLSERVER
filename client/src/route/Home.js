@@ -15,7 +15,6 @@ const Home = (props) => {
   const [err, setErr] = useState(false);
   async function getSpecialization() {
     let Sdata = await axios.get('/api/home/specialization');
-    console.log('hello', Sdata);
     return Sdata;
   }
   useEffect(() => {
@@ -31,7 +30,7 @@ const Home = (props) => {
     if (
       window.location.pathname === '/about-us' ||
       window.location.pathname === '/booking' ||
-      window.location.pathname === 'user/profile'
+      window.location.pathname === '/user/profile'
     ) {
     } else {
       navigate('/home');

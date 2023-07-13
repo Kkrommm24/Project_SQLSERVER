@@ -25,7 +25,7 @@ let handlegetAllPatients = async (req, res) => {
 //Tạo mới 1 bệnh nhân
 let handleCreateNewPatient = async (req, res) => {
   let message = await PatientService.createNewPatient(req.body);
-  console.log(message);
+
   return res.status(200).json(message);
 };
 
@@ -84,11 +84,9 @@ let handleChangePassword = async (req, res) => {
       return res.status(400).json({ error: 'Incorrect current password' });
     }
     if (isMatch2 !== 0) {
-      return res
-        .status(400)
-        .json({
-          error: 'New password does not match. Enter new password again',
-        });
+      return res.status(400).json({
+        error: 'New password does not match. Enter new password again',
+      });
     }
     // Hash và lưu mật khẩu mới
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
