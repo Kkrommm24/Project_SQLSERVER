@@ -18,6 +18,8 @@ const Profile = (props) => {
   const [desc, setDesc] = useState('');
   const [history, setHistory] = useState([]);
   const [detail, setDetail] = useState(-1);
+  const [edit, setEdit] = useState(false);
+  const [editData, setEditData] = useState({});
   const [collapse2, setCollapse2] = useState(-1);
   useEffect(() => {
     const fetchUser = async () => {
@@ -53,9 +55,6 @@ const Profile = (props) => {
         setData(userProfile[0].data);
         setBook(userProfile[1].data);
         setHistory(userProfile[2].data);
-        setTimeout(() => {
-          console.log('history state:', history);
-        }, 500);
       })
       .then(() => setIsLoading(false))
       .catch((e) => {
@@ -83,6 +82,14 @@ const Profile = (props) => {
       BookingId: data.id,
       History_description: desc,
     });
+    setReload(!reload);
+  };
+  const handleEdit = async (data) => {
+    let editProfile = await axios.put(
+      '/api/edit-' + (props.isDoctor ? 'doctor' : 'patient'),
+      editData
+    );
+    setEdit(false);
     setReload(!reload);
   };
   // const clearHistory = async () => {
@@ -123,45 +130,273 @@ const Profile = (props) => {
               's Profile
             </h1>
             <div className="text-indigo-600 font-semibold mb-3 text-3xl">
-              Information
-            </div>
-            <div className="grid grid-cols-2">
-              <p>
-                <span>Name: </span>{' '}
-                {props.isDoctor
-                  ? data.Doctor_firstName + ' ' + data.Doctor_lastName
-                  : data.Patient_firstName + ' ' + data.Patient_lastName}
-              </p>
-              <p>
-                <span>Email: </span>
-                {data.email}
-              </p>
-              <p>
-                <span>Age: </span>
-                {props.isDoctor ? data.Doctor_age : data.Patient_age}
-              </p>
-              <p>
-                <span>Phone Number: </span>
-                {props.isDoctor
-                  ? data.Doctor_phoneNumber
-                  : data.Patient_phoneNumber}
-              </p>
-              <p className="col-span-2">
-                <span>Address: </span>
-                {props.isDoctor ? data.Doctor_address : data.Patient_address}
-              </p>
+              Information{' '}
               {props.isDoctor ? (
+                <span
+                  className=" text-sm text-gray-500 underline hover:text-indigo-400 cursor-pointer float-right"
+                  onClick={() => {
+                    setEdit(true);
+                    setEditData({
+                      firstName: data.Doctor_firstName,
+                      lastName: data.Doctor_lastName,
+                      age: data.Doctor_age,
+                      gender: data.Doctor_gender,
+                      phoneNumber: data.Doctor_phoneNumber,
+                      address: data.Doctor_address,
+                    });
+                  }}
+                >
+                  Edit Profile
+                </span>
+              ) : (
+                <span
+                  className=" text-sm text-gray-500 underline hover:text-indigo-400 cursor-pointer float-right"
+                  onClick={() => {
+                    setEdit(true);
+                    setEditData({
+                      firstName: data.Patient_firstName,
+                      lastName: data.Patient_lastName,
+                      age: data.Patient_age,
+                      gender: data.Patient_gender,
+                      phoneNumber: data.Patient_phoneNumber,
+                      address: data.Doctor_address,
+                    });
+                  }}
+                >
+                  Edit Profile
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {edit ? (
                 <>
                   <p>
-                    <span>Work Place: </span>
-                    {data.Clinic_address}
+                    <span>First Name: </span>
+                    {props.isDoctor ? (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Doctor_firstName}
+                        onChange={(e) => {
+                          console.log(editData);
+                          setEditData({
+                            ...editData,
+                            firstName: e.target.value,
+                          });
+                        }}
+                      />
+                    ) : (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Patient_firstName}
+                        onChange={(e) => {
+                          console.log(editData);
+                          setEditData({
+                            ...editData,
+                            firstName: e.target.value,
+                          });
+                        }}
+                      />
+                    )}
                   </p>
                   <p>
-                    <span>Specialty: </span>
-                    {data.Specialization_name}
+                    <span>Last Name: </span>
+                    {props.isDoctor ? (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Doctor_lastName}
+                        onChange={(e) =>
+                          setEditData({
+                            ...editData,
+                            lastName: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Patient_lastName}
+                        onChange={(e) =>
+                          setEditData({
+                            ...editData,
+                            lastName: e.target.value,
+                          })
+                        }
+                      />
+                    )}
                   </p>
+
+                  <p>
+                    <span>Age: </span>
+                    {props.isDoctor ? (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="number"
+                        defaultValue={data.Doctor_age}
+                        disabled
+                      />
+                    ) : (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="number"
+                        defaultValue={data.Patient_age}
+                        onChange={(e) =>
+                          setEditData({ ...editData, age: e.target.value })
+                        }
+                      />
+                    )}
+                  </p>
+                  <p>
+                    <span>Gender: </span>
+                    <select
+                      className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                      defaultValue={
+                        props.isDoctor
+                          ? data.Doctor_gender
+                          : data.Patient_gender
+                      }
+                      disabled={props.isDoctor ? true : false}
+                      onChange={(e) =>
+                        setEditData({ ...editData, gender: e.target.value })
+                      }
+                    >
+                      <option> Male</option>
+                      <option>Female</option>
+                      <option>Others</option>
+                    </select>
+                  </p>
+                  <p>
+                    <span>Phone Number: </span>
+                    {props.isDoctor ? (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Doctor_phoneNumber}
+                        disabled
+                      />
+                    ) : (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Patient_phoneNumber}
+                        onChange={(e) =>
+                          setEditData({
+                            ...editData,
+                            phoneNumber: e.target.value,
+                          })
+                        }
+                      />
+                    )}
+                  </p>
+                  <p>
+                    <span>Address: </span>
+                    {props.isDoctor ? (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Doctor_address}
+                        onChange={(e) =>
+                          setEditData({ ...editData, address: e.target.value })
+                        }
+                      />
+                    ) : (
+                      <input
+                        className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
+                        type="text"
+                        defaultValue={data.Patient_address}
+                        onChange={(e) =>
+                          setEditData({ ...editData, address: e.target.value })
+                        }
+                      />
+                    )}
+                  </p>
+                  {props.isDoctor ? (
+                    <>
+                      <p>
+                        <span>Work Place: </span>
+                        {data.Clinic_address}
+                      </p>
+                      <p>
+                        <span>Specialty: </span>
+                        {data.Specialization_name}
+                      </p>
+                    </>
+                  ) : null}
+                  <div className="flex col-span-2 justify-center">
+                    <button
+                      className="w-max p-1 px-6 rounded-xl bg-indigo-300 hover:bg-indigo-500 mt-2 mr-1 "
+                      onClick={() => handleEdit()}
+                    >
+                      Submit
+                    </button>
+                    <button
+                      className="w-max p-1 px-6 rounded-xl bg-slate-300 hover:bg-slate-500 mt-2 ml-1 "
+                      onClick={() => setEdit(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </>
-              ) : null}
+              ) : (
+                <>
+                  <p>
+                    <span>Name: </span>{' '}
+                    {props.isDoctor
+                      ? data.Doctor_lastName + ' ' + data.Doctor_firstName
+                      : data.Patient_lastName + ' ' + data.Patient_firstName}
+                  </p>
+                  <p>
+                    <span>Email: </span>
+                    {data.email}
+                  </p>
+                  <p>
+                    <span>Age: </span>
+                    {props.isDoctor ? data.Doctor_age : data.Patient_age}
+                  </p>
+                  <p>
+                    <span>Gender: </span>
+                    {props.isDoctor
+                      ? data.Doctor_gender === 1
+                        ? 'Male'
+                        : data.Doctor_gender === 2
+                        ? 'Female'
+                        : 'Others'
+                      : data.Patient_gender === 1
+                      ? 'Male'
+                      : data.Patient_gender === 2
+                      ? 'Female'
+                      : 'Others'}
+                  </p>
+                  <p>
+                    <span>Phone Number: </span>
+                    {props.isDoctor
+                      ? data.Doctor_phoneNumber
+                      : data.Patient_phoneNumber}
+                  </p>
+                  <p>
+                    <span>Address: </span>
+                    {props.isDoctor
+                      ? data.Doctor_address
+                      : data.Patient_address}
+                  </p>
+
+                  {props.isDoctor ? (
+                    <>
+                      <p>
+                        <span>Work Place: </span>
+                        {data.Clinic_address}
+                      </p>
+                      <p>
+                        <span>Specialty: </span>
+                        {data.Specialization_name}
+                      </p>
+                    </>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
 
@@ -194,172 +429,174 @@ BOOKING TABLE
                     <th className="p-2 text-center">Status</th>
                     <th className="p-2 text-center ">
                       {' '}
-                      <p className="w-20"></p>
+                      <p className="w-16"></p>
                     </th>
                     <th className="p-2 text-center ">
                       {' '}
-                      <p className="w-20"></p>
+                      <p className="w-16"></p>
                     </th>
                   </tr>
-                  {book.map((data, index) => (
-                    <>
-                      <tr className="p-10">
-                        <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
-                          {data.Clinic_name}
-                        </td>
-                        <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
-                          {data.Patient_lastName} {data.Patient_firstName}
-                        </td>
-                        <td className="w-max p-2">{data.Clinic_address}</td>
-                        <td className="w-max p-2">
-                          {data.time} {data.date}
-                        </td>
-                        <td
-                          className={
-                            data.StatusId === 7
-                              ? 'bg-red-500 rounded-2xl text-center text-white'
-                              : data.StatusId === 6
-                              ? 'bg-green-500 rounded-2xl text-center text-white'
-                              : data.StatusId === 5
-                              ? 'bg-blue-500 rounded-2xl text-center text-white'
-                              : 'bg-yellow-500 rounded-2xl text-center text-white'
+                  {book.map((data, index) =>
+                    data.StatusId === 7 ? null : data.StatusId === 6 ? null : (
+                      <>
+                        <tr className="p-10">
+                          <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
+                            {data.Clinic_name}
+                          </td>
+                          <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
+                            {data.Patient_lastName} {data.Patient_firstName}
+                          </td>
+                          <td className="w-max p-2">{data.Clinic_address}</td>
+                          <td className="w-max p-2">
+                            {data.time} {data.date}
+                          </td>
+                          <td
+                            className={
+                              data.StatusId === 7
+                                ? 'bg-red-500 rounded-2xl text-center text-white'
+                                : data.StatusId === 6
+                                ? 'bg-green-500 rounded-2xl text-center text-white'
+                                : data.StatusId === 5
+                                ? 'bg-blue-500 rounded-2xl text-center text-white'
+                                : 'bg-yellow-500 rounded-2xl text-center text-white'
+                            }
+                          >
+                            {data.status}
+                          </td>
+                          <td className="h-full">
+                            {data.StatusId === 4 ? (
+                              <div
+                                className="cursor-pointer bg-blue-500 border-blue-500 hover:bg-white border-2 hover:text-blue-500 rounded-2xl text-center h-full p-2 text-white w-full"
+                                onClick={() => handleConfirm(data)}
+                              >
+                                Confirm
+                              </div>
+                            ) : data.StatusId === 5 ? (
+                              <button
+                                className="cursor-pointer bg-green-500 hover:bg-white border-2 hover:text-green-500 border-green-500 rounded-2xl text-center w-full text-white p-2 h-full"
+                                onClick={() => {
+                                  console.log(data.StatusId);
+                                  setCollapse2(index);
+                                  setCollapse(-1);
+                                }}
+                              >
+                                Done
+                              </button>
+                            ) : null}
+                          </td>
+                          <td>
+                            {data.StatusId !== 7 && data.StatusId !== 6 ? (
+                              <button
+                                className="bg-red-500 rounded-2xl text-center hover:bg-white hover:text-red-500 border-red-500 border-2 text-white cursor-pointer w-full p-2 h-full "
+                                onClick={() => {
+                                  console.log(data.StatusId);
+                                  setCollapse(index);
+                                  setCollapse2(-1);
+                                }}
+                              >
+                                {' '}
+                                Cancel
+                              </button>
+                            ) : null}
+                          </td>
+                        </tr>
+                        {/* CANCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
+                        <tr
+                          onBlur={() =>
+                            setTimeout(() => {
+                              setCollapse(-1);
+                            }, 150)
                           }
                         >
-                          {data.status}
-                        </td>
-                        <td className="h-full">
-                          {data.StatusId === 4 ? (
-                            <div
-                              className="cursor-pointer bg-blue-500 rounded-2xl text-center text-white w-fit"
-                              onClick={() => handleConfirm(data)}
-                            >
-                              Confirm
-                            </div>
-                          ) : data.StatusId === 5 ? (
-                            <div
-                              className="cursor-pointer bg-green-500 rounded-2xl text-center text-white h-full"
-                              onClick={() => {
-                                console.log(data.StatusId);
-                                setCollapse2(index);
-                                setCollapse(-1);
-                              }}
-                            >
-                              Done
-                            </div>
-                          ) : null}
-                        </td>
-                        <td>
-                          {data.StatusId !== 7 && data.StatusId !== 6 ? (
-                            <button
-                              className="bg-red-500 rounded-2xl text-center text-white cursor-pointer"
-                              onClick={() => {
-                                console.log(data.StatusId);
-                                setCollapse(index);
-                                setCollapse2(-1);
-                              }}
-                            >
-                              {' '}
-                              Cancel
-                            </button>
-                          ) : null}
-                        </td>
-                      </tr>
-                      {/* CANCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
-                      <tr
-                        onBlur={() =>
-                          setTimeout(() => {
-                            setCollapse(-1);
-                          }, 150)
-                        }
-                      >
-                        <td
-                          className={
-                            collapse === index
-                              ? ' transition-all ease-in-out w-full align-top h-32'
-                              : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
-                          }
-                          colSpan={7}
-                        >
-                          <textarea
-                            placeholder="Cancel description"
-                            onChange={(e) => setDesc(e.target.value)}
-                            value={desc}
+                          <td
                             className={
                               collapse === index
-                                ? 'transition-all ease-in-out w-full resize-none'
-                                : ' transition-all ease-in-out w-full hidden'
+                                ? ' transition-all ease-in-out w-full align-top h-32'
+                                : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
                             }
-                            rows="5"
-                          ></textarea>
-                          <div className="mx-auto w-fit">
-                            <button
+                            colSpan={7}
+                          >
+                            <textarea
+                              placeholder="Cancel description"
+                              onChange={(e) => setDesc(e.target.value)}
+                              value={desc}
                               className={
                                 collapse === index
-                                  ? 'transition-all ease-in-out w-max p-1 px-3 rounded-xl bg-indigo-300 hover:bg-indigo-500'
-                                  : ' transition-all ease-in-out  w-max hidden'
+                                  ? 'transition-all ease-in-out w-full resize-none bg-slate-50 shadow-inner m-1'
+                                  : ' transition-all ease-in-out w-full hidden'
                               }
-                              onClick={() => {
-                                setCollapse(-1);
-                                console.log('handled before get out');
-                                handleCancel(data);
-                              }}
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      {/* CANCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
-                      {/*DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
-                      {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
-                      <tr
-                        onBlur={() =>
-                          setTimeout(() => {
-                            setCollapse2(-1);
-                          }, 150)
-                        }
-                      >
-                        <td
-                          className={
-                            collapse2 === index
-                              ? ' transition-all ease-in-out w-full align-top h-32'
-                              : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
+                              rows="5"
+                            ></textarea>
+                            <div className="mx-auto w-fit">
+                              <button
+                                className={
+                                  collapse === index
+                                    ? 'transition-all ease-in-out w-max p-1 px-6 rounded-xl bg-indigo-300 hover:bg-indigo-500 mt-2'
+                                    : ' transition-all ease-in-out  w-max hidden'
+                                }
+                                onClick={() => {
+                                  setCollapse(-1);
+                                  console.log('handled before get out');
+                                  handleCancel(data);
+                                }}
+                              >
+                                Save
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {/* CANCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
+                        {/*DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                        {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
+                        <tr
+                          onBlur={() =>
+                            setTimeout(() => {
+                              setCollapse2(-1);
+                            }, 150)
                           }
-                          colSpan={7}
                         >
-                          <textarea
-                            placeholder="Done description"
-                            onChange={(e) => setDesc(e.target.value)}
-                            value={desc}
+                          <td
                             className={
                               collapse2 === index
-                                ? 'transition-all ease-in-out w-full resize-none'
-                                : ' transition-all ease-in-out w-full hidden'
+                                ? ' transition-all ease-in-out w-full align-top h-32'
+                                : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
                             }
-                            rows="5"
-                          ></textarea>
-                          <div className="mx-auto w-fit">
-                            <button
+                            colSpan={7}
+                          >
+                            <textarea
+                              placeholder="Done description"
+                              onChange={(e) => setDesc(e.target.value)}
+                              value={desc}
                               className={
                                 collapse2 === index
-                                  ? 'transition-all ease-in-out w-max p-1 px-3 rounded-xl bg-indigo-300 hover:bg-indigo-500'
-                                  : ' transition-all ease-in-out  w-max hidden'
+                                  ? 'transition-all ease-in-out w-full resize-none bg-slate-50 shadow-inner m-1'
+                                  : ' transition-all ease-in-out w-full hidden'
                               }
-                              onClick={() => {
-                                setCollapse2(-1);
-                                console.log('handled before get out');
-                                handleDone(data);
-                              }}
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      {/*DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
-                      {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
-                    </>
-                  ))}
+                              rows="5"
+                            ></textarea>
+                            <div className="mx-auto w-fit">
+                              <button
+                                className={
+                                  collapse2 === index
+                                    ? 'transition-all ease-in-out w-max p-1 px-6 rounded-xl bg-indigo-300 hover:bg-indigo-500 mt-2'
+                                    : ' transition-all ease-in-out  w-max hidden'
+                                }
+                                onClick={() => {
+                                  setCollapse2(-1);
+                                  console.log('handled before get out');
+                                  handleDone(data);
+                                }}
+                              >
+                                Save
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {/*DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                        {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
+                      </>
+                    )
+                  )}
                 </table>
               )
             ) : book.message ? (
@@ -378,93 +615,99 @@ BOOKING TABLE
                   <th className="p-2">Address</th>
                   <th className="p-2">Date</th>
                   <th className="p-2 text-center">Status</th>
+                  <th className="p-2 text-center">
+                    <p className="w-24 mx-auto text-center">Action</p>
+                  </th>
                 </tr>
-                {book.map((data, index) => (
-                  <>
-                    <tr className="p-10">
-                      <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
-                        {data.Clinic_name}
-                      </td>
-                      <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
-                        {data.Doctor_firstName} {data.Doctor_lastName}
-                      </td>
-                      <td className="w-max p-2">{data.Clinic_address}</td>
-                      <td className="w-max p-2">
-                        {data.time} {data.date}
-                      </td>
-                      <td
-                        className={
-                          data.StatusId === 7
-                            ? 'bg-red-500 rounded-2xl text-center text-white'
-                            : data.StatusId === 6
-                            ? 'bg-green-500 rounded-2xl text-center text-white'
-                            : data.StatusId === 5
-                            ? 'bg-blue-500 rounded-2xl text-center text-white'
-                            : 'bg-yellow-500 rounded-2xl text-center text-white'
+                {book.map((data, index) =>
+                  data.StatusId === 7 ? null : data.StatusId === 6 ? null : (
+                    <>
+                      <tr className="p-10">
+                        <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
+                          {data.Clinic_name}
+                        </td>
+                        <td className="w-max p-2 border-collapse border-spacing-y-px border-gray-950">
+                          {data.Doctor_firstName} {data.Doctor_lastName}
+                        </td>
+                        <td className="w-max p-2">{data.Clinic_address}</td>
+                        <td className="w-max p-2">
+                          {data.time} {data.date}
+                        </td>
+                        <td
+                          className={
+                            data.StatusId === 7
+                              ? 'bg-red-500 rounded-2xl text-center text-white'
+                              : data.StatusId === 6
+                              ? 'bg-green-500 rounded-2xl text-center text-white'
+                              : data.StatusId === 5
+                              ? 'bg-blue-500 rounded-2xl text-center text-white'
+                              : 'bg-yellow-500 rounded-2xl text-center text-white'
+                          }
+                        >
+                          {data.status}
+                        </td>
+                        <td>
+                          {data.StatusId !== 7 && data.StatusId !== 6 ? (
+                            <button
+                              className="text-center hover:bg-white border-red-500 border-2 rounded-2xl w-full h-full p-2 mx-2 hover:text-red-500 text-white bg-red-500"
+                              onClick={() => {
+                                console.log(data.StatusId);
+                                setCollapse(index);
+                              }}
+                            >
+                              {' '}
+                              Cancel
+                            </button>
+                          ) : null}
+                        </td>
+                      </tr>
+                      <tr
+                        onBlur={() =>
+                          setTimeout(() => {
+                            setCollapse(-1);
+                          }, 150)
                         }
                       >
-                        {data.status}
-                      </td>
-                      <td>
-                        {data.StatusId !== 7 && data.StatusId !== 6 ? (
-                          <button
-                            onClick={() => {
-                              console.log(data.StatusId);
-                              setCollapse(index);
-                            }}
-                          >
-                            {' '}
-                            Cancel
-                          </button>
-                        ) : null}
-                      </td>
-                    </tr>
-                    <tr
-                      onBlur={() =>
-                        setTimeout(() => {
-                          setCollapse(-1);
-                        }, 150)
-                      }
-                    >
-                      <td
-                        className={
-                          collapse === index
-                            ? ' transition-all ease-in-out w-full align-top h-32'
-                            : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
-                        }
-                        colSpan={5}
-                      >
-                        <textarea
-                          placeholder="Cancel description"
-                          onChange={(e) => setDesc(e.target.value)}
-                          value={desc}
+                        <td
                           className={
                             collapse === index
-                              ? 'transition-all ease-in-out w-full resize-none'
-                              : ' transition-all ease-in-out w-full hidden'
+                              ? ' transition-all ease-in-out w-full align-top h-32'
+                              : ' transition-all ease-in-out w-full align-top h-0 overflow-auto'
                           }
-                          rows="5"
-                        ></textarea>
-                        <div className="mx-auto w-fit">
-                          <button
+                          colSpan={5}
+                        >
+                          <textarea
+                            placeholder="Cancel description"
+                            onChange={(e) => setDesc(e.target.value)}
+                            value={desc}
                             className={
                               collapse === index
-                                ? 'transition-all ease-in-out w-max p-1 px-3 rounded-xl bg-indigo-300 hover:bg-indigo-500'
-                                : ' transition-all ease-in-out  w-max hidden'
+                                ? 'transition-all ease-in-out w-full resize-none'
+                                : ' transition-all ease-in-out w-full hidden'
                             }
-                            onClick={() => {
-                              setCollapse(-1);
-                              console.log('handled before get out');
-                              handleCancel(data);
-                            }}
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </>
-                ))}
+                            rows="5"
+                          ></textarea>
+                          <div className="mx-auto w-fit">
+                            <button
+                              className={
+                                collapse === index
+                                  ? 'transition-all ease-in-out w-max p-1 px-6 rounded-xl bg-indigo-300 hover:bg-indigo-500 mx-2'
+                                  : ' transition-all ease-in-out  w-max hidden'
+                              }
+                              onClick={() => {
+                                setCollapse(-1);
+                                console.log('handled before get out');
+                                handleCancel(data);
+                              }}
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </>
+                  )
+                )}
               </table>
             )}
           </div>
@@ -577,7 +820,9 @@ HISTORY TABLE
                   <th className="p-2">Clinic</th>
                   <th className="p-2">Doctor</th>
                   <th className="p-2">Date</th>
-                  <th className="p-2 text-center">Status</th>
+                  <th className="p-2 text-center w-max">
+                    <p className="">Status</p>
+                  </th>
                   <th className="p-2 text-center"></th>
                 </tr>
                 {history.map((data, index) => (
@@ -595,8 +840,8 @@ HISTORY TABLE
                       <td
                         className={
                           data.status === 'Canceled'
-                            ? 'bg-red-500 rounded-2xl text-center text-white w-24'
-                            : 'bg-green-500 rounded-2xl text-center text-white w-24'
+                            ? 'bg-red-500 rounded-2xl text-center text-white w-max'
+                            : 'bg-green-500 rounded-2xl text-center text-white w-max'
                         }
                       >
                         {data.status}
@@ -604,7 +849,7 @@ HISTORY TABLE
                       <td className=" text-center cursor-pointer ">
                         {' '}
                         <p
-                          className="underline text-gray-600 cursor-pointer"
+                          className="underline text-gray-600 w-max mx-auto cursor-pointer"
                           onClick={() => {
                             if (detail === -1) setDetail(index);
                             else setDetail(-1);

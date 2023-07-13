@@ -25,7 +25,7 @@ export const Landing = () => {
             sapien. Suspendisse cursus faucibus finibus.
           </p>
           <div className="inline bg-red-400 rounded-3xl font-medium border-2 border-red-400  p-2 px-5 mr-3 hover:border-2 hover:border-red-400 hover:bg-white hover:text-red-500 text-white">
-            <button onClick={() => navigate('/about-us')}>Read more</button>
+            <button onClick={() => navigate('/about-us')}>Đọc thêm</button>
           </div>
         </div>
         <div className=" top-1/3 absolute bg-white opacity-90">
@@ -46,6 +46,10 @@ export const Landing = () => {
               nunc libero porttitor tellus, vel pharetra metus dolor.
             </p>
           </div>
+        </div>
+        <div className="absolute top-2/3 w-screen h-screen bg-white p-20 ">
+          {' '}
+          <p></p>
         </div>
       </div>
     </>

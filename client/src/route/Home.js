@@ -28,7 +28,14 @@ const Home = (props) => {
         setIsLoading(true);
         setErr(e.message);
       });
-    navigate('/home');
+    if (
+      window.location.pathname === '/about-us' ||
+      window.location.pathname === '/booking' ||
+      window.location.pathname === 'user/profile'
+    ) {
+    } else {
+      navigate('/home');
+    }
   }, []); //if cant fetch specialization data //literally every page isnt in route is notfound page lol
   useEffect(() => {
     if (data) {
