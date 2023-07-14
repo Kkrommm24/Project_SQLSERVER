@@ -122,34 +122,29 @@ const LoginSignIn = (props) => {
             <h1 className="text-2xl pb-6">Term & Privacy Policy</h1>
             <div className="overflow-auto h-3/4">
               {' '}
-              The Hello lorem ispun. At vero eos et accusamus et iusto odio
-              dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-              atque corrupti quos dolores et quas molestias excepturi sint
-              occaecati cupiditate non provident, similique sunt in culpa qui
-              officia deserunt mollitia animi, id est laborum et dolorum fuga.
-              Et harum quidem rerum facilis est et expedita distinctio. Nam
-              libero tempore, cum soluta nobis est eligendi optio cumque nihil
-              impedit quo minus id quod maxime placeat facere possimus, omnis
-              voluptas assumenda est, omnis dolor repellendus. Temporibus autem
-              quibusdam et aut officiis debitis aut rerum necessitatibus saepe
-              eveniet ut et voluptates repudiandae sint et molestiae non
-              recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut
-              aut reiciendis voluptatibus maiores alias consequatur aut
-              perferendis doloribus asperiores repellat. At vero eos et
-              accusamus et iusto odio dignissimos ducimus qui blanditiis
-              praesentium voluptatum deleniti atque corrupti quos dolores et
-              quas molestias excepturi sint occaecati cupiditate non provident,
-              similique sunt in culpa qui officia deserunt mollitia animi, id
-              est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-              expedita distinctio. Nam libero tempore, cum soluta nobis est
-              eligendi optio cumque nihil impedit quo minus id quod maxime
-              placeat facere possimus, omnis voluptas assumenda est, omnis dolor
-              repellendus. Temporibus autem quibusdam et aut officiis debitis
-              aut rerum necessitatibus saepe eveniet ut et voluptates
-              repudiandae sint et molestiae non recusandae. Itaque earum rerum
-              hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus
-              maiores alias consequatur aut perferendis doloribus asperiores
-              repellat
+              <h1>Chính sách Điều khoản và Quyền riêng tư</h1>
+
+                <h2>1. Điều khoản sử dụng</h2>
+                <p>
+                  Chào mừng bạn đến với trang web của chúng tôi. Bằng cách truy cập và sử dụng trang web này, bạn đồng ý tuân thủ các điều khoản và điều kiện sau đây:
+                  <br /><br />
+                  - Bạn cam kết không sử dụng trang web này vào mục đích bất hợp pháp.
+                  <br /><br />
+                  - Bạn đồng ý không gây cản trở hoặc làm hỏng trang web, hệ thống hoặc dữ liệu của chúng tôi.
+                  <br /><br />
+                  - Chúng tôi không chịu trách nhiệm đối với bất kỳ thiệt hại nào phát sinh từ việc sử dụng trang web này.
+                </p>
+
+                <h2>2. Quyền riêng tư</h2>
+                <p>
+                  Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo vệ thông tin cá nhân của bạn theo chính sách sau đây:
+                  <br /><br />
+                  - Chúng tôi chỉ thu thập thông tin cá nhân cần thiết để cung cấp dịch vụ cho bạn.
+                  <br /><br />
+                  - Chúng tôi không tiết lộ thông tin cá nhân của bạn cho bên thứ ba mà không có sự đồng ý của bạn.
+                  <br /><br />
+                  - Chúng tôi áp dụng các biện pháp bảo mật để bảo vệ thông tin cá nhân của bạn khỏi mất mát, lạm dụng hoặc truy cập trái phép.
+                </p>
             </div>
           </div>
         </div>
