@@ -52,7 +52,7 @@ const LoginSignIn = (props) => {
         console.log(logErr);
       }
     } catch (e) {
-      setLogErr(e.message);
+      setLogErr('Missing required parameters');
       console.log(e);
     }
 

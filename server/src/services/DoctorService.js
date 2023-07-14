@@ -152,6 +152,9 @@ let updateDoctorData = (data) => {
         doctor.Doctor_firstName = data.firstName;
         doctor.Doctor_lastName = data.lastName;
         doctor.Doctor_address = data.address;
+        doctor.Doctor_gender = data.gender;
+        doctor.Doctor_phoneNumber = data.phoneNumber;
+        doctor.Doctor_age = data.age;
         console.log(doctor);
         await doctor.save();
         resolve({
