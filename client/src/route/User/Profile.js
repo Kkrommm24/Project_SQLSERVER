@@ -260,12 +260,15 @@ const Profile = (props) => {
                       }
                       disabled={props.isDoctor ? true : false}
                       onChange={(e) =>
-                        setEditData({ ...editData, gender: parseInt( e.target.value )})
+                        setEditData({
+                          ...editData,
+                          gender: parseInt(e.target.value),
+                        })
                       }
                     >
-                      <option value={1}> Male</option>
-                      <option value={2}>Female</option>
-                      <option value={3}>Others</option>
+                      <option value="1"> Male</option>
+                      <option value="2">Female</option>
+                      <option value="3">Others</option>
                     </select>
                   </p>
                   <p>

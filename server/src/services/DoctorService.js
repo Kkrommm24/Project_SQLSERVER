@@ -152,6 +152,12 @@ let updateDoctorData = (data) => {
         doctor.Doctor_firstName = data.firstName;
         doctor.Doctor_lastName = data.lastName;
         doctor.Doctor_address = data.address;
+<<<<<<< HEAD
+=======
+        doctor.Doctor_gender = data.gender;
+        doctor.Doctor_phoneNumber = data.phoneNumber;
+        doctor.Doctor_age = data.age;
+>>>>>>> 5c571d5f1451889fe326c872eb11412c3309202a
         console.log(doctor);
         await doctor.save();
         resolve({
