@@ -30,10 +30,9 @@ let initWebRoutes = (app) => {
   router.get('/delete-crud', homeController.deleteCRUD); //delete
   router.post('/api/login', LoginController.handleLogin); //login
   router.post('/api/log-out', async (req, res) => {
-    console.log('before', req.session);
     await delete req.session.userId;
     await delete req.session.roleId;
-    console.log('after', res.session);
+
     res.send('logged out');
   });
   //***************PATIENT***************
@@ -115,7 +114,6 @@ let initWebRoutes = (app) => {
   router.get('/api/get-session', async (req, res) => {
     let response = 'userId' in req.session ? req.session.userId : 'failed';
     let responseStr = 'userId' in req.session ? response.toString() : response;
-    console.log(responseStr);
     res.send(responseStr);
   });
 
@@ -136,7 +134,7 @@ let initWebRoutes = (app) => {
         'Patient_phoneNumber',
       ],
     });
-    console.log(data);
+
     res.send({ data: data });
   });
   router.get('/api/profile/doctor/:id', async (req, res) => {
@@ -185,7 +183,7 @@ let initWebRoutes = (app) => {
         ' ORDER by h.StatusId asc , bookings.id asc',
       { type: db.sequelize.QueryTypes.SELECT }
     );
-    console.log(bookData);
+
     if (bookData.length === 0)
       res.send({ data: { message: 'No booking records found!' } });
     res.send({ data: bookData });
@@ -199,7 +197,7 @@ let initWebRoutes = (app) => {
         ' ORDER by h.StatusId asc , bookings.id asc',
       { type: db.sequelize.QueryTypes.SELECT }
     );
-    console.log('doctor book:', bookData);
+
     if (bookData.length === 0) {
       res.send({ data: { message: 'No booking records found!' } });
     } else res.send({ data: bookData });

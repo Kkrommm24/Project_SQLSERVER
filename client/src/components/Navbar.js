@@ -26,7 +26,7 @@ export const Navbar = (props) => {
         onClick={() => navigate('/home')}
         className="text-black hover:text-indigo-500 font-medium pl-6 p-3 cursor-pointer"
       >
-        Home
+        Trang chủ
       </div>
       <div
         className="w-fit flex items-center  cursor-pointer py-3 relative"
@@ -34,7 +34,7 @@ export const Navbar = (props) => {
         onMouseOut={() => setNavDropDown(false)}
       >
         <div className="text-black hover:text-indigo-500 font-medium p-3 h-full ">
-          Specialization
+          Chuyên Khoa
         </div>
         <img
           alt="drop down"
@@ -55,17 +55,18 @@ export const Navbar = (props) => {
           ))}
         </div>
       </div>
-
-      <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-        About Us
-      </div>
+      <Link to="/about-us">
+        <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
+          Về chúng tôi
+        </div>
+      </Link>
       {!props.props.isDoctor ? (
         <Link
           to={props.props.isPatient ? '/booking' : '/login-signin'}
           state={{ state: false }}
         >
           <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-            Booking Now
+            Đặt khám ngay
           </div>
         </Link>
       ) : (
@@ -80,7 +81,7 @@ export const Navbar = (props) => {
               onMouseOut={() => setProfile(false)}
             >
               <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative">
-                Hi,Dr. {props.props.userInfo.Doctor_firstName}
+                Xin chào,Dr. {props.props.userInfo.Doctor_firstName}
               </div>
 
               <div
@@ -92,18 +93,18 @@ export const Navbar = (props) => {
               >
                 <Link to="/user/profile">
                   <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                    Your Profile
+                    Hồ sơ của bạn
                   </div>
                 </Link>
                 <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                  Some options
+                  Cài đặt
                 </div>
                 <div className="h-px w-full bg-gray-300 float-right"></div>
                 <div
                   className="w-full hover:text-red-500 cursor-pointer text-right"
                   onClick={() => handleLogout()}
                 >
-                  Log Out
+                  Đăng xuất
                 </div>
               </div>
             </div>
@@ -116,7 +117,7 @@ export const Navbar = (props) => {
               onMouseOut={() => setProfile(false)}
             >
               <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative">
-                Hi, {props.props.userInfo.Patient_firstName}
+                Xin chào, {props.props.userInfo.Patient_firstName}
               </div>
 
               <div
@@ -128,18 +129,18 @@ export const Navbar = (props) => {
               >
                 <Link to="/user/profile">
                   <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                    Your Profile
+                    Hồ sơ của bạn
                   </div>
                 </Link>
                 <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                  Some options
+                  Cài đặt
                 </div>
                 <div className="h-px w-full bg-gray-300 float-right"></div>
                 <div
                   className="w-full hover:text-red-500 cursor-pointer text-right"
                   onClick={() => handleLogout()}
                 >
-                  Log Out
+                  Đăng xuất
                 </div>
               </div>
             </div>
@@ -148,12 +149,12 @@ export const Navbar = (props) => {
           <>
             <Link to="/login-signin" state={{ state: false }}>
               <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-                Login
+                Đăng nhập
               </div>
             </Link>
             <Link to="/login-signin" state={{ state: true }}>
               <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
-                Sign in
+                Đăng ký
               </div>
             </Link>
           </>
