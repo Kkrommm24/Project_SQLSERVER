@@ -28,6 +28,7 @@ const Book = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [isEnabled, setEnabled] = useState(true);
   const [doctorList, setDoctorList] = useState({});
+  const [currentDate, setCurrentDate] = useState('');
   const [date, setDate] = useState({
     day: undefined,
     time: 0,
@@ -36,6 +37,7 @@ const Book = (props) => {
     clinic: 0,
     specialization: 0,
   });
+  const [isClicked, setClicked] = useState(-1);
   const handleChange = async (e) => {
     e.preventDefault();
     if (e.target.name === 'clinic') {
@@ -71,6 +73,17 @@ const Book = (props) => {
       if (doctorData.doctor.length === 0) {
         setEnabled(true);
       } else setEnabled(false);
+      const todayIs = () => {
+        const now = new Date();
+        var today = now.getFullYear() + '-';
+        if (now.getMonth() < 10) today += '0' + (now.getMonth() + 1) + '-';
+        else today += now.getMonth() + 1 + '-';
+        if (now.getDate() < 10) today += '0' + now.getDate();
+        else today += now.getDate();
+        console.log(today);
+        return today;
+      };
+      setCurrentDate(todayIs);
       //setDoctorList(doctorData);
       //console.log(doctorList);
       return doctorData;
@@ -148,80 +161,130 @@ const Book = (props) => {
                 <input
                   className="p-2 shadow-inner bg-slate-50 m-2 rounded-md"
                   type="date"
-                  onChange={(e) => setDate({ ...date, day: e.target.value })}
+                  onChange={(e) => {
+                    if (e.target.value < currentDate) {
+                      alert("You're choosing past date");
+                      e.target.value = '';
+                    } else setDate({ ...date, day: e.target.value });
+                  }}
                 />
               </form>
               <div className="w-max">
+                {/* TIME ADJUSTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT */}
+                {/* TIME ADJUSTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT */}
+                {/* TIME ADJUSTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT */}
+                {/* TIME ADJUSTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT */}
+
                 <div className="grid grid-cols-4 gap-2 rounded-md p-3 justify-center items-center w-max">
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={8}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 8
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={8}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     8:00 AM - 9:00 AM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={9}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 9
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={9}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     9:00 AM - 10:00 AM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={10}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 10
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={10}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     10:00 AM - 11:00 AM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={11}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 11
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={11}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     11:00 AM - 12:00 PM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={12}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 12
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={12}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     1:00 PM - 2:00 PM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={13}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 13
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={13}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     2:00 PM - 3:00 PM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
+                    className={
+                      isClicked === 14
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                    }
                     value={14}
                     onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
                       setDate({ ...date, time: parseInt(e.target.value) });
                     }}
                   >
                     3:00 PM - 4:00 PM
                   </button>
                   <button
-                    className="p-1 px-2 border- text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100"
-                    value={15}
-                    onClick={(e) =>
-                      setDate({ ...date, time: parseInt(e.target.value) })
+                    className={
+                      isClicked === 15
+                        ? 'border-2 border-black p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
+                        : 'border-2 border-white p-1 px-2 text-black active:bg-slate-200 rounded active:translate-x-0.5 active:translate-y-0.5 bg-slate-100'
                     }
+                    value={15}
+                    onClick={(e) => {
+                      setClicked(parseInt(e.target.value));
+                      setDate({ ...date, time: parseInt(e.target.value) });
+                    }}
                   >
                     4:00 PM - 5:00 PM
                   </button>
