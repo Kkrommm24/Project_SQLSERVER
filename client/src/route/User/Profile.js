@@ -263,9 +263,9 @@ const Profile = (props) => {
                         setEditData({ ...editData, gender: e.target.value })
                       }
                     >
-                      <option> Male</option>
-                      <option>Female</option>
-                      <option>Others</option>
+                      <option value="1"> Male</option>
+                      <option value="2">Female</option>
+                      <option value="3">Others</option>
                     </select>
                   </p>
                   <p>
