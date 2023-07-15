@@ -186,7 +186,9 @@ let initWebRoutes = (app) => {
 
     if (bookData.length === 0)
       res.send({ data: { message: 'No booking records found!' } });
-    res.send({ data: bookData });
+    else {
+      res.send({ data: bookData });
+    }
   });
 
   router.get('/api/booking/doctor/:id', async (req, res) => {
@@ -211,7 +213,7 @@ let initWebRoutes = (app) => {
     );
     if (history.length == 0)
       res.send({ data: { message: 'No histories found!' } });
-    res.send({ data: history });
+    else res.send({ data: history });
   });
 
   router.get('/api/history/doctor/:id', async (req, res) => {
