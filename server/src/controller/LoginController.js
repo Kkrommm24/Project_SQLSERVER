@@ -28,6 +28,9 @@ let handleLogin = async (req, res) => {
         userId = loginData.doctor.id;
         console.log('Doctor ID:', userId);
       }
+    } else if(role === 'ADMIN'){
+      userId = loginData.login;
+      console.log('ADMIN ID: ', userId);
     }
     // Lưu ID vào session
     req.session.userId = userId;

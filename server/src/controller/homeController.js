@@ -1,64 +1,79 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
-let getHomePage = async (req, res) => {
-  try {
-    let data = await db.Patient.findAll();
 
-    return res.render('homepage.ejs', {
-      data: JSON.stringify(data),
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-let getAboutPage = (req, res) => {
-  return res.render('test/about.ejs');
-};
-let getCRUD = (req, res) => {
-  return res.render('crud.ejs');
-};
-let postCRUD = async (req, res) => {
-  let message = await CRUDService.createNewUser(req.body);
-  console.log(message);
-  return res.send('Created');
-};
+
 let displayGetCRUD = async (req, res) => {
-  let data = await CRUDService.getAllPatient();
+  let data_patient = await CRUDService.getAllPatient();
+  let data_doctor = await CRUDService.getAllDoctors();
   console.log('---------------------');
-  console.log(data);
+  console.log(data_patient);
+  console.log(data_doctor);
   console.log('---------------------');
   return res.render('displayCRUD.ejs', {
-    dataTable: data,
+    patients: data_patient,
+    doctors: data_doctor,
   });
 };
 
 let getEditCRUD = async (req, res) => {
-  let PatientId = req.query.id;
-  console.log(PatientId);
-  if (PatientId) {
-    let patientData = await CRUDService.getPatientInfoById(PatientId);
-    return res.render('editCRUD.ejs', {
-      patient: patientData, //x<-y
-    });
-  } else {
-    return res.send('Patient not found!');
+  let id = req.body.id;
+  let role = req.body.roleId
+  if(role === 'Patient'){
+    if (id) {
+      // let patientData = await CRUDService.getPatientInfoById(id);
+      return res.render('editCRUD.ejs',{
+        patient: patientData //x<-y
+      });
+      await CRUDService.updatePatientData(id);
+      return res.send('Edit success');
+    } else {
+      return res.send('Patient not found');
+    }
   }
+  // if(role === 'Doctor'){
+  //   if (id) {
+  //     let doctorData = await CRUDService.getDoctorInfoById(id);
+  //     return res.render('editCRUD.ejs',{
+  //       doctor: doctorData //x<-y
+  //     });
+  //     await CRUDService.updateDoctorData(id);
+  //     return res.send('Edit success');
+  //   } else {
+  //     return res.send('Doctor not found');
+  //   }
+  // }
 };
 
 let putCRUD = async (req, res) => {
-  let data = req.body;
-  let allPatients = await CRUDService.updatePatientData(data);
+  let data_patient = await CRUDService.getAllPatient();
+  let data_doctor = await CRUDService.getAllDoctors();
+  console.log('---------------------');
+  console.log(data_patient);
+  console.log(data_doctor);
+  console.log('---------------------');
   return res.render('displayCRUD.ejs', {
-    dataTable: allPatients,
+    patients: data_patient,
+    doctors: data_doctor,
   });
 };
 let deleteCRUD = async (req, res) => {
-  let id = req.query.id;
-  if (id) {
-    await CRUDService.deletePatientById(id);
-    return res.send('Delete succeed');
-  } else {
-    return res.send('User not found');
+  let id = req.body.id;
+  let role = req.body.roleId
+  if(role === 'Patient'){
+    if (id) {
+      await CRUDService.deletePatientById(id);
+      return res.send('Delete success');
+    } else {
+      return res.send('Patient not found');
+    }
+  }
+  if(role === 'Doctor'){
+    if (id) {
+      await CRUDService.deleteDoctorById(id);
+      return res.send('Delete success');
+    } else {
+      return res.send('Doctor not found');
+    }
   }
 };
 
@@ -86,10 +101,7 @@ let getSpecializationToHome = async (req, res) => {
 };
 
 module.exports = {
-  getHomePage: getHomePage,
-  getAboutPage: getAboutPage,
-  getCRUD: getCRUD,
-  postCRUD: postCRUD,
+
   displayGetCRUD: displayGetCRUD,
   getEditCRUD: getEditCRUD,
   putCRUD: putCRUD,

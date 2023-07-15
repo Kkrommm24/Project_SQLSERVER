@@ -17,17 +17,13 @@ let initWebRoutes = (app) => {
   //         next();
   //     else res.redirect('/api/login');
   // }
-  router.get('/', homeController.getHomePage);
-  router.get('/about', homeController.getAboutPage);
 
   //***************ADMIN****************
-
-  router.get('/crud', homeController.getCRUD); //render ra form create patient
-  router.post('/post-crud', homeController.postCRUD); //created
-  router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình patient
+  router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình 
   router.get('/edit-crud', homeController.getEditCRUD); //edit
   router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển
-  router.get('/delete-crud', homeController.deleteCRUD); //delete
+  router.post('/delete-crud', homeController.deleteCRUD); //delete
+
   router.post('/api/login', LoginController.handleLogin); //login
   router.post('/api/log-out', async (req, res) => {
     await delete req.session.userId;
