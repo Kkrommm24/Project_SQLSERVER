@@ -1,20 +1,23 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
 
-let getCreate = (req, res) => {
-  return res.render('crud.ejs');
+let getCreatePatient = (req, res) => {
+  return res.render('createPatient.ejs');
 }
-let postCreate = async (req, res) => {
-  let role = req.body.roleId;
-  if(role === 'Patient'){
+
+let getCreateDoctor = (req, res) => {
+  return res.render('createDoctor.ejs');
+}
+let postCreatePatient = async (req, res) => {
     let message = await CRUDService.createNewPatient(req.body);
     console.log(message)
-    return res.send('Created New Patient');
-  }else{
-    let message = await CRUDService.createNewDoctor(req.body);
-    console.log(message)
-    return res.send('Created New Doctor');
-  }
+    return res.send(message.message);
+}
+
+let postCreateDoctor = async (req, res) => {
+  let message = await CRUDService.createNewDoctor(req.body);
+  console.log(message)
+  return res.send('Created New Doctor');
 }
 
 let displayGetCRUD = async (req, res) => {
@@ -116,8 +119,10 @@ let getSpecializationToHome = async (req, res) => {
 };
 
 module.exports = {
-  getCreate: getCreate,
-  postCreate: postCreate,
+  getCreatePatient: getCreatePatient,
+  getCreateDoctor: getCreateDoctor,
+  postCreatePatient: postCreatePatient,
+  postCreateDoctor: postCreateDoctor,
   displayGetCRUD: displayGetCRUD,
   getEditCRUD: getEditCRUD,
   putCRUD: putCRUD,

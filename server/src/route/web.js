@@ -19,8 +19,10 @@ let initWebRoutes = (app) => {
   // }
 
   //***************ADMIN****************
-  router.get('/create-new-user', homeController.getCreate); //render ra form create
-  router.post('/post-create', homeController.postCreate); //created
+  router.get('/create-new-patient', homeController.getCreatePatient); //render ra form create patient
+  router.get('/create-new-doctor', homeController.getCreateDoctor); //render ra form create doctor
+  router.post('/post-create-patient', homeController.postCreatePatient); //created patient
+  router.post('/post-create-doctor', homeController.postCreateDoctor); //created patient
   router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình 
   router.get('/edit-crud', homeController.getEditCRUD); //edit
   router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển

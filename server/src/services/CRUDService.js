@@ -81,6 +81,25 @@ let createNewDoctor = (data) => {
   });
 };
 
+let checkUserEmail = (loginEmail) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let login = await db.Login.findOne({
+        attributes: ['email', 'password', 'roleId'],
+        where: { email: loginEmail },
+        raw: true,
+      });
+      if (login) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 let hashUserPassword = (password) => {
     return new Promise( async (resolve, reject) =>{
         try{
