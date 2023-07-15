@@ -17,12 +17,7 @@ export const Landing = () => {
             Love the new you
           </h1>
           <p className="pb-7">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum.
-            Ut ac ligula sapien. Suspendisse cursus faucibus finibus.Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem
-            maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula
-            sapien. Suspendisse cursus faucibus finibus.
+          Phòng khám Hồng Phương tự hào là điểm đến uy tín trong lĩnh vực chăm sóc sức khỏe tại địa phương. Với đội ngũ bác sĩ giàu kinh nghiệm và đầy đủ trang thiết bị hiện đại, chúng tôi cam kết mang đến cho bạn những dịch vụ y tế chất lượng và tận tâm nhất.
           </p>
           <div className="inline bg-red-400 rounded-3xl font-medium border-2 border-red-400  p-2 px-5 mr-3 hover:border-2 hover:border-red-400 hover:bg-white hover:text-red-500 text-white">
             <button onClick={() => navigate('/about-us')}>Đọc thêm</button>
@@ -33,17 +28,15 @@ export const Landing = () => {
             <h1 className=" text-gray-700">This is Hong Phuong</h1>
             <h1 className="  font-light text-5xl">Welcome to our Clinic</h1>
             <p className="m-3">
-              Integer aliquet congue libero, eu gravida odio ultrices ut. Etiam
-              ac erat ut enim maximus accumsan vel ac nisl. Duis feugiat
-              bibendum orci, non elementum urna vestibulum in. Nulla facilisi.
-              Nulla egestas vel lacus sed interdum.
+            Hong Phuong Clinic takes pride in being a reputable destination for healthcare services in the local area. 
+            With an experienced team of doctors and state-of-the-art facilities,
+             we are committed to providing you with the highest quality and most compassionate medical care.
             </p>
             <p className="m-3">
-              Sed mollis, orci elementum eleifend tempor, nunc libero porttitor
-              tellus, vel pharetra metus dolor. Duis feugiat bibendum orci, non
-              elementum urna vestibulum in. Nulla facilisi. Nulla egestas vel
-              lacus sed interdum. Sed mollis, orci elementum eleifend tempor,
-              nunc libero porttitor tellus, vel pharetra metus dolor.
+            Our clinic offers a wide range of medical services, 
+            from respiratory and ENT treatments to advanced aesthetic procedures, 
+            aimed at boosting your confidence and well-being.
+            Come to Hong Phuong Clinic, where we cherish and respect every patient. We believe that our dedicated and caring approach to each treatment will ensure your peace of mind and self-love.
             </p>
           </div>
         </div>

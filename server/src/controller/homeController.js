@@ -17,7 +17,7 @@ let postCreatePatient = async (req, res) => {
 let postCreateDoctor = async (req, res) => {
   let message = await CRUDService.createNewDoctor(req.body);
   console.log(message)
-  return res.send('Created New Doctor');
+  return res.send(message.message);
 }
 
 let displayGetCRUD = async (req, res) => {
