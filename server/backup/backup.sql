@@ -18,6 +18,8 @@
 --
 -- Table structure for table `allcodes`
 --
+CREATE DATABASE QLPK;
+USE QLPK;
 
 DROP TABLE IF EXISTS `allcodes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
