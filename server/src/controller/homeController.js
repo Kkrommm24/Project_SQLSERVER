@@ -1,6 +1,21 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
 
+let getCreate = (req, res) => {
+  return res.render('crud.ejs');
+}
+let postCreate = async (req, res) => {
+  let role = req.body.roleId;
+  if(role === 'Patient'){
+    let message = await CRUDService.createNewPatient(req.body);
+    console.log(message)
+    return res.send('Created New Patient');
+  }else{
+    let message = await CRUDService.createNewDoctor(req.body);
+    console.log(message)
+    return res.send('Created New Doctor');
+  }
+}
 
 let displayGetCRUD = async (req, res) => {
   let data_patient = await CRUDService.getAllPatient();
@@ -101,7 +116,8 @@ let getSpecializationToHome = async (req, res) => {
 };
 
 module.exports = {
-
+  getCreate: getCreate,
+  postCreate: postCreate,
   displayGetCRUD: displayGetCRUD,
   getEditCRUD: getEditCRUD,
   putCRUD: putCRUD,

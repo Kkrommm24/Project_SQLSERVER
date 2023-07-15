@@ -19,6 +19,8 @@ let initWebRoutes = (app) => {
   // }
 
   //***************ADMIN****************
+  router.get('/create-new-user', homeController.getCreate); //render ra form create
+  router.post('/post-create', homeController.postCreate); //created
   router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình 
   router.get('/edit-crud', homeController.getEditCRUD); //edit
   router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển

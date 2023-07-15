@@ -3,31 +3,83 @@ const db = require('../models/index');
 const salt = bcrypt.genSaltSync(10);
 
 //Tạo user
-let createNewUser = async (data) =>{
-    return new Promise( async (resolve, reject) => {
-        try{
-            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.Login.create({
-                email: data.email,
-                password: hashPasswordFromBcrypt,  
-                roleId: 'Patient',
-            })
-            await db.Patient.create({
-                roleId: 'Patient',
-                Patient_email: data.email,
-                Patient_firstName: data.firstName,
-                Patient_lastName: data.lastName,
-                Patient_address: data.address,
-                Patient_phoneNumber: data.phoneNumber,
-                Patient_age: data.Age,
-                Patient_gender: data.gender,   
-            })
-            resolve('Create succeed');
-        }catch(e){
-            console.error('Error:', e);
-        }
-    })
-}
+let createNewPatient = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let check = await checkUserEmail(data.email);
+      if (check === true) {
+        resolve({
+          errCode: 1,
+          message: 'Your email is already in used, Try another one',
+        });
+      } else {
+        let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+        await db.Login.create({
+          email: data.email,
+          password: hashPasswordFromBcrypt,
+          roleId: 'Patient',
+        });
+        await db.Patient.create({
+          roleId: 'Patient',
+          email: data.email,
+          Patient_firstName: data.firstName,
+          Patient_lastName: data.lastName,
+          Patient_address: data.address,
+          Patient_phoneNumber: data.phoneNumber,
+          Patient_age: data.age,
+          Patient_gender: data.gender,
+        });
+        resolve({
+          errCode: 0,
+          message: 'OK',
+        });
+      }
+    } catch (e) {
+      console.error('Error:', e);
+      reject(e);
+    }
+  });
+};
+
+let createNewDoctor = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let check = await checkUserEmail(data.email);
+      if (check === true) {
+        resolve({
+          errCode: 1,
+          message: 'Your email is already in used, Try another one',
+        });
+      } else {
+        let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+        await db.Login.create({
+          email: data.email,
+          password: hashPasswordFromBcrypt,
+          roleId: 'Doctor',
+        });
+        await db.Doctor.create({
+          roleId: 'Doctor',
+          ClinicId: data.clinicId,
+          SpecializationId: data.specializationId,
+          email: data.email,
+          Doctor_firstName: data.firstName,
+          Doctor_lastName: data.lastName,
+          Doctor_address: data.address,
+          Doctor_phoneNumber: data.phoneNumber,
+          Doctor_age: data.Age,
+          Doctor_gender: data.gender,
+        });
+        resolve({
+          errCode: 0,
+          message: 'OK',
+        });
+      }
+    } catch (e) {
+      console.error('Error:', e);
+      reject(e);
+    }
+  });
+};
 
 let hashUserPassword = (password) => {
     return new Promise( async (resolve, reject) =>{
@@ -299,14 +351,15 @@ let getAllCodeService = (typeinput) => {
   });
 };
 module.exports = {
-  createNewUser: createNewUser,
+  createNewPatient: createNewPatient,
+  createNewDoctor: createNewDoctor,
 
   getAllDoctors: getAllDoctors,
   getAllPatient: getAllPatient,
 
   getPatientInfoById: getPatientInfoById,
   getDoctorInfoById: getDoctorInfoById,
-  
+
   updatePatientData: updatePatientData,
   updateDoctorData: updateDoctorData,
 
