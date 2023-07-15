@@ -29,7 +29,7 @@ let handleLogin = async (req, res) => {
         console.log('Doctor ID:', userId);
       }
     } else if(role === 'ADMIN'){
-      userId = loginData.login;
+      userId = loginData.login.id;
       console.log('ADMIN ID: ', userId);
     }
     // Lưu ID vào session

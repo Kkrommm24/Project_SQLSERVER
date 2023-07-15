@@ -20,9 +20,9 @@
 <body>
     <div class="container">
         <div class="row">
-            <form action="/put-crud" method="POST">
+            <form action="/put-doctor" method="POST">
                 <div class="form-row">
-                    <div class="col-12 mt-3"><b>Edit User's Information:</b></div>
+                    <div class="col-12 mt-3"><b>Edit Doctor's Information:</b></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -32,7 +32,7 @@
                           class="form-control" 
                           placeholder="First Name" 
                           name="firstName"
-                          value="<%= patient.firstName %>"
+                          value="<%= doctor.firstName %>"
                           required
                         />
                     </div>
@@ -43,7 +43,7 @@
                           class="form-control"
                           placeholder="Last Name" 
                           name="lastName"
-                          value="<%= patient.lastName %>"
+                          value="<%= doctor.lastName %>"
                           required
                         />
                     </div>
@@ -56,7 +56,7 @@
                           class="form-control" 
                           placeholder="Address" 
                           name="address"
-                          value="<%= patient.address %>"
+                          value="<%= doctor.address %>"
                           required
                         />
                     </div>
@@ -67,7 +67,7 @@
                           class="form-control" 
                           placeholder="Age" 
                           name="age"
-                          value="<%= patient.age %>"
+                          value="<%= doctor.age %>"
                           required
                         />
                     </div>
@@ -77,13 +77,36 @@
                         <label for="inputGender">Gender</label>
                         <select class="form-control" name="gender" required>
                             <option value="" disabled selected>Select Gender</option>
-                            <option value= 1 <%= patient.gender === 'male' ? 'selected' : '' %>>Male</option>
-                            <option value= 2 <%= patient.gender === 'female' ? 'selected' : '' %>>Female</option>
-                            <option value= 3 <%= patient.gender === 'other' ? 'selected' : '' %>>Other</option>
+                            <option value= 1 <%= doctor.gender === 'male' ? 'selected' : '' %>>Male</option>
+                            <option value= 2 <%= doctor.gender === 'female' ? 'selected' : '' %>>Female</option>
+                            <option value= 3 <%= doctor.gender === 'other' ? 'selected' : '' %>>Other</option>
                         </select>
                     </div>
                 </div>
-                <input name="id" value="<%= patient.id %>" type="hidden"/>
+                <!-- Thêm trường Clinic -->
+                <div class="form-group">
+                    <label for="inputClinic">Clinic</label>
+                    <select name="clinicId" class="form-control" required>
+                      <option value="1">Cơ sở số 1</option>
+                      <option value="2">Cơ sở số 2</option>
+                      <option value="3">Cơ sở số 3</option>
+                      <option value="4">Cơ sở số 4</option>
+                      <option value="5">Cơ sở số 5</option>
+                    </select>
+                  </div>
+  
+                  <!-- Thêm trường Specialization -->
+                  <div class="form-group">
+                    <label for="inputSpecialization">Specialization</label>
+                    <select name="specializationId" class="form-control" required>
+                      <option value=1>Tim mạch</option>
+                      <option value=2>Nội khoa</option>
+                      <option value=3>Da liễu</option>
+                      <option value=4>Răng hàm mặt</option>
+                      <option value=5>Sản phụ khoa</option>
+                    </select>
+                  </div>
+                <input name="id" value="<%= doctor.id %>" type="hidden"/>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>

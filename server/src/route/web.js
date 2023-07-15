@@ -23,9 +23,14 @@ let initWebRoutes = (app) => {
   router.get('/create-new-doctor', homeController.getCreateDoctor); //render ra form create doctor
   router.post('/post-create-patient', homeController.postCreatePatient); //created patient
   router.post('/post-create-doctor', homeController.postCreateDoctor); //created patient
-  router.get('/get-crud', homeController.displayGetCRUD); //in ra màn hình 
-  router.get('/edit-crud', homeController.getEditCRUD); //edit
-  router.post('/put-crud', homeController.putCRUD); //edit xong thì sẽ chuyển
+  router.get('/get-all', homeController.displayGetCRUD); //in ra màn hình 
+
+  router.get('/edit-patient', homeController.getEditPatient); //edit patient
+  router.post('/put-patient', homeController.putPatient); //edit xong thì sẽ chuyển về list all
+
+  router.get('/edit-doctor', homeController.getEditDoctor); //edit patient
+  router.post('/put-doctor', homeController.putDoctor); //edit xong thì sẽ chuyển về list all
+
   router.post('/delete-crud', homeController.deleteCRUD); //delete
 
   router.post('/api/login', LoginController.handleLogin); //login

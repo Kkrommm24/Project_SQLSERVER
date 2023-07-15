@@ -21,7 +21,7 @@ let postCreateDoctor = async (req, res) => {
 }
 
 let displayGetCRUD = async (req, res) => {
-  let data_patient = await CRUDService.getAllPatient();
+  let data_patient = await CRUDService.getAllPatients();
   let data_doctor = await CRUDService.getAllDoctors();
   console.log('---------------------');
   console.log(data_patient);
@@ -33,22 +33,16 @@ let displayGetCRUD = async (req, res) => {
   });
 };
 
-let getEditCRUD = async (req, res) => {
-  let id = req.body.id;
-  let role = req.body.roleId
-  if(role === 'Patient'){
+let getEditPatient = async (req, res) => {
+  let id = req.query.id;
     if (id) {
-      // let patientData = await CRUDService.getPatientInfoById(id);
-      return res.render('editCRUD.ejs',{
+      let patientData = await CRUDService.getPatientInfoById(id);
+      return res.render('editPatient.ejs',{
         patient: patientData //x<-y
       });
-      await CRUDService.updatePatientData(id);
-      return res.send('Edit success');
     } else {
       return res.send('Patient not found');
     }
-  }
-  // if(role === 'Doctor'){
   //   if (id) {
   //     let doctorData = await CRUDService.getDoctorInfoById(id);
   //     return res.render('editCRUD.ejs',{
@@ -59,21 +53,48 @@ let getEditCRUD = async (req, res) => {
   //   } else {
   //     return res.send('Doctor not found');
   //   }
-  // }
 };
 
-let putCRUD = async (req, res) => {
-  let data_patient = await CRUDService.getAllPatient();
+let putPatient = async (req, res) => {
+  let data = req.body;
+  let allPatients = await CRUDService.updatePatientData(data);
   let data_doctor = await CRUDService.getAllDoctors();
-  console.log('---------------------');
-  console.log(data_patient);
-  console.log(data_doctor);
-  console.log('---------------------');
-  return res.render('displayCRUD.ejs', {
-    patients: data_patient,
-    doctors: data_doctor,
-  });
+    console.log('---------------------');
+    console.log(allPatients);
+    // console.log(data_doctor);
+    console.log('---------------------');
+    return res.render('displayCRUD.ejs', {
+        patients: allPatients,
+        doctors: data_doctor,
+    });
 };
+
+let getEditDoctor = async (req, res) => {
+  let id = req.query.id;
+    if (id) {
+      let doctorData = await CRUDService.getDoctorInfoById(id);
+      return res.render('editDoctor.ejs',{
+        doctor: doctorData //x<-y
+      });
+    } else {
+      return res.send('Doctor not found');
+    }
+};
+
+let putDoctor = async (req, res) => {
+  let data = req.body;
+  let data_patient = await CRUDService.getAllPatients();
+  let allDoctors = await CRUDService.updateDoctorData(data);
+    console.log('---------------------');
+    console.log(allDoctors);
+    // console.log(data_doctor);
+    console.log('---------------------');
+    return res.render('displayCRUD.ejs', {
+      patients: data_patient,
+      doctors: allDoctors, 
+    });
+};
+
 let deleteCRUD = async (req, res) => {
   let id = req.body.id;
   let role = req.body.roleId
@@ -124,8 +145,13 @@ module.exports = {
   postCreatePatient: postCreatePatient,
   postCreateDoctor: postCreateDoctor,
   displayGetCRUD: displayGetCRUD,
-  getEditCRUD: getEditCRUD,
-  putCRUD: putCRUD,
+
+  getEditPatient: getEditPatient,
+  putPatient: putPatient,
+
+  getEditDoctor: getEditDoctor,
+  putDoctor: putDoctor,
+
   deleteCRUD: deleteCRUD,
   getAllCode: getAllCode,
   getSpecializationToHome: getSpecializationToHome,

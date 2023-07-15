@@ -66,7 +66,7 @@ let createNewDoctor = (data) => {
           Doctor_lastName: data.lastName,
           Doctor_address: data.address,
           Doctor_phoneNumber: data.phoneNumber,
-          Doctor_age: data.Age,
+          Doctor_age: data.age,
           Doctor_gender: data.gender,
         });
         resolve({
@@ -113,7 +113,7 @@ let hashUserPassword = (password) => {
 }
 
 // Lấy danh sách user
-let getAllPatient = () => {
+let getAllPatients = () => {
   return new Promise(async (resolve, reject) => {
     try {
       let patients = db.Patient.findAll({
@@ -178,11 +178,11 @@ let getDoctorInfoById = (DoctorId) => {
   })
 }
 //Edit user in4
-let updatePatientData = (PatientId) => {
+let updatePatientData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let patient = await db.Patient.findOne({
-        where: { id: PatientId },
+        where: { id: data.id },
       });
       console.log(patient);
       if (patient) {
@@ -194,7 +194,8 @@ let updatePatientData = (PatientId) => {
         patient.Patient_gender = data.gender,
         console.log(patient);
         await patient.save();
-        resolve();
+        let allPatients = await db.Patient.findAll();
+        resolve(allPatients);
       } else {
         resolve();
       }
@@ -204,11 +205,11 @@ let updatePatientData = (PatientId) => {
   });
 };
 
-let updateDoctorData = (DoctorId) => {
+let updateDoctorData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let doctor = await db.Doctor.findOne({
-        where: { id: DoctorId },
+        where: { id: data.id },
       });
       console.log(doctor);
       if (doctor) {
@@ -218,11 +219,12 @@ let updateDoctorData = (DoctorId) => {
         doctor.Doctor_phoneNumber = data.phoneNumber,
         doctor.Doctor_age = data.age,
         doctor.Doctor_gender = data.gender,
-        doctor.ClinicId = data.clinicid,
-        doctor.SpecializationId = data.specializationid
+        doctor.ClinicId = data.clinicId,
+        doctor.SpecializationId = data.specializationId
         console.log(doctor);
         await doctor.save();
-        resolve();
+        let allDoctors = await db.Doctor.findAll();
+        resolve(allDoctors);
       } else {
         resolve();
       }
@@ -374,7 +376,7 @@ module.exports = {
   createNewDoctor: createNewDoctor,
 
   getAllDoctors: getAllDoctors,
-  getAllPatient: getAllPatient,
+  getAllPatients: getAllPatients,
 
   getPatientInfoById: getPatientInfoById,
   getDoctorInfoById: getDoctorInfoById,
