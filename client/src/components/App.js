@@ -9,6 +9,7 @@ import IsLogSignIn from '../route/Login_SignIn';
 import Profile from '../route/User/Profile';
 import { Landing } from './Landing';
 import About from '../route/AboutUs';
+import ChangePassword from '../route/User/Password';
 //hook for checking who tf is logging in
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Home />}>
             <Route path="/home" element={<Landing />} />
             <Route path="/user/profile" element={<Profile />} />
+            <Route path="/user/change-password" element={<ChangePassword />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/booking" element={<Booking />} />
           </Route>

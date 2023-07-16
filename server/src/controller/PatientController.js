@@ -81,21 +81,26 @@ let handleChangePassword = async (req, res) => {
     console.log('New Password:', newPassword);
     console.log('Confirm New Password:', cf_newPassword);
     if (!isMatch) {
-      return res.status(400).json({ error: 'Incorrect current password' });
+      return res
+        .status(400)
+        .json({ error: 'Incorrect current password', errCode: 2 });
     }
     if (isMatch2 !== 0) {
       return res.status(400).json({
         error: 'New password does not match. Enter new password again',
+        errCode: 1,
       });
     }
     // Hash và lưu mật khẩu mới
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
     login.password = hashedNewPassword;
     await login.save();
-    return res.status(200).json({ message: 'Password updated successfully' });
+    return res
+      .status(200)
+      .json({ message: 'Password updated successfully', errCode: 0 });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: 'Server error', errCode: 3 });
   }
 };
 

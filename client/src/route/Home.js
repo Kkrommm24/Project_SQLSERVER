@@ -30,7 +30,8 @@ const Home = (props) => {
     if (
       window.location.pathname === '/about-us' ||
       window.location.pathname === '/booking' ||
-      window.location.pathname === '/user/profile'
+      window.location.pathname === '/user/profile' ||
+      window.location.pathname === '/user/change-password'
     ) {
     } else {
       navigate('/home');
