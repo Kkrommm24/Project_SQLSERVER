@@ -58,7 +58,6 @@ const Book = (props) => {
       let errCode = submitted.errCode;
       console.log(submitted);
       if (errCode === 0) {
-        alert(message);
         navigate('/home', {
           state: { statusCode: 1, message: 'Đặt lịch khám thành công!' },
         });

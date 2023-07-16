@@ -50,7 +50,6 @@ const ChangePassword = (props) => {
         )
         .then((response) => {
           if (response.errCode === 0) {
-            alert(response.message);
             navigate('/home', {
               state: { statusCode: 1, message: 'Đổi mật khẩu thành công!' },
             });

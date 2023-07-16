@@ -11,7 +11,6 @@ export const Landing = () => {
     }, 5000);
   });
   let location = useLocation();
-  console.log(location.state.message);
   const navigate = useNavigate();
   return (
     <>
