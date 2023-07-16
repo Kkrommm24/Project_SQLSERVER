@@ -34,20 +34,32 @@ const ChangePassword = (props) => {
       });
   });
   const handleChangePassword = async () => {
-    await axios
-      .put(
-        '/api/change-' + (props.isDoctor ? 'doctor-' : 'patient-') + 'password',
-        password
-      )
-      .then((response) => {
-        if (response.errCode === 0) {
-          alert(response.message);
-          navigate('/home');
-        } else {
-          setErr(response.error);
-        }
-      })
-      .catch((e) => setErr(e.response.data.error));
+    if (
+      !password.currentPassword ||
+      !password.newPassword ||
+      !password.cf_newPassword
+    ) {
+      setErr('Please fill all fields');
+    } else {
+      await axios
+        .put(
+          '/api/change-' +
+            (props.isDoctor ? 'doctor-' : 'patient-') +
+            'password',
+          password
+        )
+        .then((response) => {
+          if (response.errCode === 0) {
+            alert(response.message);
+            navigate('/home', {
+              state: { statusCode: 1, message: 'Đổi mật khẩu thành công!' },
+            });
+          } else {
+            setErr(response.error);
+          }
+        })
+        .catch((e) => setErr(e.response.data.error));
+    }
   };
   return (
     <div>
@@ -76,8 +88,9 @@ const ChangePassword = (props) => {
             <h1 className="mt-10 mb-10 text-gray-900 text-5xl font-bold">
               Đổi mật khẩu
             </h1>
-            <p>Mật khảu hiện tại:</p>
+            <p>Mật khẩu hiện tại:</p>
             <input
+              className="bg-slate-100 rounded shadow-inner p-1 w-full"
               type="password"
               placeholder="Nhập mật khẩu hiện tại của bạn"
               onChange={(e) => {
@@ -86,6 +99,7 @@ const ChangePassword = (props) => {
             />
             <p>Mật khẩu mới:</p>
             <input
+              className="bg-slate-100 rounded shadow-inner p-1 w-full"
               type="password"
               placeholder="Nhập mật khẩu mới"
               value={password.newPassword}
@@ -95,6 +109,7 @@ const ChangePassword = (props) => {
             />
             <p>Xác nhận mật khẩu mới:</p>
             <input
+              className="bg-slate-100 rounded shadow-inner p-1 w-full"
               type="password"
               placeholder="Nhập lại mật khẩu mới"
               value={password.cf_newPassword}
@@ -105,9 +120,14 @@ const ChangePassword = (props) => {
                 });
               }}
             />
-            <p>{err}</p>
             <p></p>
-            <button onClick={(e) => handleChangePassword()}>Click me </button>
+            <button
+              className=" block w-full hover:bg-white bg-indigo-500 border-2 border-indigo-500 rounded-md text-white hover:text-indigo-500 mt-3  p-1"
+              onClick={(e) => handleChangePassword()}
+            >
+              Xác Nhận{' '}
+            </button>
+            <p className="text-red-500 font-medium">{err}</p>
           </div>
         </div>
       )}

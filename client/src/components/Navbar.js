@@ -96,9 +96,11 @@ export const Navbar = (props) => {
                     Hồ sơ của bạn
                   </div>
                 </Link>
-                <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                  Cài đặt
-                </div>
+                <Link to="/user/change-password">
+                  <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                    Đổi mật khẩu
+                  </div>
+                </Link>
                 <div className="h-px w-full bg-gray-300 float-right"></div>
                 <div
                   className="w-full hover:text-red-500 cursor-pointer text-right"
@@ -132,9 +134,11 @@ export const Navbar = (props) => {
                     Hồ sơ của bạn
                   </div>
                 </Link>
-                <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
-                  Cài đặt
-                </div>
+                <Link to="/user/change-password">
+                  <div className="w-full hover:text-indigo-500 cursor-pointer text-right">
+                    Đổi mật khẩu
+                  </div>
+                </Link>
                 <div className="h-px w-full bg-gray-300 float-right"></div>
                 <div
                   className="w-full hover:text-red-500 cursor-pointer text-right"

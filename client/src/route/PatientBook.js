@@ -59,7 +59,9 @@ const Book = (props) => {
       console.log(submitted);
       if (errCode === 0) {
         alert(message);
-        navigate('/home');
+        navigate('/home', {
+          state: { statusCode: 1, message: 'Đặt lịch khám thành công!' },
+        });
       }
     }
   };
