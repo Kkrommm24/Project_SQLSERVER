@@ -24,8 +24,7 @@ Deploy database models and base data in server with ``` npm run database ```
 
 (Note that you will need a database called 'qlpk' to use this)
 
-
-After that, ```npm run dev``` to run
+After that, you can just use ```npm run dev``` to start the project and enjoy it
 
 //Working on it later//
 
