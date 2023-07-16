@@ -9,6 +9,7 @@ import IsLogSignIn from '../route/Login_SignIn';
 import Profile from '../route/User/Profile';
 import { Landing } from './Landing';
 import About from '../route/AboutUs';
+import Clinics from '../route/Clinic';
 import ChangePassword from '../route/User/Password';
 //hook for checking who tf is logging in
 
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/user/profile" element={<Profile />} />
             <Route path="/user/change-password" element={<ChangePassword />} />
             <Route path="/about-us" element={<About />} />
+            <Route path="/clinics" element={<Clinics />} />
             <Route path="/booking" element={<Booking />} />
           </Route>
           <Route path="/login-signin" element={<IsLogSignIn />} />

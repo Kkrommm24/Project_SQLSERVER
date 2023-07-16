@@ -31,7 +31,8 @@ const Home = (props) => {
       window.location.pathname === '/about-us' ||
       window.location.pathname === '/booking' ||
       window.location.pathname === '/user/profile' ||
-      window.location.pathname === '/user/change-password'
+      window.location.pathname === '/user/change-password' ||
+      window.location.pathname === '/clinics'
     ) {
     } else {
       navigate('/home');

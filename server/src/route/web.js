@@ -237,7 +237,11 @@ let initWebRoutes = (app) => {
     '/api/home/specialization',
     homeController.getSpecializationToHome
   );
-
+  router.get('/api/home/clinic', async (req, res) => {
+    let cData = await db.Clinic.findAll();
+    if (cData) res.send({ cData: cData });
+    else res.send({ message: "Couldn't find any clinics!" });
+  });
   return app.use('/', router);
 };
 

@@ -54,7 +54,6 @@ const Book = (props) => {
       alert('Pls fill all fields');
     } else {
       let submitted = await handleBooking(submit.doctor, date.day, date.time);
-      let message = submitted.message;
       let errCode = submitted.errCode;
       console.log(submitted);
       if (errCode === 0) {
@@ -297,7 +296,6 @@ const Book = (props) => {
                   Đặt lịch khám{' '}
                 </button>
               </div>
-              <h1></h1>
             </div>
           </div>
         </div>

@@ -60,6 +60,11 @@ export const Navbar = (props) => {
           Về chúng tôi
         </div>
       </Link>
+      <Link to="/clinics">
+        <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer">
+          Cơ sở khám bệnh
+        </div>
+      </Link>
       {!props.props.isDoctor ? (
         <Link
           to={props.props.isPatient ? '/booking' : '/login-signin'}
