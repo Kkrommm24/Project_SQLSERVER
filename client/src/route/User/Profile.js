@@ -236,6 +236,9 @@ const Profile = (props) => {
                         className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
                         type="number"
                         defaultValue={data.Doctor_age}
+                        onChange={(e) =>
+                          setEditData({ ...editData, age: e.target.value })
+                        }
                       />
                     ) : (
                       <input
@@ -276,6 +279,12 @@ const Profile = (props) => {
                         className="bg-slate-100 rounded shadow-inner disabled:text-gray-500 disabled:opacity-70"
                         type="text"
                         defaultValue={data.Doctor_phoneNumber}
+                        onChange={(e) =>
+                          setEditData({
+                            ...editData,
+                            phoneNumber: e.target.value,
+                          })
+                        }
                       />
                     ) : (
                       <input
