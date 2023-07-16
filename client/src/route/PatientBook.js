@@ -162,7 +162,7 @@ const Book = (props) => {
                   className="p-2 shadow-inner bg-slate-50 m-2 rounded-md"
                   type="date"
                   onChange={(e) => {
-                    if (e.target.value < currentDate) {
+                    if (e.target.value <= currentDate) {
                       alert("You're choosing past date");
                       e.target.value = '';
                     } else setDate({ ...date, day: e.target.value });
