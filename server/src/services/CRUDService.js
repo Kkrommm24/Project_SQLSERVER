@@ -2,6 +2,57 @@ const bcrypt = require('bcryptjs');
 const db = require('../models/index');
 const salt = bcrypt.genSaltSync(10);
 
+//Login Admin
+
+let handleLogin = (email, password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let loginData = {};
+      let isExist = await checkUserEmail(email);
+      if (isExist) {
+        //user existed
+
+        let login = await db.Login.findOne({
+          attributes: ['id', 'email', 'password', 'roleId'],
+          where: { email: email },
+          raw: true,
+        });
+        if (login) {
+          //compare password
+          let check = await bcrypt.compareSync(password, login.password);
+
+          if (check) {
+            if (login.roleId === 'Admin') {
+              loginData.errCode = 0;
+              loginData.errMessage = `Ok You're Admin`;
+              delete login.password;
+              loginData.login = login;
+            } else {
+              loginData.errCode = 4;
+              loginData.errMessage = `You're not Admin, please go out`;
+              delete login.password;
+              loginData.login = login;
+            }
+          } else {
+            loginData.errCode = 3;
+            loginData.errMessage = 'Wrong Password';
+          }
+        } else {
+          loginData.errCode = 2;
+          loginData.errMessage = `USER NOT FOUND`;
+        }
+      } else {
+        loginData.errCode = 1;
+        loginData.errMessage = `Email doesn't exist`;
+      }
+      resolve(loginData);
+    } catch (e) {
+      console.error('Error:', e);
+      reject(e);
+    }
+  });
+};
+
 //Tạo user
 let createNewPatient = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -372,6 +423,8 @@ let getAllCodeService = (typeinput) => {
   });
 };
 module.exports = {
+  handleLogin: handleLogin,
+
   createNewPatient: createNewPatient,
   createNewDoctor: createNewDoctor,
 

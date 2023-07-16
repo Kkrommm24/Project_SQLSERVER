@@ -14,7 +14,7 @@ export const Landing = () => {
   const navigate = useNavigate();
   return (
     <>
-      {location.state ? (
+      { location.state? (
         location.state.statusCode === 1 ? (
           <div
             className={

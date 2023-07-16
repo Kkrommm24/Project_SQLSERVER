@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <title>List of Patients and Doctors</title>
   <style>
     table {
@@ -28,8 +29,24 @@
     .delete-btn {
       background-color: #e74c3c;
     }
+    .logout-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      background-color: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
+<body>
+  <form method="POST" action="/admin/logout">
+    <button class="logout-btn">Logout</button>
+  </form>
+</body>
 <body>
   <h1>List of Patients <button class="add-btn" onclick="window.location.href='/create-new-patient'">Add Patient</button>
   </h1>

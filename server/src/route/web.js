@@ -19,12 +19,33 @@ let initWebRoutes = (app) => {
   // }
 
   //***************ADMIN****************
+  const checkAdminLoggedIn = (req, res, next) => {
+    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+    if (req.session) {
+      // Nếu đã đăng nhập, kiểm tra xem có quyền admin hay không (thí dụ bạn có một biến isAdmin trong session)
+      if (req.session.roleId === 'Admin') {
+        // Nếu có quyền admin, tiếp tục đến route tiếp theo
+        next();
+      } else {
+        // Nếu không có quyền admin, chuyển hướng người dùng đến trang đăng nhập cho admin
+        res.redirect('/admin/login');
+      }
+    } else {
+      // Nếu chưa đăng nhập, chuyển hướng người dùng đến trang đăng nhập cho admin
+      res.redirect('/admin/login');
+    }
+  };
+
+  router.get('/admin/login', homeController.adminLogin);
+  router.post('/post/admin/login', homeController.handleLogin)
+
+  router.get('/get-all', checkAdminLoggedIn, homeController.displayGetCRUD); //in ra màn hình
+
   router.get('/create-new-patient', homeController.getCreatePatient); //render ra form create patient
   router.get('/create-new-doctor', homeController.getCreateDoctor); //render ra form create doctor
   router.post('/post-create-patient', homeController.postCreatePatient); //created patient
   router.post('/post-create-doctor', homeController.postCreateDoctor); //created patient
-  router.get('/get-all', homeController.displayGetCRUD); //in ra màn hình
-
+  
   router.get('/edit-patient', homeController.getEditPatient); //edit patient
   router.post('/put-patient', homeController.putPatient); //edit xong thì sẽ chuyển về list all
 
@@ -34,6 +55,8 @@ let initWebRoutes = (app) => {
   router.post('/delete-crud', homeController.deleteCRUD); //delete
 
   router.post('/api/login', LoginController.handleLogin); //login
+  router.post('/admin/logout', homeController.adminLogout);
+
   router.post('/api/log-out', async (req, res) => {
     await delete req.session.userId;
     await delete req.session.roleId;

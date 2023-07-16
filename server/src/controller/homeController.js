@@ -1,6 +1,60 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
 
+let adminLogin = (req, res) => {
+  return res.render('loginForm.ejs');
+}
+
+let handleLogin = async (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
+
+  // Check email exist
+  if (!email || !password) {
+    return res.status(500).json({
+      errCode: 1,
+      message: 'Missing inputs parameter!',
+    });
+  }
+
+  let loginData = await CRUDService.handleLogin(email, password);
+  if (loginData.errCode === 0) {
+    let role = loginData.login.roleId;
+    let userId;
+    if (role === 'Admin') {
+      userId = loginData.login.id;
+      console.log('ADMIN ID: ', userId);
+
+      // Lưu ID và roleId vào session
+      req.session.adminId = userId;
+      req.session.roleId = role;
+      console.log(req.session);
+      return res.redirect('/get-all');
+    } 
+    else {
+      return res.status(200).json({
+        errCode: loginData.errCode,
+        message: loginData.errMessage,
+      });
+    }
+  } else {
+    return res.status(200).json({
+      errCode: loginData.errCode,
+      message: loginData.errMessage,
+    });
+  }
+};
+
+let adminLogout = async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+    // Chuyển hướng về trang admin/login sau khi logout
+    return res.redirect('/admin/login'); // Thêm điều hướng vào đây
+  });
+}
+
 let getCreatePatient = (req, res) => {
   return res.render('createPatient.ejs');
 }
@@ -140,6 +194,11 @@ let getSpecializationToHome = async (req, res) => {
 };
 
 module.exports = {
+  adminLogin: adminLogin,
+  handleLogin: handleLogin,
+
+  adminLogout: adminLogout,
+
   getCreatePatient: getCreatePatient,
   getCreateDoctor: getCreateDoctor,
   postCreatePatient: postCreatePatient,

@@ -28,7 +28,7 @@ let handleLogin = async (req, res) => {
         userId = loginData.doctor.id;
         console.log('Doctor ID:', userId);
       }
-    } else if(role === 'ADMIN'){
+    } else if(role === 'Admin'){
       userId = loginData.login.id;
       console.log('ADMIN ID: ', userId);
     }
