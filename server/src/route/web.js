@@ -37,6 +37,8 @@ let initWebRoutes = (app) => {
   };
 
   router.get('/admin/login', homeController.adminLogin);
+  router.post('/admin/logout', homeController.adminLogout); // admin logout
+
   router.post('/post/admin/login', homeController.handleLogin)
 
   router.get('/get-all', checkAdminLoggedIn, homeController.displayGetCRUD); //in ra màn hình
@@ -55,8 +57,6 @@ let initWebRoutes = (app) => {
   router.post('/delete-crud', homeController.deleteCRUD); //delete
 
   router.post('/api/login', LoginController.handleLogin); //login
-  router.post('/admin/logout', homeController.adminLogout);
-
   router.post('/api/log-out', async (req, res) => {
     await delete req.session.userId;
     await delete req.session.roleId;
@@ -90,16 +90,6 @@ let initWebRoutes = (app) => {
   router.delete('/api/delete-doctor', DoctorController.handleDeleteDoctor); // delete a doctor (might be delete if it's not useful)
 
   //***************BOOKING***************
-
-  //   router.get('/api/patient-booking', BookingController.handleBooking_1); // render frontend select clinic
-  //   router.post('/api/booking-state-clinic', BookingController.postBooking_clinic); // save clinicId and redirect to /api/patient-booking-specialization
-
-  //   router.get('/api/patient-booking-specialization', BookingController.handleBooking_2); // render frontend select specialization
-  //   router.post('/api/booking-state-specialization', BookingController.postBooking_specialization); // save specializationId and redirect to /api/patient-booking-doctor
-
-  //   router.get('/api/patient-booking-doctor', BookingController.handleBooking_3); // render frontend select doctor, date and time
-  //   router.post('/api/booking-state-complete', BookingController.postBooking_doctor); // result of booking
-
   router.post(
     '/api/user/booking/cancel',
     BookingController.handleCancelBooking,

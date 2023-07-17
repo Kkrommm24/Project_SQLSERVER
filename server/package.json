@@ -8,7 +8,7 @@
   },
   "author": "QLPK",
   "license": "ISC",
-  "description": "backend cua chrom",
+  "description": "server",
   "dependencies": {
     "@babel/cli": "^7.22.5",
     "@babel/node": "^7.22.5",
