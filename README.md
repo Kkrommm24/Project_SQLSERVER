@@ -50,7 +50,7 @@ After download project's files, you need to use ``` npm run install ``` to insta
 
 
 Deploy database models and base data in server with ``` npm run database ```
-
+Default password for every users including admin is "123456". You can change it if you want
 
 (Note that you will need a database called 'qlpk' to use this)
 
