@@ -60,10 +60,15 @@ const Book = (props) => {
         navigate('/home', {
           state: { statusCode: 1, message: 'Đặt lịch khám thành công!' },
         });
-      } else if (errCode === 1)
+      } else if (errCode === 1){
         alert(
           'Lịch khám bị trùng. Vui lòng chọn thời gian hoặc bác sĩ khám khác!'
         );
+      } else if (errCode === 1.1){
+        alert(
+          'Bạn đã đặt lịch khám này. Vui lòng chọn thời gian khác!'
+        );
+      }
     }
   };
   useEffect(() => {
