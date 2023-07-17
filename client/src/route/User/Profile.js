@@ -436,13 +436,9 @@ BOOKING TABLE
                     <th className="p-2">Address</th>
                     <th className="p-2">Date</th>
                     <th className="p-2 text-center">Status</th>
-                    <th className="p-2 text-center ">
-                      {' '}
-                      <p className="w-16"></p>
-                    </th>
-                    <th className="p-2 text-center ">
-                      {' '}
-                      <p className="w-16"></p>
+                    <th className="p-2 text-center" colSpan={2}>
+                      Action
+                      <p className="w-32"></p>
                     </th>
                   </tr>
                   {book.map((data, index) =>
@@ -462,17 +458,17 @@ BOOKING TABLE
                           <td
                             className={
                               data.StatusId === 7
-                                ? 'bg-red-500 rounded-2xl text-center text-white'
+                                ? 'bg-red-500 rounded-2xl text-center text-white '
                                 : data.StatusId === 6
                                 ? 'bg-green-500 rounded-2xl text-center text-white'
                                 : data.StatusId === 5
                                 ? 'bg-blue-500 rounded-2xl text-center text-white'
-                                : 'bg-yellow-500 rounded-2xl text-center text-white'
+                                : 'bg-yellow-500 rounded-2xl text-center text-white p-1 m-1'
                             }
                           >
                             {data.status}
                           </td>
-                          <td className="h-full">
+                          <td className="h-full px-1 pl-3">
                             {data.StatusId === 4 ? (
                               <div
                                 className="cursor-pointer bg-blue-500 border-blue-500 hover:bg-white border-2 hover:text-blue-500 rounded-2xl text-center h-full p-2 text-white w-full"
