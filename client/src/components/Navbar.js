@@ -86,7 +86,7 @@ export const Navbar = (props) => {
               onMouseOut={() => setProfile(false)}
             >
               <div className="text-black hover:text-indigo-500 font-medium p-3 cursor-pointer relative">
-                Xin chào,Dr. {props.props.userInfo.Doctor_firstName}
+                Xin chào, Dr. {props.props.userInfo.Doctor_firstName}
               </div>
 
               <div
