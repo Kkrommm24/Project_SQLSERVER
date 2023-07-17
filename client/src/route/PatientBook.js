@@ -51,7 +51,7 @@ const Book = (props) => {
     e.preventDefault();
     if (!submit.doctor || !date.day || date.time === 0) {
       console.log(submit);
-      alert('Pls fill all fields');
+      alert('Xin hãy điền toàn bộ ô còn trống');
     } else {
       let submitted = await handleBooking(submit.doctor, date.day, date.time);
       let errCode = submitted.errCode;
@@ -62,11 +62,11 @@ const Book = (props) => {
         });
       } else if (errCode === 1){
         alert(
-          'Lịch khám bị trùng. Vui lòng chọn thời gian hoặc bác sĩ khám khác!'
+          'Lịch khám này đã có người đặt. Vui lòng chọn thời gian hoặc bác sĩ khám khác!'
         );
       } else if (errCode === 1.1){
         alert(
-          'Bạn đã đặt lịch khám này. Vui lòng chọn thời gian khác!'
+          'Bạn đã đặt 1 lịch khác trùng thời gian với lịch khám này. Vui lòng chọn thời gian khác!'
         );
       }
     }
