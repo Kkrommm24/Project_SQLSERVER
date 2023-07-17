@@ -1,15 +1,19 @@
 import { response } from 'express';
 import db from '../models/index';
+const { Op } = require('sequelize');
 
 let checkBooking = (doctorData, dateData, timeTypeData) => {
   return new Promise(async (resolve, reject) => {
     try {
       let booking = await db.Booking.findOne({
-        attributes: ['DoctorId', 'date', 'timeType'],
+        attributes: ['DoctorId', 'date', 'timeType', 'StatusId'],
         where: {
           DoctorId: doctorData,
           date: dateData,
           timeType: timeTypeData,
+          StatusId: {
+            [Op.in]: [4, 5] // Thêm điều kiện StatusId là 4 hoặc 5 thì không đặt được
+          }
         },
         raw: true,
       });
@@ -28,11 +32,14 @@ let checkBooking2 = (patientData, dateData, timeTypeData) => {
   return new Promise(async (resolve, reject) => {
     try {
       let booking = await db.Booking.findOne({
-        attributes: ['PatientId', 'date', 'timeType'],
+        attributes: ['PatientId', 'date', 'timeType', 'StatusId'],
         where: {
           PatientId: patientData,
           date: dateData,
           timeType: timeTypeData,
+          StatusId: {
+            [Op.in]: [4, 5] // Thêm điều kiện StatusId là 4 hoặc 5 thì không đặt được
+          }
         },
         raw: true,
       });
