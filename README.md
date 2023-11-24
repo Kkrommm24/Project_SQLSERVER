@@ -47,12 +47,10 @@ git clone https://github.com/Kkrommm24/Project_SQLSERVER.git
 ## Install dependencies
 After download project's files, you need to use ``` npm run install ``` to install neccessary files.
 
-
+Create a database name "qlpk" (you can change it in server/src/config/config.json)
 
 Deploy database models and base data in server with ``` npm run database ```
 Default password for every users including admin is "123456". You can change it if you want
-
-(Note that you will need a database called 'qlpk' to use this)
 
 After that, you can just use ```npm run dev``` to start the project and enjoy it
 ## Collaborators

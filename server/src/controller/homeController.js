@@ -189,7 +189,6 @@ let getSpecializationToHome = async (req, res) => {
     res.send({ sData: data });
   } catch (e) {
     console.error(e);
-    re;
   }
 };
 

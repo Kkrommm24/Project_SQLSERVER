@@ -16,7 +16,15 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const logins = [];
     const passwords = [];
-
+    const admin_password = '123456';
+    const admin = {
+      email: "admin@test.com",
+      roleId: 'Admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    logins.push(admin);
+    passwords.push(admin_password);
     for (let i = 0; i < 30; i++) {
       const email = `${generateRandomName().toLowerCase()}${i + 1}@gmail.com`;
       const password = '123456'; // Thay đổi mật khẩu theo nhu cầu
